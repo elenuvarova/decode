@@ -1,0 +1,287 @@
+# Decode — JTBD ↔ user flows
+
+**Фаза:** UX architecture · **Дата:** 2026-06-12 · **Платформа:** iPhone, последняя iOS
+**Входы:** [jtbd.md](../product/jtbd.md) (jobs J1–J6, гипотезы), [task4-personas-premortem.md](../research-sprint/task4-personas-premortem.md) (6 требований), [research/00 §6](../../research/00-executive-summary.md) (UX-паттерны + референсы), [task5 VoC](../research-sprint/task5-voc-action-points.md) (инварианты)
+
+Каждый core-job сегмента явно привязан к flow, экранам и сигналу успеха. Это редкий senior-артефакт: показывает, что каждый экран существует ради работы пользователя, а не «потому что так бывает».
+
+---
+
+## 0. Как это собрано
+
+**Core loop продукта:** `Scan → Understand → Decide → Watch`.
+**6 требований pre-mortem встроены в flows** (помечены `[PMx]`):
+- `[PM1]` Home = Cockpit (не последний result)
+- `[PM2]` Онбординг-ветка «нет документа сейчас» (demo + скан старого письма)
+- `[PM3]` Бейдж credit-file — геройский элемент result
+- `[PM4]` Пейволл: free = N decodes/мес (полный wedge, но лимит) · Pro = unlimited + полный Vault + Watch/Radar; пейволл **после первого decode** *(ревизия по [research/21](../../research/21-pricing-monetization.md))*
+- `[PM5]` Q&A detect-and-signpost для debt-distress
+- `[PM6]` Три языка достоверности на result (From document / Calculated / AI)
+
+**Инварианты VoC/комплаенс на всех flows:** no bank connection; биллинг Apple-IAP-only без карты на free; отмена в 2 тапа; тон без осуждения; запрещены «you should / recommend / switch» (FCA).
+
+Легенда экранов: `[Screen]` = полноэкранный, `{Sheet}` = bottom-sheet, `(System)` = системный диалог. ID экранов сверены с [screen-sitemap.md](screen-sitemap.md).
+
+---
+
+## 1. Карта: job → flow → core-loop шаг
+
+| Job | Pri | Flow | Шаг loop | Главный сигнал успеха (activation) |
+|---|---|---|---|---|
+| J1 Понять, что подписываю | P0 | **F2 Scan & Decode** | Scan→Understand | Первый decode + просмотр aha-числа и credit-file бейджа |
+| J2 Всё в одном месте | P0 | **F5 Cockpit** | Watch | ≥2 документа в Vault, возврат в cockpit |
+| J3 Напоминание с суммой+последствием | P0 | **F6 Radar** | Watch | Включён первый reminder; открыт alert |
+| J4 Спросить простым языком | P0 | **F3 Ask** | Decide | Первый заданный вопрос с переходом к источнику |
+| J5 Как выйти/отменить | P1 | **F3 Ask** (под-ветка) | Decide | Просмотр «cancel channel + deadline» |
+| J6 Глазами кредитора | P2 | **F7 Vault detail** | Watch→Act | Открыт commitment-detail / export «for lender» |
+| (активация) | — | **F1 Onboarding** | вход в loop | Дошёл до первого result (вкл. ветку «нет документа») |
+| (монетизация) | — | **F8 Upgrade** | gate Watch | trial→paid на Watch-границе |
+| (доверие/гигиена) | — | **F9 Settings & Cancel** | — | отмена в 2 тапа найдена |
+
+---
+
+## 2. Flows (диаграммы + контракты)
+
+### F1 · Onboarding → активация (служит входу в loop, `[PM2]`)
+
+```
+[Welcome]  одно обещание: «Understand any financial document in 30 seconds»
+   │       sub: «Built for the UK · No bank connection required»   ← снимает VoC T-3
+   ▼
+[Value mock]  слайд с мокапом result (продукт виден до регистрации)
+   │
+   ▼
+[Trust & consent]  no bank link · encrypted · «we never sell data»
+   │              + AI-consent с именем Anthropic (Apple 5.1.2(i))   ← обязателен
+   ▼
+[Sign in with Apple]  (единственный auth; не блокирует первый скан, если делаем guest-scan)
+   ▼
+[Pre-permission: Camera]  зачем камера + «Upload from Photos» fallback
+   ▼
+   ├─ есть документ ──────────────► F2 Scan & Decode
+   └─ нет документа сейчас [PM2] ─► {No-doc branch}:
+                                      • «Try a sample Klarna offer» → F2 на demo-доке
+                                      • «Scan an old letter or statement»
+   (push-permission — НЕ здесь, а после первого result, на данных этого документа)
+```
+**Состояния:** default; «уже есть аккаунт» → Sign in; отказ камеры → upload-путь.
+**Контракт:** ≤3 слайда до первого действия; первая ценность до регистрации/пейволла; push спрашиваем после первого скана.
+**Успех:** % новичков, дошедших до первого result (включая demo-ветку) — главный activation-gate против F5 pre-mortem.
+**Референсы:** Wise/Plum welcome, Fabric value-mock, Plazo trust ([research/15](../../research/15-mobbin-onboarding.md)).
+
+---
+
+### F2 · Scan & Decode — ядро (J1, Scan→Understand)
+
+```
+ВХОД: TabBar центр [Scan] · share-extension из Mail · empty-state CTA · demo-ветка онбординга
+   ▼
+{Capture sheet}  «Снять на камеру / Выбрать фото / Выбрать файл (PDF)» + recent photos
+   ▼
+[Camera]  авто-capture + live-подсветка края · multi-page (один договор = один документ)
+   ▼
+[Review]  превью · Retake / Add page · crop ТОЛЬКО как fallback
+   │  quality-гейт: blur/glare → диагностика «плохо ✗ / хорошо ✓» + Try again   ← до AI
+   ▼
+[Processing]  фото остаётся + scan-line + skeleton result
+   │  реальные этапы (SSE): Reading → Extracting terms → Calculating cost → Checking traps
+   ▼
+[Decode-result]  ← ГЛАВНЫЙ ЭКРАН
+   │  ① aha-число первым: «True cost: £412 — £64 more than headline»   (Plum-паттерн)
+   │  ② [PM3] бейдж-герой: «Goes on your credit file: YES / NO / only if collections»
+   │  ③ key terms с риск-лейблами; безопасные схлопнуты («6 terms look standard ⌃»)
+   │  ④ [PM6] три языка достоверности:
+   │       • «From your document» — tap → подсветка места в документе
+   │       • «Calculated, not AI» — бейдж на true cost
+   │       • «AI» — на summary/Q&A
+   │  ⑤ trap-карточки: факт + £ + 1–2 next step, тон спокойный
+   │  ⑥ confidence: «✓ from document» / «Check this» (tap→zoom+правка→пересчёт) / «Couldn't read»
+   ▼
+   ├──► [Ask] (F3)         спросить по документу
+   ├──► [Save+Watch]       авто-имя «Klarna BNPL offer — 14 May 2026» + предложить даты Radar
+   └──► [Scan another]     возврат в F2 (Jordan сканирует 4 оффера)
+```
+**Состояния:** loading (этапы); success (result); partial («couldn't read» секции — честно); error (capture-quality / сеть / AI-fail → retake/retry/ручной ввод).
+**Контракт:** числа считает детерминированный движок (бейдж «Calculated, not AI»); каждый extracted term тапается в источник; правка значения мгновенно пересчитывает true cost; никаких «you should».
+**Успех:** первый decode завершён И просмотрены aha-число + credit-file бейдж (J1 activation).
+**Покрывает риски:** F3 (ошибка в числах → 3 языка достоверности), F5 (demo-вход).
+**Референсы:** Yuka result-схема, Plum aha, Yazio processing, Docusign/Apple Notes capture, Chime/Starling errors.
+
+---
+
+### F3 · Ask — вопросы и выход (J4 + J5, Decide)
+
+```
+ВХОД: кнопка [Ask] на result · долгое нажатие на термин
+   ▼
+{Q&A sheet}  шторка поверх документа, в шапке — имя оффера (скоуп на документ, не general)
+   │  3 чипа-подсказки из найденных trap-флагов:
+   │    «Will this affect my credit score?» · «What if I miss a payment?» · «Can they take money if I cancel my card?»
+   │
+   ├─ обычный вопрос ──► ответ простым языком
+   │                     + двухуровневая citation «p.2 §4» → {Source sheet} с подсветкой
+   │                     + честное «This isn't specified in your agreement» вместо галлюцинации
+   │                     + verbalized uncertainty «double-check the highlighted line» (не проценты)
+   │
+   ├─ J5 «как отменить/выйти» ──► канал + дедлайн отказа из документа (факт, не совет)
+   │                              «Cancel by calling X before 14 Nov» + источник
+   │
+   └─ [PM5] detect debt-distress («should I pay this or that first?», «can I ignore the collector?»)
+         ──► НЕ ответ-совет, а {Signpost card}: StepChange / MoneyHelper + «the choice is yours»
+             (intent-классификатор + safe-template; запрещённые паттерны в промпте И output-фильтре)
+```
+**Состояния:** default (чипы); streaming-ответ; «не указано в документе»; debt-distress signpost.
+**Контракт `[PM5]`+FCA:** на «what should I do?» — generic options + signposting, не прямой совет; чат всегда скоуплен на документ; дисклеймер «explains, doesn't advise» в футере.
+**Успех:** первый вопрос задан И совершён переход к источнику (J4 activation).
+**Референсы:** ElevenReader Q&A-шторка, ChatGPT/Gemini citations, Grok follow-ups.
+
+---
+
+### F5 · Cockpit — обзор `[PM1]` (J2, Watch) — это HOME
+
+```
+[Home / Cockpit]  ← дефолтный таб, не последний result
+   │  headline: «Committed this month: £214»  +  срезы «Due in 7 / 30 / 60 days»  (считается без банка)
+   │  тоггл month ⇄ year: «6 commitments — £86/mo ⇄ £1,032/yr»
+   │  секции по статусу с субтоталами:
+   │    «⚠ Needs attention» (trap/overlap) · «Renewing soon» · «Active» · «Decoded, no action»
+   │  анатомия строки: иконка типа · имя · «Due in 4 days · 28 Nov» · £ · слот ⚠ trap
+   │  savings-фрейминг: «Detected 3 traps costing you £180/year»
+   │  «all clear»-состояние: «Nothing needs attention until 28 June ✓»
+   ▼
+   ├──► строка ──► F7 Vault detail
+   ├──► [Scan] ──► F2
+   └──► bell/Alerts ──► {Alerts inbox} (F6)
+```
+**Состояния:** empty (0 документов → guided «Scan your first document — true cost in 30s» + кнопка Scan, антипаттерн-тупик закрыт); 1 документ; many; all-clear.
+**Контракт:** home всегда cockpit (`[PM1]`); никаких bank-link механик, промо-баннеров, перегруза графиками; спокойный «банковский» тон.
+**Успех:** возврат в cockpit при ≥2 документах (J2 + retention против F1 pre-mortem).
+**Референсы:** Afterpay headline+срезы, Orbit count/total, Rocket Money копирайт, Apple Wallet all-clear.
+
+---
+
+### F6 · Radar — наблюдение (J3, Watch)
+
+```
+СОЗДАНИЕ: на F2 Save+Watch — inline-тоггл «Promo rate ends 14 Nov — remind you?»  (Radar = следствие скана)
+   ▼
+[Local notification]  «Boiler cover renews in 14 days — you'll be charged £312 on 24 Jun» → tap
+   ▼
+{Alert detail}  [что] + [через сколько] + [точная сумма и дата] + ОДНА CTA «Review terms» → F7/F2
+   │  для price-increase: «было £9.99 → стало £12.99 (+30%)» + «Why?» → source-подсветка
+   │
+[Alerts inbox]  двухслойно: «Coming up» (мини-календарь) + «Coming later»
+   │  reliability contract: «Watching 4 dates · last checked today» + тест-нотификация в онбординге
+   ▼
+{Reminder settings}  lead-time по категории · «Renewals & deadlines» locked-On · «Tips» off by default
+```
+**Состояния:** all-clear; upcoming; overdue (CPA-«сдвоенный» платёж показываем явно); permission-not-granted баннер.
+**Контракт `[PM4]` (free/paid):** базовый Radar по сосканированному — во free; Radar по всем датам/множеству обязательств — Watch-слой за пейволлом. Локальные нотификации (офлайн) + серверный дубль — анти-Bobby (VoC T-7).
+**Успех:** включён первый reminder; открыт alert (J3 activation).
+**Референсы:** Uber One alert-анатомия, Rocket Money двухслойный, Apple Wallet all-clear, Opal/Calm пикеры, Hyundai price-rise.
+
+---
+
+### F7 · Vault detail — досье обязательства (J6, Watch→Act)
+
+```
+[Vault list]  все decoded-документы (= таб)  ·  поиск/фильтр по статусу
+   ▼
+{Commitment detail}  bottom-sheet:
+   │  key-value строки (каждая → source highlight)  ·  Notes («cancel before renewal»)
+   │  Price History с дельтой  ·  даты Radar
+   │  J6: «View as a lender would» / export — сводка обязательств (P2/P3)
+   │  CTA-пара: основное действие + тихий деструктив (Delete/Stop watching)
+```
+**Состояния:** default; пустой Vault (= empty cockpit, guided scan); single; many.
+**Контракт:** Face ID на Vault (`expo-local-authentication`) — дешёвый trust-сигнал; авто-именование, не «Scan 47.pdf».
+**Успех:** открыт detail / использован export (J6).
+**Референсы:** Orbit detail-sheet, Fabric empty-state.
+
+---
+
+### F8 · Upgrade — монетизация на Watch-границе `[PM4]`
+
+```
+ТРИГГЕР (в момент ценности, не на входе):
+   • сразу после ПЕРВОГО decode (Day-0 — где принимается 80–90% решений о подписке)
+   • «N scans left this month» в камере при приближении к лимиту (Lovi-паттерн)
+   • попытка Watch-действия сверх free (Radar по всем датам / полный Vault / unlimited Q&A)
+   ▼
+{Paywall sheet}  MultiPlanSelector (£4.99/мес · годовой −30%) + trial timeline · цена+лимиты на одном экране БЕЗ footnotes
+   │  free = N полных decodes/мес (wedge не урезан, но лимит); Pro = unlimited + полный Vault + Watch/Radar   ← анти-Emma/Cleo, но wedge не даром
+   ▼
+(System) Apple IAP  ← только IAP, без карты, без обхода App Store (VoC T-1/T-2)
+```
+**Состояния:** free-active; near-limit; paywall; purchased; restore.
+**Контракт (ревизия [research/21](../../research/21-pricing-monetization.md)):** free = N полных decodes/мес; Pro = unlimited + полный Vault + Watch/Radar; пейволл **после первого decode** (Day-0). **Apple build-gate:** НЕ trial-toggle (Guideline 3.1.2 реджектит с янв 2026) → multi-plan selector + trial timeline; триал не 3 дня. Подать **Apple Small Business Program** (15% с дня 1) до запуска. £4.99 — anchor, финализировать Van Westendorp PSM по S1/S2. Апселл редкий, контекстный; «express and informed consent» (планка FTC-settlement).
+**Успех:** trial→paid на Watch-границе (против F2 pre-mortem).
+
+---
+
+### F9 · Settings & Cancel — гигиена доверия (VoC-инварианты)
+
+```
+[Settings]
+   ├─ Subscription ──► «Manage in Apple Subscriptions» (отмена в 2 тапа) + статус
+   ├─ Privacy ──────► что на сервер / на устройстве · retention · «Delete everything» (1 тап)
+   ├─ Notifications ─► категории, lead-time
+   ├─ Help ─────────► «Email a human · reply in 24h»  (анти-VoC T-6: не бот)
+   └─ Legal ────────► «Decode explains, doesn't give financial advice» + MoneyHelper/StepChange
+```
+**Контракт:** отмена в 2 тапа без лабиринтов/ID; поддержка с человеком; дисклеймер не мелким шрифтом.
+**Успех:** отмена находится без friction (защита рейтинга — главный VoC-вывод).
+
+---
+
+## 3. Связка flows (как пользователь течёт между работами)
+
+```
+                     ┌────────────────────── F1 Onboarding ──────────────────────┐
+                     ▼                                                            │
+   share-in ───► F2 Scan & Decode ──► Decode-result ──► Save+Watch ──► F6 Radar   │
+                     ▲   │                   │  │              │          │       │
+                     │   │                   │  └─► F3 Ask     │          ▼       │
+                     │   └── Scan another ◄──┘     (J4/J5)     │     [notification]
+                     │                                          ▼          │
+   [Scan tab] ───────┘                              F5 Cockpit (HOME) ◄────┘
+                                                       │  [PM1]
+                                                       ├─► F7 Vault detail (J6)
+                                                       └─► F8 Upgrade (Watch-gate) ─► Apple IAP
+   [Settings] ─────────────────────────────────────────────► F9 Cancel/Privacy
+```
+Сквозной шов продукта — **Scan → Watch**: каждый завершённый decode предлагает сохранение и дату наблюдения; cockpit — постоянная причина возврата.
+
+---
+
+## 4. Активационная воронка (что мерить)
+
+```
+Install → Onboarding complete → First scan started → First result viewed*  ← АКТИВАЦИЯ (J1)
+        → Saved to Vault → Radar reminder set → Return to Cockpit (≥2 docs)  ← RETENTION (J2/J3)
+        → Watch-limit hit → Upgrade                                          ← MONETIZATION
+```
+`*` включая demo-ветку `[PM2]` для пользователей без документа.
+**North Star кандидаты (открытый вопрос ресёрча №7):** watched commitments · £ предотвращённых потерь · decoded documents. Решается метриками-фазой; здесь фиксируем, что activation = **first result viewed**, не install.
+
+## 5. Покрытие jobs и требований (самопроверка)
+
+| Job/Требование | Flow | Закрыто |
+|---|---|---|
+| J1 | F2 | ✅ |
+| J2 | F5 | ✅ |
+| J3 | F6 | ✅ |
+| J4 | F3 | ✅ |
+| J5 | F3 под-ветка | ✅ |
+| J6 | F7 | ✅ (P2-глубина) |
+| PM1 Home=Cockpit | F5 — дефолтный таб | ✅ |
+| PM2 ветка «нет документа» | F1 | ✅ |
+| PM3 credit-file бейдж-герой | F2 result ② | ✅ |
+| PM4 пейволл на Watch | F8 / F6 | ✅ |
+| PM5 Q&A signpost | F3 | ✅ |
+| PM6 три языка достоверности | F2 result ④ | ✅ |
+| VoC T-1/T-2 биллинг | F8/F9 | ✅ |
+| VoC T-3 no bank link | F1 trust | ✅ |
+| VoC T-7 radar reliability | F6 | ✅ |
+
+Каждый flow раскладывается в экраны в [screen-sitemap.md](screen-sitemap.md), оттуда — в поэкранные контракты `docs/screens/<url>.md` перед wireframes.
