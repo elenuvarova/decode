@@ -1,0 +1,106 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: var(--color-gray-50, #f6f6f7);
+  --panel: var(--color-gray-0, #fff);
+  --ink: var(--color-gray-900, #1a1a1d);
+  --muted: var(--color-gray-500, #74747a);
+  --line: var(--color-gray-200, #e3e3e6);
+  --accent: var(--color-gray-900, #1a1a1d);
+}
+
+body {
+  font-family: Inter, -apple-system, "SF Pro Text", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+#app { display: grid; grid-template-columns: 280px 1fr; height: 100vh; }
+
+/* sidebar */
+#sidebar {
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+  padding: 20px 16px;
+  overflow-y: auto;
+}
+.brand { display: flex; flex-direction: column; gap: 2px; margin-bottom: 20px; }
+.brand strong { font-size: 20px; font-weight: 700; }
+.brand span { font-size: 12px; color: var(--muted); }
+.panel { margin-bottom: 22px; }
+.panel h2 {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--muted); margin-bottom: 10px; font-weight: 600;
+}
+#flow-list, #screen-list { display: flex; flex-direction: column; gap: 4px; }
+
+.flow-btn, .screen-btn {
+  text-align: left; border: 1px solid var(--line); background: var(--panel);
+  border-radius: 10px; padding: 9px 11px; font-size: 13px; cursor: pointer;
+  color: var(--ink); font-family: inherit; line-height: 1.25;
+}
+.flow-btn { font-weight: 600; }
+.flow-btn small { display: block; font-weight: 400; color: var(--muted); font-size: 11px; margin-top: 2px; }
+.screen-btn { font-size: 12.5px; color: var(--muted); }
+.flow-btn:hover, .screen-btn:hover { border-color: var(--ink); }
+.flow-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+.flow-btn.active small { color: #cfcfd3; }
+.screen-btn.current { background: var(--ink); color: #fff; border-color: var(--ink); }
+.hint { font-size: 11px; color: var(--muted); margin-top: 12px; }
+
+/* stage */
+#stage { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+#topbar {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 20px; border-bottom: 1px solid var(--line); background: var(--panel);
+}
+#btn-back {
+  width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--line);
+  background: var(--panel); cursor: pointer; font-size: 16px; color: var(--ink);
+}
+#btn-back:hover { border-color: var(--ink); }
+.title-wrap { display: flex; flex-direction: column; flex: 1; }
+#screen-title { font-size: 15px; font-weight: 600; }
+#screen-id { font-size: 11px; color: var(--muted); }
+.flow-controls { display: flex; align-items: center; gap: 8px; }
+.flow-controls button {
+  border: 1px solid var(--line); background: var(--panel); border-radius: 8px;
+  padding: 6px 12px; font-size: 13px; cursor: pointer; color: var(--ink); font-family: inherit;
+}
+.flow-controls button:hover:not(:disabled) { border-color: var(--ink); }
+.flow-controls button:disabled { opacity: .4; cursor: default; }
+#flow-status { font-size: 12px; color: var(--muted); min-width: 92px; text-align: center; }
+
+#viewport { flex: 1; overflow: auto; display: flex; justify-content: center; padding: 28px; }
+#phone {
+  width: 402px; min-width: 402px; align-self: flex-start; position: relative;
+  border: 10px solid #111; border-radius: 46px; overflow: hidden;
+  box-shadow: 0 18px 50px rgba(0,0,0,.18); background: #fff;
+}
+#screen-img { display: block; width: 100%; height: auto; }
+
+/* working tap hotspots overlaid on the phone screen */
+#hotspots { position: absolute; inset: 0; }
+.hotspot {
+  position: absolute; cursor: pointer; border-radius: 8px;
+  background: rgba(20, 110, 245, .12); border: 1.5px solid rgba(20, 110, 245, .55);
+  transition: background .12s, border-color .12s;
+}
+.hotspot:hover { background: rgba(20, 110, 245, .26); border-color: rgba(20, 110, 245, .95); }
+.hotspot .hs-label {
+  position: absolute; left: 50%; bottom: calc(100% + 4px); transform: translateX(-50%);
+  background: #111; color: #fff; font-size: 11px; line-height: 1; white-space: nowrap;
+  padding: 5px 8px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .12s;
+}
+.hotspot:hover .hs-label { opacity: 1; }
+body.hide-hotspots .hotspot { background: transparent; border-color: transparent; }
+body.hide-hotspots .hotspot:hover { background: rgba(20,110,245,.18); border-color: rgba(20,110,245,.7); }
+
+/* footer */
+#actions-wrap {
+  border-top: 1px solid var(--line); background: var(--panel); padding: 12px 20px;
+  display: flex; align-items: center; gap: 16px;
+}
+.toggle { display: flex; align-items: center; gap: 7px; font-size: 13px; cursor: pointer; user-select: none; }
+.toggle input { width: 16px; height: 16px; }
+#hotspot-hint { font-size: 12.5px; color: var(--muted); }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Decode — clickable prototype</title>
+  <link rel="stylesheet" href="../design/wireframes/tokens.css" />
+  <link rel="stylesheet" href="proto.css" />
+</head>
+<body>
+  <div id="app">
+    <aside id="sidebar">
+      <div class="brand">
+        <strong>Decode</strong>
+        <span>clickable wireframe prototype</span>
+      </div>
+
+      <div class="panel">
+        <h2>Flows</h2>
+        <div id="flow-list" data-testid="flow-list"></div>
+      </div>
+
+      <div class="panel">
+        <h2>All screens</h2>
+        <div id="screen-list" data-testid="screen-list"></div>
+      </div>
+
+      <p class="hint">iPhone 17 Pro · 402×874 pt · lo-fi grayscale</p>
+    </aside>
+
+    <main id="stage">
+      <div id="topbar">
+        <button id="btn-back" data-testid="nav-back" title="Back">←</button>
+        <div class="title-wrap">
+          <span id="screen-title" data-testid="screen-title">—</span>
+          <span id="screen-id" data-testid="screen-id"></span>
+        </div>
+        <div class="flow-controls" id="flow-controls" hidden>
+          <button id="btn-prev" data-testid="flow-prev">Prev</button>
+          <span id="flow-status" data-testid="flow-status"></span>
+          <button id="btn-next" data-testid="flow-next">Next</button>
+          <button id="btn-exit-flow" data-testid="flow-exit">✕</button>
+        </div>
+      </div>
+
+      <div id="viewport">
+        <div id="phone" data-testid="current-screen" data-screen="">
+          <img id="screen-img" data-testid="screen-img" alt="" />
+          <div id="hotspots" data-testid="hotspots"></div>
+        </div>
+      </div>
+
+      <div id="actions-wrap">
+        <label class="toggle">
+          <input type="checkbox" id="toggle-hotspots" data-testid="toggle-hotspots" checked />
+          Show tap areas
+        </label>
+        <span class="hint" id="hotspot-hint">Tap the highlighted areas on the phone to move through the flow.</span>
+      </div>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
