@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decode — Foundations (wireframe tokens)</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  /* Витрина (НЕ часть токенов — только для этой страницы) */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--background); color: var(--foreground);
+    font-family: var(--font-sans); padding: var(--space-2xl);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  header.page { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-xl); }
+  header.page h1 { font-size: var(--text-h1); font-weight: var(--fw-h1); margin: 0; }
+  header.page .sub { color: var(--muted-foreground); font-size: var(--text-caption); }
+  .toggle { font: inherit; font-size: var(--text-caption); padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--border); border-radius: var(--r-full); background: var(--card);
+    color: var(--foreground); cursor: pointer; }
+  section { margin-bottom: var(--space-2xl); }
+  section > h2 { font-size: var(--text-h2); font-weight: var(--fw-h2); margin: 0 0 var(--space-xs); }
+  section > .note { color: var(--muted-foreground); font-size: var(--text-caption); margin: 0 0 var(--space-lg); }
+  .block-label { font-size: var(--text-caption); font-weight: 600; color: var(--muted-foreground);
+    text-transform: uppercase; letter-spacing: .04em; margin: var(--space-lg) 0 var(--space-sm); }
+
+  /* color swatches */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: var(--space-md); }
+  .sw { border: 1px solid var(--border); border-radius: var(--r-default); overflow: hidden; background: var(--card); }
+  .sw .chip { height: 64px; display: flex; align-items: flex-end; padding: var(--space-sm);
+    font-size: var(--text-caption); }
+  .sw .meta { padding: var(--space-sm) var(--space-md); }
+  .sw .name { font-size: var(--text-caption); font-weight: 600; }
+  .sw .val { font-size: 11px; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+  .sw .ref { font-size: 11px; color: var(--muted-foreground); }
+
+  /* typography */
+  .type-row { display: flex; align-items: baseline; gap: var(--space-lg); padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--border); }
+  .type-row .tok { width: 160px; flex: none; font-size: var(--text-caption); color: var(--muted-foreground);
+    font-variant-numeric: tabular-nums; }
+  .figures { font-variant-numeric: tabular-nums; }
+
+  /* spacing */
+  .space-row { display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-sm); }
+  .space-row .tok { width: 130px; font-size: var(--text-caption); color: var(--muted-foreground); }
+  .space-bar { height: 16px; background: var(--foreground); border-radius: 2px; }
+
+  /* radii */
+  .radii { display: flex; gap: var(--space-lg); flex-wrap: wrap; }
+  .radii .r { text-align: center; font-size: var(--text-caption); color: var(--muted-foreground); }
+  .radii .box { width: 72px; height: 72px; background: var(--muted); border: 1px solid var(--border); margin-bottom: var(--space-xs); }
+
+  /* elevation */
+  .elev { display: flex; gap: var(--space-xl); flex-wrap: wrap; }
+  .elev .e { width: 120px; height: 72px; background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--r-default); display: flex; align-items: center; justify-content: center;
+    font-size: var(--text-caption); color: var(--muted-foreground); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="page">
+    <div>
+      <h1>Decode · Foundations</h1>
+      <div class="sub">wireframe-grayscale · токены из docs/DESIGN.md · hex печатается из computed style (проверка, что токены живые)</div>
+    </div>
+    <button class="toggle" onclick="document.documentElement.classList.toggle('dark')">Light / Dark</button>
+  </header>
+
+  <!-- COLORS -->
+  <section id="colors">
+    <h2>Colors</h2>
+    <p class="note">Два уровня: примитивы (уникальные значения) → семантические роли (ссылки). Компоненты используют только роли.
+      В ч/б статусы различаются иконкой/весом, не оттенком.</p>
+
+    <div class="block-label">Примитивы (palette)</div>
+    <div class="swatches" id="primitives"></div>
+
+    <div class="block-label">Семантические роли — Surface</div>
+    <div class="swatches" id="role-surface"></div>
+
+    <div class="block-label">Семантические роли — Brand / Semantic</div>
+    <div class="swatches" id="role-semantic"></div>
+
+    <div class="block-label">Семантические роли — Domain (Decode)</div>
+    <div class="swatches" id="role-domain"></div>
+  </section>
+
+  <!-- TYPOGRAPHY -->
+  <section id="typography">
+    <h2>Typography</h2>
+    <p class="note">SF Pro system stack. figures — tabular-nums для £/%/дат. Размеры в rem (Dynamic Type).</p>
+    <div id="type"></div>
+  </section>
+
+  <!-- SPACING -->
+  <section id="spacing">
+    <h2>Spacing</h2>
+    <p class="note">base 4px, всё кратно. usage: xs иконка↔текст · sm близкие · md поля экрана · lg карточка · xl секции · 2xl крупные разрывы.</p>
+    <div id="space"></div>
+  </section>
+
+  <!-- RADII -->
+  <section id="radii">
+    <h2>Radii</h2>
+    <div class="radii" id="radiibox"></div>
+  </section>
+
+  <!-- ELEVATION -->
+  <section id="elevation">
+    <h2>Elevation</h2>
+    <p class="note">На wireframe почти flat; реальные тени — на фазе дизайна.</p>
+    <div class="elev" id="elev"></div>
+  </section>
+</div>
+
+<script>
+  const cs = getComputedStyle(document.documentElement);
+  const hex = (v) => cs.getPropertyValue(v).trim() || '—';
+  const onFg = (roleVar, fgVar) => `<div class="chip" style="background:var(${roleVar});color:var(${fgVar})">Aa</div>`;
+
+  // primitives
+  const prims = ['--gray-0','--gray-50','--gray-100','--gray-200','--gray-300','--gray-400','--gray-500','--gray-600','--gray-700','--gray-900','--gray-950'];
+  document.getElementById('primitives').innerHTML = prims.map(p => `
+    <div class="sw">
+      <div class="chip" style="background:var(${p});color:${['--gray-0','--gray-50','--gray-100','--gray-200','--gray-300'].includes(p)?'var(--gray-900)':'var(--gray-0)'}"></div>
+      <div class="meta"><div class="name">${p.replace('--','')}</div><div class="val">${hex(p)}</div></div>
+    </div>`).join('');
+
+  // role renderer: [roleVar, fgVar(optional), primitive-ref]
+  const renderRoles = (id, rows) => {
+    document.getElementById(id).innerHTML = rows.map(([role, fg, ref]) => `
+      <div class="sw">
+        ${onFg('--'+role, fg ? '--'+fg : '--background')}
+        <div class="meta">
+          <div class="name">${role}</div>
+          <div class="ref">→ ${ref}</div>
+          <div class="val">${hex('--'+role)}</div>
+        </div>
+      </div>`).join('');
+  };
+
+  renderRoles('role-surface', [
+    ['background',null,'gray-0'],['foreground',null,'gray-900'],['muted',null,'gray-50'],
+    ['muted-foreground',null,'gray-500'],['border',null,'gray-200'],['card',null,'gray-0/50'],
+    ['popover',null,'gray-0/100'],['input',null,'gray-200'],['ring',null,'gray-400'],
+  ]);
+  renderRoles('role-semantic', [
+    ['primary','primary-foreground','accent-placeholder'],
+    ['success','success-foreground','gray-700 → green'],
+    ['warning','warning-foreground','gray-600 → amber'],
+    ['danger','danger-foreground','gray-900 → red'],
+    ['info','info-foreground','gray-500'],
+  ]);
+  renderRoles('role-domain', [
+    ['trap-high','danger-foreground','danger'],['trap-med','warning-foreground','warning'],['trap-info','info-foreground','info'],
+    ['credit-file-yes','danger-foreground','danger'],['credit-file-no','success-foreground','success'],['credit-file-cond','warning-foreground','warning'],
+    ['confidence-ok','success-foreground','success'],['confidence-check','warning-foreground','warning'],['confidence-unread','background','muted-foreground'],
+    ['calculated','background','foreground'],['ai-tag','background','muted-foreground'],
+    ['renewal-due','warning-foreground','warning'],['overdue','danger-foreground','danger'],
+  ]);
+
+  // typography
+  const types = [
+    ['display','True cost: £412'],['h1','Your commitments'],['h2','Renewing soon'],
+    ['body','This is a credit agreement for £400 over 6 payments.'],
+    ['caption','Renews in 4 days · 28 Nov 2026'],
+  ];
+  document.getElementById('type').innerHTML = types.map(([t,sample]) => `
+    <div class="type-row">
+      <div class="tok">text-${t} · ${hex('--text-'+t)}</div>
+      <div style="font-size:var(--text-${t});line-height:var(--lh-${t});font-weight:var(--fw-${t})">${sample}</div>
+    </div>`).join('') + `
+    <div class="type-row">
+      <div class="tok">figures · tabular</div>
+      <div class="figures" style="font-size:var(--text-display);font-weight:700">£1,234,567.89 · 39.9% APR</div>
+    </div>`;
+
+  // spacing
+  const spaces = [['xs','4px'],['sm','8px'],['md','16px'],['lg','24px'],['xl','32px'],['2xl','48px']];
+  document.getElementById('space').innerHTML = spaces.map(([s,px]) => `
+    <div class="space-row"><div class="tok">space-${s} · ${px}</div>
+      <div class="space-bar" style="width:var(--space-${s})"></div></div>`).join('');
+
+  // radii
+  const radii = [['sm','8'],['default','12'],['lg','16'],['xl','20'],['full','9999']];
+  document.getElementById('radiibox').innerHTML = radii.map(([r,px]) => `
+    <div class="r"><div class="box" style="border-radius:var(--r-${r})"></div>r-${r} · ${px}</div>`).join('');
+
+  // elevation
+  const elev = [['card','--e-card'],['sheet','--e-sheet'],['popover','--e-popover'],['modal','--e-modal']];
+  document.getElementById('elev').innerHTML = elev.map(([n,v]) => `
+    <div class="e" style="box-shadow:var(${v})">${n}</div>`).join('');
+</script>
+</body>
+</html>

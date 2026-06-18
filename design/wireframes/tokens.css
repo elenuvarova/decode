@@ -1,0 +1,125 @@
+/* Decode — design tokens (wireframe-grayscale stage)
+ * Источник правды: docs/DESIGN.md. Архитектура финальная: примитивы → семантические роли.
+ * Цвет = grayscale-плейсхолдеры. На фазе дизайна меняются ТОЛЬКО примитивы и ссылки ролей.
+ * Портируется 1:1 в src/app/globals.css (:root + .dark + @theme inline) при scaffold прототипа.
+ */
+
+:root {
+  /* ── Уровень 1: ПРИМИТИВЫ (light, grayscale) — уникальные значения только здесь ── */
+  --gray-0:   #FFFFFF;
+  --gray-50:  #F7F7F8;
+  --gray-100: #EFEFF1;
+  --gray-200: #E2E2E6;
+  --gray-300: #CACAD0;
+  --gray-400: #A6A6AE;
+  --gray-500: #7C7C85;
+  --gray-600: #5A5A62;
+  --gray-700: #3F3F46;
+  --gray-900: #1A1A1E;
+  --gray-950: #0E0E11;
+  --accent-placeholder: var(--gray-900);   /* brand-акцент: на дизайне → brand hue */
+
+  /* ── Уровень 2: СЕМАНТИЧЕСКИЕ РОЛИ → ссылки на примитивы (в коде используются ТОЛЬКО они) ── */
+  /* Surface */
+  --background: var(--gray-0);
+  --foreground: var(--gray-900);
+  --muted: var(--gray-50);
+  --muted-foreground: var(--gray-500);
+  --border: var(--gray-200);
+  --card: var(--gray-0);
+  --card-foreground: var(--gray-900);
+  --popover: var(--gray-0);
+  --popover-foreground: var(--gray-900);
+  --input: var(--gray-200);
+  --ring: var(--gray-400);
+  /* Brand */
+  --primary: var(--accent-placeholder);
+  --primary-foreground: var(--gray-0);
+  /* Semantic */
+  --success: var(--gray-700);  --success-foreground: var(--gray-0);
+  --warning: var(--gray-600);  --warning-foreground: var(--gray-0);
+  --danger:  var(--gray-900);  --danger-foreground:  var(--gray-0);
+  --info:    var(--gray-500);  --info-foreground:    var(--gray-0);
+  /* Domain (Decode) */
+  --trap-high: var(--danger);
+  --trap-med:  var(--warning);
+  --trap-info: var(--info);
+  --credit-file-yes:  var(--danger);
+  --credit-file-no:   var(--success);
+  --credit-file-cond: var(--warning);
+  --confidence-ok:     var(--success);
+  --confidence-check:  var(--warning);
+  --confidence-unread: var(--muted-foreground);
+  --calculated: var(--foreground);
+  --ai-tag:     var(--muted-foreground);
+  --renewal-due: var(--warning);
+  --overdue:     var(--danger);
+
+  /* ── Typography (финальное) ── */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  --font-figures: "SF Pro Text", -apple-system, system-ui, sans-serif; /* + tabular-nums */
+  --text-display: 2.125rem;  --lh-display: 2.5rem;    --fw-display: 700;
+  --text-h1: 1.625rem;       --lh-h1: 2rem;           --fw-h1: 700;
+  --text-h2: 1.25rem;        --lh-h2: 1.625rem;       --fw-h2: 600;
+  --text-body: 1.0625rem;    --lh-body: 1.5rem;       --fw-body: 400;
+  --fw-body-strong: 600;
+  --text-caption: 0.8125rem; --lh-caption: 1.125rem;  --fw-caption: 400;
+
+  /* ── Spacing (финальное, base 4px, spacious) ── */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --screen-padding: 16px;
+  --tap-min: 44px;
+
+  /* ── Radii (мягкие, гипотеза Apple/Things) ── */
+  --r-sm: 8px;
+  --r-default: 12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+  --r-full: 9999px;
+
+  /* ── Elevation (на wireframe почти flat) ── */
+  --e-card:    0 1px 2px rgba(0,0,0,0.04);
+  --e-sheet:   0 -2px 16px rgba(0,0,0,0.08);
+  --e-popover: 0 4px 16px rgba(0,0,0,0.10);
+  --e-modal:   0 8px 32px rgba(0,0,0,0.16);
+
+  /* ── Z-index (под организмы Decode) ── */
+  --z-sticky: 10;
+  --z-dropdown: 20;
+  --z-sheet: 30;
+  --z-modal: 40;
+  --z-toast: 50;
+
+  /* ── Motion ── */
+  --d-fast: 150ms;
+  --d-normal: 250ms;
+  --d-slow: 400ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ── Тёмная тема: переопределяем ТОЛЬКО примитивы → роли re-resolve через var() автоматически ── */
+.dark {
+  --gray-0:   #0E0E11;
+  --gray-50:  #16161A;
+  --gray-100: #1D1D22;
+  --gray-200: #26262C;
+  --gray-300: #33333A;
+  --gray-400: #4C4C55;
+  --gray-500: #7C7C85;
+  --gray-600: #A6A6AE;
+  --gray-700: #CACAD0;
+  --gray-900: #EDEDF0;
+  --gray-950: #FFFFFF;
+  /* роли, которые в dark указывают на ДРУГОЙ примитив (см. DESIGN.md) */
+  --card: var(--gray-50);
+  --popover: var(--gray-100);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
