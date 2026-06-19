@@ -1,5 +1,5 @@
 #!/bin/bash
-# sf_svg.sh — export true vector SVG from SF Symbols app
+# sf_svg.sh — export true vector SVG from SF Symbols Beta app
 # Usage: ./sf_svg.sh <symbol-name> [point-size]
 # Example: ./sf_svg.sh house.fill 24
 
@@ -20,34 +20,31 @@ delay 2.0
 tell application "System Events"
     tell process "SF Symbols Beta"
         set frontmost to true
-        delay 0.4
+        delay 0.5
 
         -- Search for symbol
         keystroke "f" using command down
-        delay 0.5
+        delay 0.6
         keystroke "a" using command down
-        delay 0.1
+        delay 0.2
         keystroke "$SYMBOL"
-        delay 1.5
+        delay 2.0
 
-        -- Escape: commits search, moves focus out of search field
-        key code 53
-        delay 0.4
-
-        -- Click first result in grid
+        -- Click first result directly (no Escape — Escape can clear search in batch mode)
         set theGrid to list 1 of list 1 of scroll area 2 of splitter group 1 of window 1
         if (count of UI elements of theGrid) = 0 then
             error "No results found for: $SYMBOL"
         end if
+        -- Single click transfers focus from search field and selects symbol
         click UI element 1 of theGrid
-        delay 0.5
+        delay 0.8
 
         -- Open "Copy Image As…"
         click menu item "Copy Image As…" of menu 1 of menu bar item "Edit" of menu bar 1
 
-        -- Wait for sheet to appear
+        -- Wait for sheet to appear (up to 3 seconds)
         set sw to 0
-        repeat while (count of sheets of window 1) = 0 and sw < 6
+        repeat while (count of sheets of window 1) = 0 and sw < 10
             delay 0.3
             set sw to sw + 0.3
         end repeat
@@ -61,16 +58,16 @@ tell application "System Events"
                     set fmt to pop up button 1
                     if value of fmt is not "SVG" then
                         click fmt
-                        delay 0.3
+                        delay 0.4
                         click menu item "SVG" of menu 1 of fmt
-                        delay 0.3
+                        delay 0.4
                     end if
                 end try
                 -- Set point size
                 try
                     set value of text field 1 to "$SIZE"
                     key code 36
-                    delay 0.2
+                    delay 0.3
                 end try
                 -- Click Copy Image
                 try
@@ -81,7 +78,7 @@ tell application "System Events"
             end tell
         end tell
 
-        delay 0.6
+        delay 0.8
     end tell
 end tell
 return ""
