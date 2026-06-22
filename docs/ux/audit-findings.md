@@ -105,3 +105,46 @@
 - M5 Swipe-to-delete
 - L3 Reduce Motion fallback
 - L4–L5 VoiceOver stars
+
+---
+
+## D. DS Cleanup + Screen Fixes (2026-06-22, сессия 2)
+
+Все изменения применены через Figma Plugin API.
+
+### DS-фиксы
+
+| # | Что | Проблема | Фикс |
+| --- | --- | --- | --- |
+| 1 | Icons × 69 | SF Symbol dual-layer (чёрный + белый overlay 85%) — невидимы на белом фоне | Все 183 vector fills → `r:0.18 g:0.18 b:0.18` (single dark gray) |
+| 2 | Icons layout | 10 новых иконок разбросаны вне сетки (x:360–879) | Перемещены в сетку: заполнена строка 5 (x:288, y:1480) + строка 6 (y:1512) |
+| 3 | NavBar | Компонент плавал на x:1560, вне колонок | → MOLECULES колонка (x:560, y:1360) |
+| 4 | Atoms/Switch | Компонент плавал на x:1560 | → ATOMS колонка (x:0, y:1220) |
+
+### Screen-фиксы
+
+| # | Экран | Проблема | Фикс |
+| --- | --- | --- | --- |
+| S1 | Scan-Review warn | `icon` frame — auto-layout порядок был неверным (иконка на x:336) | `insertChild(0, icon)` → icon first, text fill-width, `counterAxisAlignItems:CENTER` |
+| S2 | Ask | Dismiss — `Icons/chevron.left` на правой стороне (x:356) — семантически неверно | `swapComponent` → `Icons/xmark.circle.fill` |
+| S3 | Decode-Result TrapCard ×2 | Одинаковая иконка для всех уровней + `⚠`/`ⓘ` в тексте заголовка | Удалены глифы из title; trap2 icon → `Icons/info.circle.fill` |
+| S4 | Decode-Result-Insurance TrapCard ×2 | То же | То же |
+| S5 | Cockpit bell | Нет badge — entry в Renewal Radar не очевиден | Добавлен 8×8 dot (dark fill, white stroke) поверх bell icon |
+| S6 | Paywall feature rows | 4 inline custom frames вместо DS компонента | Заменены на `Molecules/FeatureRow` instances с корректным title/sub |
+
+### Что уже было OK (проверено, не трогали)
+
+- Decode-Result: "Done" dismiss присутствует ✓
+- Settings: h:1140, контент не обрезается ✓
+- Onboarding-2: toggle OFF (r:0.89 gray track, thumb x:3), Continue State=Disabled ✓
+- Renewal Radar: Pro gate ("Unlock reminders for all with Pro" + "COMING LATER (PRO)") ✓
+- AlertDetail: использует `Molecules/HeadlineStat` ✓
+- VaultDetail: использует `Molecules/KeyValueRow` ×4 ✓
+- Vault-List chips: использует `Atoms/Chip` ×4 ✓
+- Onboarding-2 trust rows: используют `Molecules/FeatureRow` (переопределения внутри) ✓
+
+### Что остаётся (не сделано)
+
+- Onboarding-1: реструктура (одна модель CTA, убрать terminal CTA со слайда 1) — требует переработки структуры экрана
+- Credit-file hero order на Decode-Result (PM3)
+- H1 Destructive button: пользователь запретил красный цвет в вайрах — без реализации до финального дизайна
