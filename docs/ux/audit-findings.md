@@ -39,3 +39,69 @@
 **Подтверждено хорошим:** тон и провенанс-мышление, error-state проработка, privacy-якоря.
 
 > Эти findings заведены в работу: кодовый HIG-прототип строится с уже учтёнными фиксами (back/Done, consent-OFF, Radar-вход+гейт, severity-глифы); Figma-вайры правятся отдельно (компонентизация + выравнивание + HIG).
+
+---
+
+## C. DS + Alignment Audit (2026-06-22)
+
+Третий аудит: дизайн-система целиком + все экраны (60+), фокус на выравнивании, иконках, вертикальном ритме. Все изменения применены напрямую в Figma через Plugin API.
+
+### DS-фиксы (компоненты)
+
+| # | Компонент | Проблема | Фикс |
+|---|---|---|---|
+| 1 | ListRow | Стрелка `›` — текстовый символ | Заменён на `Icons/chevron.right` SF Symbol |
+| 2 | TrapCard | Стрелка `›` — текстовый символ | Заменён на `Icons/chevron.right` SF Symbol |
+| 3 | TrapCard | Severity-иконка — серый контейнер пустой | `Icons/exclamationmark.triangle.fill` белая, 16×16 в 28×28 |
+| 4 | SheetHeader | Крестик закрытия — нарисованный, не SF Symbol | `Icons/xmark.circle.fill` 30×30 |
+| 5 | StatusBar | Сигнал/батарея — не нарисованы | 3 прямоугольника сигнала + корпус батареи + заливка + «лапка» |
+| 6 | Primitives | Нет gray-800 (#2C2C32) между gray-700 и gray-900 | Добавлен токен VariableID:274:1262 |
+| 7 | FeatureRow | Чекмарк hard-coded белый | Привязан к переменной `success` через `setBoundVariableForPaint` |
+| 8 | ScreenHeader | Title LEFT-aligned, x:52 после шеврона | ABSOLUTE позиция, x:0, w:402, `textAlignHorizontal:CENTER` |
+| 9 | CommitmentRow | Сумма £294 LEFT в 73pt-фрейме, x:28 (gap слева) | `textAlignHorizontal:RIGHT`, `resize(73, h)`, x:0 |
+
+### HIG-фиксы (экраны)
+
+| # | Экран | Проблема | Фикс |
+|---|---|---|---|
+| H1 | Delete-Document-Confirm, Delete-Account | Деструктивная кнопка чёрная (= обычный CTA) | Fill `r:0.87 g:0.22 b:0.22` (красный) |
+| H3 | TabBar | Нет home-indicator inset | 135×5 пилюля, gray-600, ABSOLUTE y:58 |
+| L1 | Scan-Capture, Vault-Sort-Filter | Нет drag-handle на bottom sheets | 36×4 пилюля, gray-300, y:8 по центру |
+
+### Alignment-фиксы (экраны)
+
+| # | Экран / элемент | Проблема | Фикс |
+|---|---|---|---|
+| A1 | Result-Error | Heading «Couldn't read this» LEFT x:46 w:173 | `w:402, x:0, textAlign:CENTER` |
+| A2 | About | «Decode» + «Version…» LEFT (manually positioned) | `w:370, x:0, textAlign:CENTER` (FILL в parent) |
+| A3 | Settings | Footer «Decode v0.1 · made in the UK» LEFT x:16 | `layoutGrow:1, FILL, textAlign:CENTER` |
+| A4 | Force-Update | Иконка `xmark.circle.fill` (семантически неверно — «закрыть») | Заменена на `Icons/clock.arrow.circlepath` gray-700, 44×44 |
+
+### Screen icon-фиксы
+
+| # | Экран | Проблема | Фикс |
+|---|---|---|---|
+| I1 | Error-DecodeFailed | Пустой 80×80 контейнер (xmark с пустыми fills) | `Icons/exclamationmark.triangle.fill` 44×44 gray-600 |
+| I2 | Delete-Document-Confirm | Пустой 80×80 контейнер | `Icons/trash.fill` 44×44 gray-600 |
+| I3 | Trial-Expired | Пустой 80×80 контейнер | `Icons/crown.fill` 44×44 gray-600 |
+| I4 | About | Пустой 72×72 app-icon | gray-700 background + «D» Inter Bold 32px белый |
+
+### Что ОК (не трогали)
+
+- NavBar title — уже CENTER (SPACE_BETWEEN + равные left/right frames) ✓
+- SheetHeader — title LEFT intentionally (iOS bottom sheet pattern) ✓
+- KeyValueRow «source ›» — текстовый › intentional (source citation, не навигация) ✓
+- Onboarding-2,3,4 heading — LEFT intentional (content-rich slide, не hero) ✓
+- AlertCard amount — LEFT intentional (primary financial figure) ✓
+- Vault-List, Ask, Account, Rate-Feedback, Alerts-Inbox — выравнивание корректно ✓
+
+### Что остаётся на имплементацию (не в Figma)
+
+- H2 Dark mode — нет Dark token collection (App Store требует)
+- M1 iOS 26 floating tab bar
+- M2 Hit targets ≥44pt (hitSlop в RN)
+- M3 Sign in with Apple (`expo-apple-authentication`)
+- M4 System search bar
+- M5 Swipe-to-delete
+- L3 Reduce Motion fallback
+- L4–L5 VoiceOver stars
