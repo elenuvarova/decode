@@ -101,6 +101,7 @@ const SCREENS = {
     { label: 'Settings', to: 'settings', rect: [86, 6, 12, 5] },
     { label: 'Coming up this week ›', to: 'payment-calendar', rect: [4, 28, 92, 6] },
     { label: 'Traps / Renewal Radar', to: 'alerts-inbox', rect: [4, 34, 92, 6] },
+    { label: 'Needs attention insight', to: 'alerts-inbox', rect: [4, 39, 92, 6] },
     { label: 'Open a commitment', to: 'vault-detail', rect: [4, 41, 92, 9] },
     { label: '+ Scan', to: 'scan-capture', rect: [33, 92, 34, 7] },
     { label: 'Vault', to: 'vault-list',  rect: [67, 92, 33, 7] } ] },
@@ -183,7 +184,10 @@ const SCREENS = {
     { label: 'Start free trial', to: 'cockpit', rect: [6, 90, 88, 6] } ] },
 
   'radar-settings': { title: 'Renewal Radar · Settings', img: 'radar-settings.png', hotspots: [
-    { label: 'Back to Settings', to: 'settings', rect: [1, 6, 16, 5] } ] },
+    { label: 'Back to Settings', to: 'settings', rect: [1, 6, 16, 5] },
+    { label: 'Renewal Radar toggle ›', to: 'radar-settings', rect: [4, 10, 92, 8] },
+    { label: 'Remind me ›', to: 'radar-settings', rect: [4, 20, 92, 8] },
+    { label: '+ Add commitment', to: 'add-commitment', rect: [4, 37, 60, 5] } ] },
 
   'consent-center': { title: 'Privacy choices', img: 'consent-center.png', hotspots: [
     { label: 'Back to Settings', to: 'settings', rect: [1, 6, 16, 5] },
