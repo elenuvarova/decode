@@ -34,6 +34,7 @@ const SCREENS = {
     { label: 'Cancel', to: 'cockpit', rect: [25, 92, 50, 5] } ] },
 
   'scan-camera': { title: 'Scan · Camera', img: 'scan-camera-wireframe.png', hotspots: [
+    { label: 'Cancel / close', to: 'scan-capture', rect: [0, 0, 20, 8] },
     { label: 'Capture', to: 'scan-review', rect: [38, 80, 24, 13] },
     { label: 'Upload from Photos', to: 'scan-review', rect: [25, 94, 50, 4] } ] },
 
@@ -48,6 +49,7 @@ const SCREENS = {
     { label: 'Decode all 3 pages', to: 'scan-processing', rect: [10, 89, 80, 8] } ] },
 
   'scan-processing': { title: 'Scan · Processing', img: 'scan-processing-wireframe.png', hotspots: [
+    { label: 'Cancel', to: 'scan-capture', rect: [22, 92, 56, 6] },
     { label: 'BNPL / loan result', to: 'decode-result', rect: [10, 76, 80, 9] },
     { label: 'Insurance result', to: 'decode-result-insurance', rect: [10, 86, 80, 7] },
     { label: 'Could not read → error', to: 'error-decode-failed', rect: [70, 3, 28, 6] } ] },
@@ -87,7 +89,7 @@ const SCREENS = {
   // ── COCKPIT / HOME ───────────────────────────────────────────────────────────
   'cockpit': { title: 'Cockpit (Home)', img: 'cockpit-wireframe.png', hotspots: [
     { label: 'Settings', to: 'settings', rect: [86, 6, 12, 5] },
-    { label: 'Coming up / Payment calendar', to: 'payment-calendar', rect: [4, 14, 92, 8] },
+    { label: 'Coming up this week ›', to: 'payment-calendar', rect: [4, 28, 92, 6] },
     { label: 'Traps / Renewal Radar', to: 'alerts-inbox', rect: [4, 34, 92, 6] },
     { label: 'Open a commitment', to: 'vault-detail', rect: [4, 41, 92, 9] },
     { label: '+ Scan', to: 'scan-capture', rect: [33, 92, 34, 7] },
@@ -117,7 +119,11 @@ const SCREENS = {
     { label: 'Back to Vault', to: 'vault-list', rect: [2, 1, 30, 5] },
     { label: 'Compare offers', to: 'compare-offers', rect: [4, 51, 92, 6] },
     { label: 'Ask about this document', to: 'ask', rect: [12, 58, 76, 6] },
-    { label: 'Stop watching · Delete', to: 'vault-list', rect: [25, 66, 50, 4] } ] },
+    { label: 'Delete document', to: 'delete-document-confirm', rect: [4, 65, 92, 5] } ] },
+
+  'delete-document-confirm': { title: 'Delete · Confirmation', img: 'vault-detail.png', hotspots: [
+    { label: 'Keep it (cancel)', to: 'vault-detail', rect: [4, 72, 92, 6] },
+    { label: 'Delete document (confirm)', to: 'vault-list', rect: [4, 80, 92, 7] } ] },
 
   'compare-offers': { title: 'Compare offers', img: 'compare-offers.png', hotspots: [
     { label: 'Back to Vault', to: 'vault-list', rect: [1, 6, 16, 5] },
@@ -132,7 +138,8 @@ const SCREENS = {
   'alert-detail': { title: 'Alert detail', img: 'alert-detail.png', hotspots: [
     { label: 'Back', to: 'alerts-inbox', rect: [1, 6, 16, 5] },
     { label: 'Review the plan', to: 'vault-detail', rect: [12, 86, 76, 6] },
-    { label: 'Snooze 3 days', to: 'alerts-inbox', rect: [25, 94, 50, 4] } ] },
+    { label: 'Snooze 3 days', to: 'alerts-inbox', rect: [25, 94, 50, 4] },
+    { label: 'Mark as done', to: 'alerts-inbox', rect: [25, 90, 50, 4] } ] },
 
   'add-commitment': { title: 'Add a commitment', img: 'add-commitment.png', hotspots: [
     { label: 'Back', to: 'alerts-inbox', rect: [1, 6, 16, 5] },
