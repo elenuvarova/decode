@@ -45,10 +45,14 @@ const SCREENS = {
     { label: 'Upload from Photos', to: 'scan-review', rect: [25, 94, 50, 4] } ] },
 
   'scan-review': { title: 'Scan · Check the scan', img: 'scan-review.png', hotspots: [
-    { label: 'Close', to: 'scan-capture', rect: [1, 7, 12, 6] },
+    { label: 'Discard (× close)', to: 'scan-review-discard', rect: [1, 7, 12, 6] },
     { label: '+ page (multi-page)', to: 'multi-page-scan', rect: [23, 65, 24, 8] },
     { label: 'Retake', to: 'scan-camera',    rect: [4, 93, 44, 6] },
     { label: 'Use this scan', to: 'scan-processing', rect: [52, 93, 44, 6] } ] },
+
+  'scan-review-discard': { title: 'Discard scan?', img: 'scan-review.png', hotspots: [
+    { label: 'Discard', to: 'scan-capture', rect: [12, 62, 76, 7] },
+    { label: 'Keep scanning', to: 'scan-review', rect: [12, 70, 76, 6] } ] },
 
   'multi-page-scan': { title: 'Scan · Multi-page', img: 'multi-page-scan.png', hotspots: [
     { label: 'Back to scan', to: 'scan-review', rect: [1, 6, 16, 5] },
@@ -148,8 +152,16 @@ const SCREENS = {
     { label: 'Mark as done', to: 'alerts-inbox', rect: [25, 90, 50, 4] } ] },
 
   'add-commitment': { title: 'Add a commitment', img: 'add-commitment.png', hotspots: [
-    { label: 'Back', to: 'alerts-inbox', rect: [1, 6, 16, 5] },
-    { label: 'Add to Radar', to: 'alerts-inbox', rect: [10, 82, 80, 9] } ] },
+    { label: 'Back (with changes)', to: 'add-commitment-discard', rect: [1, 6, 16, 5] },
+    { label: 'Add to Radar', to: 'add-commitment-success', rect: [10, 82, 80, 9] } ] },
+
+  'add-commitment-discard': { title: 'Discard changes?', img: 'add-commitment.png', hotspots: [
+    { label: 'Discard', to: 'alerts-inbox', rect: [12, 62, 76, 7] },
+    { label: 'Keep editing', to: 'add-commitment', rect: [12, 70, 76, 6] } ] },
+
+  'add-commitment-success': { title: 'Commitment saved', img: 'add-commitment.png', hotspots: [
+    { label: 'Back to Cockpit', to: 'cockpit', rect: [12, 62, 76, 7] },
+    { label: 'View in Vault', to: 'vault-list', rect: [12, 70, 76, 6] } ] },
 
   // ── SETTINGS ─────────────────────────────────────────────────────────────────
   'settings': { title: 'Settings', img: 'settings.png', hotspots: [
@@ -158,7 +170,7 @@ const SCREENS = {
     { label: 'Restore purchases', to: 'paywall',          rect: [4, 19, 92, 6] },
     { label: 'What Decode stores', to: 'consent-center',  rect: [4, 27, 92, 6] },
     { label: 'Export my data', to: 'consent-center',      rect: [4, 33, 92, 6] },
-    { label: 'Delete everything', to: 'consent-center',   rect: [4, 39, 92, 6] },
+    { label: 'Delete everything', to: 'delete-everything-confirm', rect: [4, 39, 92, 6] },
     { label: 'Reminders & deadlines', to: 'radar-settings', rect: [4, 47, 92, 8] },
     { label: 'Quiet hours', to: 'radar-settings',         rect: [4, 55, 92, 6] },
     { label: 'Email a human', to: 'contact-support',      rect: [4, 62, 92, 7] },
@@ -201,6 +213,10 @@ const SCREENS = {
     { label: 'Back to Settings', to: 'settings',          rect: [1, 6, 16, 5] },
     { label: 'Privacy Policy', to: 'consent-center',      rect: [4, 39, 92, 7] },
     { label: 'Complaints process', to: 'contact-support', rect: [4, 59, 92, 8] } ] },
+
+  'delete-everything-confirm': { title: 'Delete everything?', img: 'settings.png', hotspots: [
+    { label: 'Cancel', to: 'settings', rect: [12, 70, 76, 6] },
+    { label: 'Delete everything (confirm)', to: 'cockpit-empty', rect: [12, 62, 76, 7] } ] },
 
   // ── ERRORS & EMPTY STATES ────────────────────────────────────────────────────
   'error-offline': { title: 'Error · Offline', img: 'error-offline.png', hotspots: [
