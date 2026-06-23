@@ -148,3 +148,35 @@
 - Onboarding-1: реструктура (одна модель CTA, убрать terminal CTA со слайда 1) — требует переработки структуры экрана
 - Credit-file hero order на Decode-Result (PM3)
 - H1 Destructive button: пользователь запретил красный цвет в вайрах — без реализации до финального дизайна
+
+---
+
+## E. Icon Container Fills Removed (2026-06-23, сессия 3)
+
+Все изменения применены через Figma Plugin API.
+
+### DS-фиксы (компоненты)
+
+| # | Компонент | Проблема | Фикс |
+| --- | --- | --- | --- |
+| 1 | TrapCard `sev` [68:19] | Тёмный filled circle r:90 под иконкой | `fills = []`; icon vectors → gray-500 |
+| 2 | AlertCard `ic` [68:40] | Тёмный filled circle r:90 под иконкой | `fills = []`; icon vectors → gray-500 |
+| 3 | FeatureRow `check` [84:350] | Тёмный filled circle r:63 под иконкой | `fills = []`; icon vectors → gray-500 |
+| 4 | TabBar active `ic` [67:22] | Тёмный filled circle r:26 под camera icon | `fills = []`; camera vectors → gray-900 (active indicator без фона) |
+| 5 | StateScaffold `icon` [83:345] | Светлый filled circle r:247 под иконкой | `fills = []`; icon stays gray-500 |
+
+### Screen-фиксы (Page 1)
+
+| # | Экран / элемент | Фикс |
+| --- | --- | --- |
+| S1 | Result-Error circle [75:240] | `fills = []`; icon → gray-500 |
+| S2 | Trial-Expired crown container [177:1448] | `fills = []`; crown → gray-500 |
+| S3 | Delete-Confirm trash container [177:1651] | `fills = []`; trash → gray-500 |
+| S4 | All small icon containers on Page 1 | Sweep: 166 frames ≤100pt с fills + icon child → `fills = []`, vectors → gray-500 |
+
+### Состояние после фикса
+
+- TrapCard, AlertCard, StateScaffold, FeatureRow — иконки стоят прямо на белом фоне ✓
+- Delete-Confirm, Trial-Expired, Error-DecodeFailed — state иконки без контейнеров ✓
+- Cockpit, Decode-Result — list-row иконки clean ✓
+- Permission screens — illustration иконки standalone ✓
