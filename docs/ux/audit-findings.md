@@ -180,3 +180,16 @@
 - Delete-Confirm, Trial-Expired, Error-DecodeFailed — state иконки без контейнеров ✓
 - Cockpit, Decode-Result — list-row иконки clean ✓
 - Permission screens — illustration иконки standalone ✓
+
+---
+
+## F. Icon Scale + Centering (2026-06-23, сессия 3)
+
+Все изменения применены через Figma Plugin API.
+
+| # | Что | Проблема | Фикс |
+| --- | --- | --- | --- |
+| 1 | Icons × 69 | Группы разного размера (10×15 — 21×24), позиция вручную, без auto-layout | Scale to fit 20×20 (aspect ratio preserved); `layoutMode:HORIZONTAL CENTER+CENTER`; фрейм 24×24 FIXED |
+| 2 | StatusBar signal frame [67:6] | `layoutMode:VERTICAL` — иконки стекались вертикально | → `HORIZONTAL AUTO`, `itemSpacing:4` |
+| 3 | StatusBar right frame [67:5] | Фиксированный 56×14, лишняя fill r:247 | → `HORIZONTAL AUTO`, fill cleared |
+| 4 | `Icons/cellularbars`, `Icons/battery.100percent` | `clipsContent:true` (авто-layout default) клипировал контент внутри малых instances (18×12, 26×12) | `clipsContent = false` |
