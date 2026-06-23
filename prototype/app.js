@@ -24,8 +24,14 @@ const SCREENS = {
 
   'onboarding-4': { title: 'Onboarding · Register', img: 'onboarding-4-register.png', hotspots: [
     { label: 'Sign in with Apple', to: 'cockpit-empty', rect: [12, 76, 76, 6] },
-    { label: 'Continue with email', to: 'cockpit-empty', rect: [12, 83, 76, 6] },
+    { label: 'Continue with email', to: 'email-auth', rect: [12, 83, 76, 6] },
     { label: 'Skip — keep on device', to: 'cockpit-empty', rect: [22, 90, 56, 5] } ] },
+
+  'email-auth': { title: 'Sign in with email', img: 'onboarding-4-register.png', hotspots: [
+    { label: 'Back', to: 'onboarding-4', rect: [1, 6, 16, 5] },
+    { label: 'Sign in', to: 'cockpit-empty', rect: [12, 86, 76, 6] },
+    { label: 'Create account', to: 'cockpit-empty', rect: [22, 92, 56, 5] },
+    { label: 'Forgot password', to: 'email-auth', rect: [55, 80, 40, 4] } ] },
 
   // ── SCAN FLOW ────────────────────────────────────────────────────────────────
   'scan-capture': { title: 'Scan · Add a document', img: 'scan-capture.png', hotspots: [

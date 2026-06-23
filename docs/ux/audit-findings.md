@@ -193,3 +193,38 @@
 | 2 | StatusBar signal frame [67:6] | `layoutMode:VERTICAL` — иконки стекались вертикально | → `HORIZONTAL AUTO`, `itemSpacing:4` |
 | 3 | StatusBar right frame [67:5] | Фиксированный 56×14, лишняя fill r:247 | → `HORIZONTAL AUTO`, fill cleared |
 | 4 | `Icons/cellularbars`, `Icons/battery.100percent` | `clipsContent:true` (авто-layout default) клипировал контент внутри малых instances (18×12, 26×12) | `clipsContent = false` |
+
+---
+
+## G. UX-аудит: критические фиксы (2026-06-23, сессия 4)
+
+Продолжение «чини все» — применены через Figma Plugin API + правки `prototype/app.js`.
+
+### Figma-фиксы
+
+| # | Экран | Что исправлено |
+| --- | --- | --- |
+| 1 | Settings [71:78] | «Photos deleted after decode» → muted-foreground (убран нечаянный danger-цвет) |
+| 2 | Paywall [96:478] | Добавлен «Restore purchases» ниже CTA-кнопки; billing text поднят в safe area (y:849→y:850) |
+| 3 | Scan-Camera [59:2] | Добавлена × close-кнопка (xmark instance) top-left x:16 y:16 |
+| 4 | Scan-Processing [59:15] | Добавлена «Cancel» кнопка bottom y:820 |
+| 5 | Settings ct [71:86] | Добавлен ряд «Appearance / Text size, theme» в секцию NOTIFICATIONS |
+| 6 | Vault-detail [95:440] | Добавлен ряд «Compare offers ›» между NoteBlock и CTA |
+| 7 | Cockpit hcard [99:615] | Добавлен «Coming up this week ›» → tappable row под seg |
+| 8 | Alert-detail ct [95:492] | Добавлена «Mark as done» кнопка под Snooze |
+| 9 | Contact-support ct [114:982] | Добавлен success-hint «After sending, we'll confirm by email within 24 h.» |
+| 10 | Onboarding-4 | Создан экран `email-auth` (email + password form, Sign in btn, Create account link) |
+
+### Prototype-фиксы (`prototype/app.js`)
+
+| # | Экран | Изменение |
+| --- | --- | --- |
+| 1 | scan-camera | Добавлен hotspot «Cancel / close» → scan-capture |
+| 2 | scan-processing | Добавлен hotspot «Cancel» → scan-capture |
+| 3 | vault-detail | Delete → delete-document-confirm (новый экран); Compare offers hotspot |
+| 4 | cockpit | «Coming up this week ›» → payment-calendar |
+| 5 | alert-detail | «Mark as done» hotspot → alerts-inbox |
+| 6 | onboarding-4 | «Continue with email» → email-auth |
+| 7 | email-auth | Новый экран: Sign in → cockpit-empty, Create account → cockpit-empty |
+
+**Итог:** 41 экран · 128 hotspots · 0 broken links
