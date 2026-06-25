@@ -99,6 +99,7 @@ typography:
     body:     { size: 1.0625rem, weight: 400, line: 1.5rem, use: "основной текст (iOS 17px)" } # 17px
     body-strong: { size: 1.0625rem, weight: 600, line: 1.5rem, use: "акцент в теле" }
     caption:  { size: 0.8125rem, weight: 400, line: 1.125rem, use: "мета, даты, сноски" }    # ~13px
+    label:    { size: 0.8125rem, weight: 600, line: 1rem, tracking: 0.06em, transform: uppercase, use: "секционные ярлыки (NEEDS ATTENTION / TRUE COST), eyebrow" } # ~13px caps — есть на Foundations-борде
     figures-lg: { size: 2.125rem, weight: 700, line: 2.5rem, numeric: tabular, use: "крупные £-суммы" }
     figures-md: { size: 1.0625rem, weight: 600, line: 1.5rem, numeric: tabular, use: "£/APR/% в строках" }
 
@@ -217,7 +218,10 @@ components:
 - `display` — aha-число «True cost: £412» на result.
 - `h1` — заголовок экрана; `h2` — секции, имя оффера.
 - `body` (17px, iOS-норма) + `body-strong`; `caption` — мета/даты/сноски/дисклеймер.
+- `label` — секционные ярлыки в caps (`NEEDS ATTENTION`, `TRUE COST`, `KEY TERMS`) и eyebrow-надписи. Реально используется на экранах и на Foundations-борде.
 - **`figures-lg` / `figures-md` с `tabular-nums`** — для всех денежных сумм, процентов и дат (финансовые числа обязаны выравниваться по разрядам). Размеры в rem — уважение к Dynamic Type.
+
+> **Канон рампы:** источник правды — этот файл + **Foundations-борд** (`design/wireframes/figma/foundations-wireframe.png`), они совпадают (`display / h1 / h2 / body / body-strong / caption / label / figures-*`). Старый `design-system-board.png` показывает иллюстративную iOS-лесенку с другими именами (Large title / Title / Callout / Subhead) — это НЕ контракт; при расхождении выигрывает рампа отсюда.
 
 ## Layout
 

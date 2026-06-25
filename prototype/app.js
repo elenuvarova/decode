@@ -27,11 +27,12 @@ const SCREENS = {
     { label: 'Continue with email', to: 'email-auth', rect: [12, 83, 76, 6] },
     { label: 'Skip — keep on device', to: 'cockpit-empty', rect: [22, 90, 56, 5] } ] },
 
-  'email-auth': { title: 'Sign in with email', img: 'onboarding-4-register.png', hotspots: [
-    { label: 'Back', to: 'onboarding-4', rect: [1, 6, 16, 5] },
-    { label: 'Sign in', to: 'cockpit-empty', rect: [12, 86, 76, 6] },
-    { label: 'Create account', to: 'cockpit-empty', rect: [22, 92, 56, 5] },
-    { label: 'Forgot password', to: 'email-auth', rect: [55, 80, 40, 4] } ] },
+  'email-auth': { title: 'Sign in with email', img: 'email-auth.png', hotspots: [
+    { label: 'Back', to: 'onboarding-4', rect: [1, 5, 18, 5] },
+    { label: 'Done', to: 'cockpit-empty', rect: [85, 5, 14, 5] },
+    { label: 'Forgot password', to: 'email-auth', rect: [60, 36, 38, 4] },
+    { label: 'Sign in', to: 'cockpit-empty', rect: [6, 42, 88, 6] },
+    { label: 'Create account', to: 'cockpit-empty', rect: [25, 49, 50, 4] } ] },
 
   // ── SCAN FLOW ────────────────────────────────────────────────────────────────
   'scan-capture': { title: 'Scan · Add a document', img: 'scan-capture.png', hotspots: [
@@ -50,9 +51,9 @@ const SCREENS = {
     { label: 'Retake', to: 'scan-camera',    rect: [4, 93, 44, 6] },
     { label: 'Use this scan', to: 'scan-processing', rect: [52, 93, 44, 6] } ] },
 
-  'scan-review-discard': { title: 'Discard scan?', img: 'scan-review.png', hotspots: [
-    { label: 'Discard', to: 'scan-capture', rect: [12, 62, 76, 7] },
-    { label: 'Keep scanning', to: 'scan-review', rect: [12, 70, 76, 6] } ] },
+  'scan-review-discard': { title: 'Discard scan?', img: 'scan-review-discard.png', hotspots: [
+    { label: 'Discard', to: 'scan-capture', rect: [13, 57, 74, 6] },
+    { label: 'Keep scanning', to: 'scan-review', rect: [25, 65, 50, 4] } ] },
 
   'multi-page-scan': { title: 'Scan · Multi-page', img: 'multi-page-scan.png', hotspots: [
     { label: 'Back to scan', to: 'scan-review', rect: [1, 6, 16, 5] },
@@ -132,9 +133,9 @@ const SCREENS = {
     { label: 'Ask about this document', to: 'ask', rect: [12, 58, 76, 6] },
     { label: 'Delete document', to: 'delete-document-confirm', rect: [4, 65, 92, 5] } ] },
 
-  'delete-document-confirm': { title: 'Delete · Confirmation', img: 'vault-detail.png', hotspots: [
-    { label: 'Keep it (cancel)', to: 'vault-detail', rect: [4, 72, 92, 6] },
-    { label: 'Delete document (confirm)', to: 'vault-list', rect: [4, 80, 92, 7] } ] },
+  'delete-document-confirm': { title: 'Delete · Confirmation', img: 'delete-document-confirm.png', hotspots: [
+    { label: 'Delete document (confirm)', to: 'vault-list', rect: [13, 58, 74, 6] },
+    { label: 'Keep it (cancel)', to: 'vault-detail', rect: [25, 66, 50, 4] } ] },
 
   'compare-offers': { title: 'Compare offers', img: 'compare-offers.png', hotspots: [
     { label: 'Back to Vault', to: 'vault-list', rect: [1, 6, 16, 5] },
@@ -147,39 +148,39 @@ const SCREENS = {
     { label: 'Review an alert', to: 'alert-detail', rect: [10, 33, 80, 6] } ] },
 
   'alert-detail': { title: 'Alert detail', img: 'alert-detail.png', hotspots: [
-    { label: 'Back', to: 'alerts-inbox', rect: [1, 6, 16, 5] },
-    { label: 'Review the plan', to: 'vault-detail', rect: [12, 86, 76, 6] },
-    { label: 'Snooze 3 days', to: 'alerts-inbox', rect: [25, 94, 50, 4] },
-    { label: 'Mark as done', to: 'alerts-inbox', rect: [25, 90, 50, 4] } ] },
+    { label: 'Back', to: 'alerts-inbox', rect: [1, 6, 18, 5] },
+    { label: 'Move money / open Klarna', to: 'vault-detail', rect: [4, 51, 92, 6] },
+    { label: 'Snooze 3 days', to: 'alerts-inbox', rect: [28, 59, 44, 3] },
+    { label: 'Mark as done', to: 'alerts-inbox', rect: [30, 65, 40, 3] } ] },
 
   'add-commitment': { title: 'Add a commitment', img: 'add-commitment.png', hotspots: [
     { label: 'Back (with changes)', to: 'add-commitment-discard', rect: [1, 6, 16, 5] },
     { label: 'Add to Radar', to: 'add-commitment-success', rect: [10, 82, 80, 9] } ] },
 
-  'add-commitment-discard': { title: 'Discard changes?', img: 'add-commitment.png', hotspots: [
-    { label: 'Discard', to: 'alerts-inbox', rect: [12, 62, 76, 7] },
-    { label: 'Keep editing', to: 'add-commitment', rect: [12, 70, 76, 6] } ] },
+  'add-commitment-discard': { title: 'Discard changes?', img: 'add-commitment-discard.png', hotspots: [
+    { label: 'Discard', to: 'alerts-inbox', rect: [13, 57, 74, 6] },
+    { label: 'Keep editing', to: 'add-commitment', rect: [25, 65, 50, 4] } ] },
 
-  'add-commitment-success': { title: 'Commitment saved', img: 'add-commitment.png', hotspots: [
-    { label: 'Back to Cockpit', to: 'cockpit', rect: [12, 62, 76, 7] },
-    { label: 'View in Vault', to: 'vault-list', rect: [12, 70, 76, 6] } ] },
+  'add-commitment-success': { title: 'Commitment saved', img: 'add-commitment-success.png', hotspots: [
+    { label: 'Back to Cockpit', to: 'cockpit', rect: [13, 56, 74, 6] },
+    { label: 'View in Vault', to: 'vault-list', rect: [25, 64, 50, 4] } ] },
 
   // ── SETTINGS ─────────────────────────────────────────────────────────────────
   'settings': { title: 'Settings', img: 'settings.png', hotspots: [
-    { label: 'Back', to: 'cockpit', rect: [1, 6, 16, 5] },
-    { label: 'Manage subscription', to: 'paywall',        rect: [4, 13, 92, 6] },
-    { label: 'Restore purchases', to: 'paywall',          rect: [4, 19, 92, 6] },
-    { label: 'What Decode stores', to: 'consent-center',  rect: [4, 27, 92, 6] },
-    { label: 'Export my data', to: 'consent-center',      rect: [4, 33, 92, 6] },
-    { label: 'Delete everything', to: 'delete-everything-confirm', rect: [4, 39, 92, 6] },
-    { label: 'Reminders & deadlines', to: 'radar-settings', rect: [4, 47, 92, 8] },
-    { label: 'Appearance', to: 'appearance',               rect: [4, 47, 92, 6] },
-    { label: 'Quiet hours', to: 'radar-settings',         rect: [4, 56, 92, 6] },
-    { label: 'Help & FAQ', to: 'help-faq',                rect: [4, 62, 92, 7] },
-    { label: 'Email a human', to: 'contact-support',      rect: [4, 69, 92, 6] },
-    { label: 'Free debt help', to: 'qa-signpost',         rect: [4, 75, 92, 6] },
-    { label: 'Decode explains, it doesn\'t advise', to: 'how-it-works', rect: [4, 77, 92, 6] },
-    { label: 'Privacy policy & terms', to: 'about',       rect: [4, 83, 92, 6] } ] },
+    { label: 'Back', to: 'cockpit', rect: [1, 4, 18, 4] },
+    { label: 'Manage subscription', to: 'paywall',        rect: [4, 9.4, 92, 5] },
+    { label: 'Restore purchases', to: 'paywall',          rect: [4, 15, 92, 5] },
+    { label: 'What Decode stores', to: 'consent-center',  rect: [4, 23.1, 92, 5] },
+    { label: 'Export my data', to: 'consent-center',      rect: [4, 28.7, 92, 5] },
+    { label: 'Delete everything', to: 'delete-everything-confirm', rect: [4, 34.4, 92, 5] },
+    { label: 'Reminders & deadlines', to: 'radar-settings', rect: [4, 42.5, 92, 5] },
+    { label: 'Quiet hours', to: 'radar-settings',         rect: [4, 48.1, 92, 5] },
+    { label: 'Appearance', to: 'appearance',              rect: [4, 53.7, 92, 5] },
+    { label: 'Help & FAQ', to: 'help-faq',                rect: [4, 66.9, 92, 5] },
+    { label: 'Email a human', to: 'contact-support',      rect: [4, 72.5, 92, 5] },
+    { label: 'Free debt help', to: 'qa-signpost',         rect: [4, 78.2, 92, 5] },
+    { label: 'Decode explains, it doesn\'t advise', to: 'how-it-works', rect: [4, 86.3, 92, 5] },
+    { label: 'Privacy policy & terms', to: 'about',       rect: [4, 91.9, 92, 5] } ] },
 
   'paywall': { title: 'Paywall · Decode Pro', img: 'paywall.png', hotspots: [
     { label: 'Close', to: 'cockpit',         rect: [4, 6, 11, 6] },
@@ -220,9 +221,9 @@ const SCREENS = {
     { label: 'Privacy Policy', to: 'consent-center',      rect: [4, 39, 92, 7] },
     { label: 'Complaints process', to: 'contact-support', rect: [4, 59, 92, 8] } ] },
 
-  'delete-everything-confirm': { title: 'Delete everything?', img: 'settings.png', hotspots: [
-    { label: 'Cancel', to: 'settings', rect: [12, 70, 76, 6] },
-    { label: 'Delete everything (confirm)', to: 'cockpit-empty', rect: [12, 62, 76, 7] } ] },
+  'delete-everything-confirm': { title: 'Delete everything?', img: 'delete-everything-confirm.png', hotspots: [
+    { label: 'Delete everything (confirm)', to: 'cockpit-empty', rect: [13, 57, 74, 6] },
+    { label: 'Cancel', to: 'settings', rect: [25, 65, 50, 4] } ] },
 
   // ── ERRORS & EMPTY STATES ────────────────────────────────────────────────────
   'error-offline': { title: 'Error · Offline', img: 'error-offline.png', hotspots: [
