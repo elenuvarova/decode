@@ -65,21 +65,36 @@ const SCREENS = {
     { label: 'Cancel', to: 'scan-capture', rect: [22, 92, 56, 6] },
     { label: 'BNPL / loan result', to: 'decode-result', rect: [10, 76, 80, 9] },
     { label: 'Insurance result', to: 'decode-result-insurance', rect: [10, 86, 80, 7] },
-    { label: 'Could not read → error', to: 'error-decode-failed', rect: [70, 3, 28, 6] } ] },
+    { label: 'Could not read → error', to: 'error-decode-failed', rect: [70, 3, 28, 6] },
+    { label: 'Partial read → result with gaps', to: 'result-error', rect: [2, 3, 28, 6] } ] },
 
   // ── DECODE RESULT ────────────────────────────────────────────────────────────
   'decode-result': { title: 'Decode result · BNPL', img: 'decode-result-wireframe.png', hotspots: [
     { label: 'Done', to: 'cockpit',  rect: [85, 4, 13, 3] },
-    { label: 'This number looks wrong?', to: 'trust-repair', rect: [4, 87, 64, 3] },
+    { label: 'from your document › (source)', to: 'source-highlight', rect: [4, 21, 45, 3] },
+    { label: 'Late fee · p.2 §4 (source)', to: 'source-highlight', rect: [4, 47, 55, 4] },
+    { label: 'Does a number look wrong?', to: 'trust-repair', rect: [4, 84, 60, 2] },
+    { label: 'Compare with another offer', to: 'compare-offers', rect: [4, 86.5, 60, 2] },
+    { label: 'Scan another document', to: 'scan-capture', rect: [4, 89.3, 60, 2] },
     { label: 'Ask', to: 'ask',   rect: [4, 95, 45, 4] },
-    { label: 'Save & watch', to: 'cockpit', rect: [51, 95, 45, 4] } ] },
+    { label: 'Save & watch', to: 'save-watch-success', rect: [51, 95, 45, 4] } ] },
+
+  'source-highlight': { title: 'Source · highlighted line (PM6)', img: 'source-highlight.png', hotspots: [
+    { label: 'Close (×)', to: 'decode-result', rect: [84, 10, 14, 5] },
+    { label: 'Report a mismatch', to: 'trust-repair', rect: [4, 83, 92, 6] },
+    { label: 'Done', to: 'decode-result', rect: [4, 90, 92, 6] } ] },
 
   'decode-result-insurance': { title: 'Decode result · Insurance', img: 'decode-result-insurance.png', hotspots: [
     { label: 'Done', to: 'cockpit',      rect: [85, 5, 13, 3] },
     { label: 'Trap: auto-renews', to: 'vault-detail', rect: [4, 70, 92, 7] },
     { label: 'Trap: price walking', to: 'vault-detail', rect: [4, 78, 92, 7] },
     { label: 'Ask', to: 'ask',           rect: [4, 94, 45, 5] },
-    { label: 'Save & watch', to: 'cockpit', rect: [51, 94, 45, 5] } ] },
+    { label: 'Save & watch', to: 'save-watch-success', rect: [51, 94, 45, 5] } ] },
+
+  'save-watch-success': { title: 'Saved & watching', img: 'save-watch-success.png', hotspots: [
+    { label: 'Back to Cockpit', to: 'cockpit', rect: [13, 33, 74, 6] },
+    { label: 'View in Vault', to: 'vault-list', rect: [13, 40, 74, 5] },
+    { label: 'Adjust reminders', to: 'radar-settings', rect: [13, 51, 74, 5] } ] },
 
   'share-decode': { title: 'Share this decode', img: 'share-decode.png', hotspots: [
     { label: 'Save as PDF', to: 'decode-result',         rect: [4, 43, 92, 8] },
@@ -89,7 +104,9 @@ const SCREENS = {
     { label: 'Cancel', to: 'decode-result',              rect: [4, 93, 92, 6] } ] },
 
   'ask': { title: 'Ask', img: 'ask.png', hotspots: [
-    { label: 'Back to result', to: 'decode-result', rect: [1, 6, 16, 5] },
+    { label: 'Close (×)', to: 'decode-result', rect: [86, 7, 12, 4] },
+    { label: 'Citation: credit file · p.1', to: 'source-highlight', rect: [8, 34, 40, 3] },
+    { label: 'Citation: late fee · p.2 §4', to: 'source-highlight', rect: [8, 69, 40, 3] },
     { label: 'I can\'t pay these (distress)', to: 'qa-signpost', rect: [4, 61, 70, 7] } ] },
 
   'qa-signpost': { title: 'Ask · Debt signpost', img: 'qa-signpost.png', hotspots: [
@@ -147,13 +164,14 @@ const SCREENS = {
 
   'compare-offers': { title: 'Compare offers', img: 'compare-offers.png', hotspots: [
     { label: 'Back to Vault', to: 'vault-list', rect: [2, 6, 30, 4] },
-    { label: 'Add another to compare', to: 'scan-capture', rect: [4, 54, 92, 6] } ] },
+    { label: 'Save the cheaper one', to: 'cockpit', rect: [4, 58, 92, 6] },
+    { label: 'Add another to compare', to: 'scan-capture', rect: [4, 67, 92, 6] } ] },
 
   // ── RENEWAL RADAR / ALERTS ───────────────────────────────────────────────────
   'alerts-inbox': { title: 'Renewal Radar', img: 'alerts-inbox.png', hotspots: [
     { label: 'Back', to: 'cockpit', rect: [2, 6, 30, 4] },
     { label: 'Add manual commitment', to: 'add-commitment', rect: [84, 6, 14, 5] },
-    { label: 'Move money', to: 'alert-detail', rect: [8, 26, 84, 6] },
+    { label: 'See what to do', to: 'alert-detail', rect: [8, 26, 84, 6] },
     { label: 'Review an alert', to: 'alert-detail', rect: [8, 45, 84, 6] } ] },
 
   'alert-detail': { title: 'Alert detail', img: 'alert-detail.png', hotspots: [
@@ -177,8 +195,8 @@ const SCREENS = {
   // ── SETTINGS ─────────────────────────────────────────────────────────────────
   'settings': { title: 'Settings', img: 'settings.png', hotspots: [
     { label: 'Back', to: 'cockpit', rect: [1, 4, 18, 4] },
-    { label: 'Manage subscription', to: 'paywall',        rect: [4, 9.4, 92, 5] },
-    { label: 'Restore purchases', to: 'paywall',          rect: [4, 15, 92, 5] },
+    { label: 'Manage subscription', to: 'subscription-management', rect: [4, 9.4, 92, 5] },
+    { label: 'Restore purchases', to: 'subscription-management', rect: [4, 15, 92, 5] },
     { label: 'What Decode stores', to: 'consent-center',  rect: [4, 23.1, 92, 5] },
     { label: 'Export my data', to: 'consent-center',      rect: [4, 28.7, 92, 5] },
     { label: 'Delete everything', to: 'delete-everything-confirm', rect: [4, 34.4, 92, 5] },
@@ -235,6 +253,17 @@ const SCREENS = {
     { label: 'Cancel', to: 'settings', rect: [13, 37, 74, 6] } ] },
 
   // ── ERRORS & EMPTY STATES ────────────────────────────────────────────────────
+  'result-error': { title: 'Result · Couldn\'t read', img: 'result-error.png', hotspots: [
+    { label: 'Close (×)', to: 'cockpit', rect: [2, 6, 10, 4] },
+    { label: 'Retake photo', to: 'scan-camera', rect: [12, 72, 76, 7] },
+    { label: 'Choose a different file', to: 'scan-capture', rect: [25, 82, 50, 4] } ] },
+
+  'subscription-management': { title: 'Settings · Subscription', img: 'subscription-management.png', hotspots: [
+    { label: 'Back to Settings', to: 'settings', rect: [2, 6, 30, 4] },
+    { label: 'Plan · change (paywall)', to: 'paywall', rect: [4, 26, 92, 9] },
+    { label: 'Manage in Apple Subscriptions', to: 'subscription-management', rect: [4, 42, 92, 9] },
+    { label: 'Restore purchases', to: 'subscription-management', rect: [4, 54, 92, 7] } ] },
+
   'error-offline': { title: 'Error · Offline', img: 'error-offline.png', hotspots: [
     { label: 'Try again', to: 'cockpit',    rect: [13, 35, 74, 6] },
     { label: 'Open Vault', to: 'vault-list', rect: [13, 42, 74, 6] } ] },
@@ -265,7 +294,7 @@ const SCREENS = {
 
 const FLOWS = {
   'first-decode': { name: 'First decode (J1)', sub: 'Onboarding → scan → BNPL result → save',
-    steps: ['onboarding-1','onboarding-2','onboarding-3','scan-capture','scan-camera','scan-review','scan-processing','decode-result','cockpit'] },
+    steps: ['onboarding-1','onboarding-2','onboarding-3','scan-capture','scan-camera','scan-review','scan-processing','decode-result','save-watch-success','cockpit'] },
 
   'insurance': { name: 'Insurance decode', sub: 'Scan → process → insurance result',
     steps: ['scan-capture','scan-review','scan-processing','decode-result-insurance','cockpit'] },
@@ -303,8 +332,8 @@ const FLOWS = {
   'privacy': { name: 'Privacy choices', sub: 'Settings → privacy → export / delete',
     steps: ['settings','consent-center','settings'] },
 
-  'errors': { name: 'Error & empty states', sub: 'Gallery of all 6 states',
-    steps: ['error-offline','error-decode-failed','error-limit-reached','error-camera-denied','empty-no-results','error-purchase-failed'] },
+  'errors': { name: 'Error & empty states', sub: 'Gallery of all 7 states',
+    steps: ['error-offline','error-decode-failed','result-error','error-limit-reached','error-camera-denied','empty-no-results','error-purchase-failed'] },
 };
 
 // ── STATE & RENDER ─────────────────────────────────────────────────────────────

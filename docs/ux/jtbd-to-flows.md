@@ -1,6 +1,6 @@
 # Decode — JTBD ↔ user flows
 
-**Фаза:** UX architecture · **Дата:** 2026-06-12 · **Платформа:** iPhone, последняя iOS
+**Фаза:** UX architecture · **Дата:** 2026-06-12 · **Обновлено:** 2026-07-02 — F1/F2/F3/F6 синхронизированы с построенным (Figma + прототип; audit H6) · **Платформа:** iPhone, последняя iOS
 **Входы:** [jtbd.md](../product/jtbd.md) (jobs J1–J6, гипотезы), [task4-personas-premortem.md](../research-sprint/task4-personas-premortem.md) (6 требований), [research/00 §6](../../research/00-executive-summary.md) (UX-паттерны + референсы), [task5 VoC](../research-sprint/task5-voc-action-points.md) (инварианты)
 
 Каждый core-job сегмента явно привязан к flow, экранам и сигналу успеха. Это редкий senior-артефакт: показывает, что каждый экран существует ради работы пользователя, а не «потому что так бывает».
@@ -42,30 +42,33 @@
 
 ## 2. Flows (диаграммы + контракты)
 
-### F1 · Onboarding → активация (служит входу в loop, `[PM2]`)
+### F1 · Onboarding → активация (служит входу в loop, `[PM2]`) — обновлено 2026-07-02 под построенное
 
 ```
-[Welcome]  одно обещание: «Understand any financial document in 30 seconds»
+[Welcome + value mock]  одно обещание: «Understand any financial document in 30 seconds»
+   │       + мок result прямо на welcome: карточка «TRUE COST £412» + чип «Credit file: YES»
+   │         (бывший отдельный слайд Value mock слит сюда — сознательно: продукт виден с первого экрана)
    │       sub: «Built for the UK · No bank connection required»   ← снимает VoC T-3
    ▼
-[Value mock]  слайд с мокапом result (продукт виден до регистрации)
-   │
-   ▼
-[Trust & consent]  no bank link · encrypted · «we never sell data»
+[Trust & AI consent]  (Onboarding-2-Trust)  no bank link · encrypted · «we never sell data»
    │              + AI-consent с именем Anthropic (Apple 5.1.2(i))   ← обязателен
    ▼
-[Sign in with Apple]  (единственный auth; не блокирует первый скан, если делаем guest-scan)
+[No-doc / entry choice] [PM2]  (Onboarding-3-NoDoc — полноэкранный, не шит):
+   │    • «Try a sample» ──────────────► сразу decode-result на demo-доке (захардкоженный sample)
+   │    • «Decode something you signed» ► F2 Scan & Decode
+   │    • «Forward an email» ──────────► share-in путь, дальше к Register
+   │    • «Skip for now» ──────────────► дальше без документа
    ▼
-[Pre-permission: Camera]  зачем камера + «Upload from Photos» fallback
+[Register]  (Onboarding-4-Register) — три опции:
+   │    • Sign in with Apple (primary)
+   │    • «Continue with email» ─► [email-auth]
+   │    • «Skip — keep on device» ─► гостевой/локальный режим (ценность до регистрации)
    ▼
-   ├─ есть документ ──────────────► F2 Scan & Decode
-   └─ нет документа сейчас [PM2] ─► {No-doc branch}:
-                                      • «Try a sample Klarna offer» → F2 на demo-доке
-                                      • «Scan an old letter or statement»
+   Cockpit (empty) → guided first scan
    (push-permission — НЕ здесь, а после первого result, на данных этого документа)
 ```
-**Состояния:** default; «уже есть аккаунт» → Sign in; отказ камеры → upload-путь.
-**Контракт:** ≤3 слайда до первого действия; первая ценность до регистрации/пейволла; push спрашиваем после первого скана.
+**Состояния:** default; «уже есть аккаунт» → email-auth; отказ камеры → upload-путь (в scan-флоу; отдельный camera-праймер в онбординг не вошёл).
+**Контракт (обновлено 2026-07-02):** ≤3 слайда до первого действия; первая ценность до регистрации/пейволла — закреплена гостевым режимом «Skip — keep on device»; прежний контракт «Sign in with Apple — единственный auth» отменён (Apple — primary из трёх опций); push спрашиваем после первого скана.
 **Успех:** % новичков, дошедших до первого result (включая demo-ветку) — главный activation-gate против F5 pre-mortem.
 **Референсы:** Wise/Plum welcome, Fabric value-mock, Plazo trust ([research/15](../../research/15-mobbin-onboarding.md)).
 
@@ -91,18 +94,21 @@
    │  ② [PM3] бейдж-герой: «Goes on your credit file: YES / NO / only if collections»
    │  ③ key terms с риск-лейблами; безопасные схлопнуты («6 terms look standard ⌃»)
    │  ④ [PM6] три языка достоверности:
-   │       • «From your document» — tap → подсветка места в документе
+   │       • «From your document» — tap «from your document ›» / citation → {Source-Highlight} (построен)
    │       • «Calculated, not AI» — бейдж на true cost
    │       • «AI» — на summary/Q&A
    │  ⑤ trap-карточки: факт + £ + 1–2 next step, тон спокойный
    │  ⑥ confidence: «✓ from document» / «Check this» (tap→zoom+правка→пересчёт) / «Couldn't read»
    ▼
    ├──► [Ask] (F3)         спросить по документу
-   ├──► [Save+Watch]       авто-имя «Klarna BNPL offer — 14 May 2026» + предложить даты Radar
+   ├──► [Save & watch] ─► [Saved & watching]  (Save-Watch-Success — обновлено 2026-07-02)
+   │       zero-config save: авто-имя «Klarna BNPL offer — 14 May 2026» и даты Radar — автоматически, без шита
+   │       строка-подтверждение: «Watching the 28 May payment — we'll remind you 2 days before.»
+   │       CTA: Back to Cockpit · View in Vault · тихий «Adjust reminders» → {Reminder settings}
    └──► [Scan another]     возврат в F2 (Jordan сканирует 4 оффера)
 ```
-**Состояния:** loading (этапы); success (result); partial («couldn't read» секции — честно); error (capture-quality / сеть / AI-fail → retake/retry/ручной ввод).
-**Контракт:** числа считает детерминированный движок (бейдж «Calculated, not AI»); каждый extracted term тапается в источник; правка значения мгновенно пересчитывает true cost; никаких «you should».
+**Состояния:** loading (этапы); success (result); partial («couldn't read» секции — честно, экран Result-Error заведён из processing); error (capture-quality / сеть / AI-fail → retake/retry/ручной ввод).
+**Контракт (обновлено 2026-07-02):** числа считает детерминированный движок (бейдж «Calculated, not AI»); каждый extracted term тапается в источник — экран {Source-Highlight} построен, PM6 закрыт полностью; правка значения мгновенно пересчитывает true cost; сохранение — zero-config (конфигурационный шит Save+Watch не строился, настройка — за «Adjust reminders»); никаких «you should».
 **Успех:** первый decode завершён И просмотрены aha-число + credit-file бейдж (J1 activation).
 **Покрывает риски:** F3 (ошибка в числах → 3 языка достоверности), F5 (demo-вход).
 **Референсы:** Yuka result-схема, Plum aha, Yazio processing, Docusign/Apple Notes capture, Chime/Starling errors.
@@ -119,7 +125,10 @@
    │    «Will this affect my credit score?» · «What if I miss a payment?» · «Can they take money if I cancel my card?»
    │
    ├─ обычный вопрос ──► ответ простым языком
-   │                     + двухуровневая citation «p.2 §4» → {Source sheet} с подсветкой
+   │                     + двухуровневая citation «p.2 §4» → {Source-Highlight} (построен, обновлено 2026-07-02):
+   │                       шапка «имя оффера + p.2 §4» · выдержка документа с одной подсвеченной строкой
+   │                       · «This is the exact line from your document» · тихий CTA «Report a mismatch»
+   │                       → Trust-repair · Done → назад
    │                     + честное «This isn't specified in your agreement» вместо галлюцинации
    │                     + verbalized uncertainty «double-check the highlighted line» (не проценты)
    │
@@ -151,7 +160,7 @@
    ▼
    ├──► строка ──► F7 Vault detail
    ├──► [Scan] ──► F2
-   └──► bell/Alerts ──► {Alerts inbox} (F6)
+   └──► bell/Alerts ──► [Renewal Radar] (F6, полноэкранный)
 ```
 **Состояния:** empty (0 документов → guided «Scan your first document — true cost in 30s» + кнопка Scan, антипаттерн-тупик закрыт); 1 документ; many; all-clear.
 **Контракт:** home всегда cockpit (`[PM1]`); никаких bank-link механик, промо-баннеров, перегруза графиками; спокойный «банковский» тон.
@@ -163,15 +172,18 @@
 ### F6 · Radar — наблюдение (J3, Watch)
 
 ```
-СОЗДАНИЕ: на F2 Save+Watch — inline-тоггл «Promo rate ends 14 Nov — remind you?»  (Radar = следствие скана)
+СОЗДАНИЕ (обновлено 2026-07-02): zero-config — даты Radar ставятся автоматически при «Save & watch» (F2);
+   успех-экран подтверждает: «Watching the 28 May payment — we'll remind you 2 days before.»,
+   настройка — тихий «Adjust reminders» → {Reminder settings}   (Radar = следствие скана)
    ▼
 [Local notification]  «Boiler cover renews in 14 days — you'll be charged £312 on 24 Jun» → tap
    ▼
 {Alert detail}  [что] + [через сколько] + [точная сумма и дата] + ОДНА CTA «Review terms» → F7/F2
    │  для price-increase: «было £9.99 → стало £12.99 (+30%)» + «Why?» → source-подсветка
    │
-[Alerts inbox]  двухслойно: «Coming up» (мини-календарь) + «Coming later»
+[Renewal Radar]  (полноэкранный, не шит — обновлено 2026-07-02) двухслойно: «Coming up» (мини-календарь) + «Coming later»
    │  reliability contract: «Watching 4 dates · last checked today» + тест-нотификация в онбординге
+   │  + Pro-upsell блок «Watching 2 of 6 · Unlock with Pro»  (шов с F8)
    ▼
 {Reminder settings}  lead-time по категории · «Renewals & deadlines» locked-On · «Tips» off by default
 ```
@@ -239,7 +251,7 @@
 ```
                      ┌────────────────────── F1 Onboarding ──────────────────────┐
                      ▼                                                            │
-   share-in ───► F2 Scan & Decode ──► Decode-result ──► Save+Watch ──► F6 Radar   │
+   share-in ───► F2 Scan & Decode ──► Decode-result ──► SW-success ──► F6 Radar   │
                      ▲   │                   │  │              │          │       │
                      │   │                   │  └─► F3 Ask     │          ▼       │
                      │   └── Scan another ◄──┘     (J4/J5)     │     [notification]
@@ -250,7 +262,7 @@
                                                        └─► F8 Upgrade (Watch-gate) ─► Apple IAP
    [Settings] ─────────────────────────────────────────────► F9 Cancel/Privacy
 ```
-Сквозной шов продукта — **Scan → Watch**: каждый завершённый decode предлагает сохранение и дату наблюдения; cockpit — постоянная причина возврата.
+Сквозной шов продукта — **Scan → Watch** (обновлено 2026-07-02): каждый завершённый decode сохраняется в один тап — zero-config, имя и даты наблюдения ставятся автоматически (SW-success = «Saved & watching»); cockpit — постоянная причина возврата. В кликабельном прототипе связка материализована как 49 экранов / 14 флоу.
 
 ---
 
@@ -279,7 +291,7 @@ Install → Onboarding complete → First scan started → First result viewed* 
 | PM3 credit-file бейдж-герой | F2 result ② | ✅ |
 | PM4 пейволл на Watch | F8 / F6 | ✅ |
 | PM5 Q&A signpost | F3 | ✅ |
-| PM6 три языка достоверности | F2 result ④ | ✅ |
+| PM6 три языка достоверности | F2 result ④ + {Source-Highlight} (tap-to-source построен) | ✅ полностью (обновлено 2026-07-02) |
 | VoC T-1/T-2 биллинг | F8/F9 | ✅ |
 | VoC T-3 no bank link | F1 trust | ✅ |
 | VoC T-7 radar reliability | F6 | ✅ |

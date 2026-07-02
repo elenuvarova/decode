@@ -14,11 +14,16 @@ http://localhost:8765/prototype/index.html
 ## How it works
 - **Tap hotspots on the phone** — transparent clickable areas positioned over the real buttons/rows in each screen; click to navigate. Toggle **“Show tap areas”** to reveal/hide their outlines; hover shows a `label → target` tooltip.
 - **Flow runner** — pick a named flow in the sidebar, then step with **Prev / Next** (status shows `Flow · step/total`). **✕** exits the flow.
-- **Jump anywhere** — the sidebar lists all 26 screens.
+- **Jump anywhere** — the sidebar lists all 49 screens.
 - **Back** — top-left, walks navigation history.
 
-## Flows (8)
-`first-decode` (J1) · `ask` (J4) · `watch` (J3) · `vault` (J6) · `monetize` · `trust` · `onboarding` · `errors`.
+## Flows (14)
+`first-decode` (J1) · `insurance` · `multi-page` · `ask` (J4) · `share` · `trust` · `watch` (J3) · `vault` (J6) · `payment-cal` · `monetize` (F8) · `onboarding` · `settings-tour` · `privacy` · `errors`.
+
+Newly wired in the 2026-07-02 fix pass: `source-highlight` (`source-highlight.png`), `subscription-management` (`subscription-management.png`, from Settings → Manage subscription), `result-error` (`result-error.png`, from the scan-processing partial-fail path). `save-watch-success` was wired in the immediately-preceding uncommitted pass (45→46 vs the last commit), so relative to git HEAD this tree adds **four** screens — all four PNGs are new files. Static-prototype note: `source-highlight` Close/Done always return to `decode-result`, even when entered from an `ask` citation — use the global Back in that path.
+
+## Hotspots
+Each screen in `app.js` declares its hotspots as `{ label, to, rect }`, where **`rect = [left%, top%, width%, height%]` of the frame** — percentages, so re-exported PNGs at any scale keep working. Every hotspot renders with `data-testid="action-<slug>"` (slug of its label) plus `data-to`, so Playwright can click any control by a stable id.
 
 ## Playwright
 Every control has a stable `data-testid`:
@@ -27,9 +32,14 @@ Every control has a stable `data-testid`:
 - `action-<slug>` on each on-phone hotspot (also carries `data-to`)
 - `current-screen` (the phone) exposes `data-screen="<id>"`; `window.PROTO.state` returns `{current, flowId, flowIdx, historyLen}` for assertions.
 
-Integrity-checked via Playwright: **26 screens, 8 flows, 63 hotspots, 0 broken flow steps / hotspot targets, 0 missing images, 0 orphan screens.**
+Integrity-checked via Playwright: **49 screens, 14 flows, 0 broken flow steps / hotspot targets, 0 missing images, 0 orphan screens** (2026-07-02 fix pass).
+
+## Not wired (on purpose)
+These frames exist in Figma (designed, wiring deferred):
+- **App Store artifacts (4)** — Perm-Camera, Perm-Notifications, Perm-FaceID, Delete-Account: launch/review artifacts, not in-app navigation.
+- **Deferred screens** — Account, Privacy-Policy, Legal-Disclaimer, Notifications-Settings, Trial-Expired, Vault-Search-Results, Vault-Sort-Filter, Document-History, Force-Update, Maintenance, Rate-Feedback.
 
 ## Files
 `index.html` · `proto.css` (uses `../design/wireframes/tokens.css`) · `app.js` (screen + flow + hotspot data). Previews in `previews/`.
 
-> The prototype reflects the wireframe PNGs. When a screen changes in Figma, re-export its PNG to `../design/wireframes/figma/` and the prototype updates automatically.
+> The prototype reflects the wireframe PNGs. **Figma is the source of truth.** Screen PNGs in `../design/wireframes/figma/` are **2× exports** of the 402-wide frames (so 804 px wide); wide boards like `foundations` export at 1.5×. When a screen changes in Figma, re-export its PNG at 2× and the prototype updates automatically.

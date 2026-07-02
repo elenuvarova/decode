@@ -57,6 +57,7 @@ colors:
     popover-foreground:  { light: "{gray-900}", dark: "{gray-900}" }
     input:               { light: "{gray-200}", dark: "{gray-300}" }
     ring:                { light: "{gray-400}", dark: "{gray-500}" }     # focus-ring
+    icon:                { light: "{gray-400}", dark: "{gray-500}" }     # иконки/глифы
     # Brand
     primary:             { light: "{accent-placeholder}", dark: "{accent-placeholder}" }
     primary-foreground:  { light: "{gray-0}",   dark: "{gray-0}" }
@@ -86,10 +87,11 @@ colors:
 
 # ─────────────────────────────────────────────────────────────────────────────
 # TYPOGRAPHY — iOS системный стек; уровни, реально нужные продукту. ФИНАЛЬНОЕ (не плейсхолдер).
-# Размеры в rem (уважение к Dynamic Type). mono-figures (tabular-nums) — для £/%/дат.
+# Размеры в rem (уважение к Dynamic Type). figures (tabular-nums) — для £/%/дат.
 # ─────────────────────────────────────────────────────────────────────────────
 typography:
   fontFamily:
+    # В Figma рампа собрана на Inter — стенд-ин SF Pro (близкие метрики); в коде — системный SF Pro-стек ниже.
     sans:   '-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif'
     figures: '"SF Pro Text", -apple-system, system-ui, sans-serif'    # с font-variant-numeric: tabular-nums
   scale:
@@ -99,9 +101,9 @@ typography:
     body:     { size: 1.0625rem, weight: 400, line: 1.5rem, use: "основной текст (iOS 17px)" } # 17px
     body-strong: { size: 1.0625rem, weight: 600, line: 1.5rem, use: "акцент в теле" }
     caption:  { size: 0.8125rem, weight: 400, line: 1.125rem, use: "мета, даты, сноски" }    # ~13px
-    label:    { size: 0.8125rem, weight: 600, line: 1rem, tracking: 0.06em, transform: uppercase, use: "секционные ярлыки (NEEDS ATTENTION / TRUE COST), eyebrow" } # ~13px caps — есть на Foundations-борде
+    label:    { size: 0.75rem, weight: 500, line: 1rem, transform: uppercase, use: "секционные ярлыки (NEEDS ATTENTION / TRUE COST), eyebrow" } # ~12px caps; uppercase набирается в тексте, tracking'а у Figma-стиля нет
     figures-lg: { size: 2.125rem, weight: 700, line: 2.5rem, numeric: tabular, use: "крупные £-суммы" }
-    figures-md: { size: 1.0625rem, weight: 600, line: 1.5rem, numeric: tabular, use: "£/APR/% в строках" }
+    figures:  { size: 1.0625rem, weight: 600, line: 1.5rem, numeric: tabular, use: "£/APR/% в строках" }
 
 # ─────────────────────────────────────────────────────────────────────────────
 # SPACING — контракт с usage. base 4px, шкала кратна. ФИНАЛЬНОЕ. Density = spacious (Apple/Things).
@@ -110,9 +112,11 @@ spacing:
   unit: 4px
   xs:  4px    # иконка ↔ текст внутри компонента
   sm:  8px    # между близкими элементами
-  md:  16px   # между элементами в блоке; боковые поля экрана (iOS)
-  lg:  24px   # padding карточки, между блоками
-  xl:  32px   # между секциями экрана
+  space-12: 12px   # компактный тир: плотные пары, паддинг кнопки/чипа (добавлен 2026-06-26, enforcement)
+  md:  16px   # паддинг list-row/обычных карточек; между элементами в блоке; боковые поля экрана (iOS)
+  space-20: 20px   # hero/feature-паддинг (добавлен 2026-06-26, enforcement)
+  lg:  24px   # между секциями (главный рычаг «воздуха», правило 1:3 к sm)
+  xl:  32px   # между регионами; перед футером/дисклеймером
   "2xl": 48px # крупные разрывы (онбординг, empty states)
   screen-padding: 16px       # боковые поля экрана (iOS-стандарт)
   safe-top: env(safe-area-inset-top)      # Dynamic Island
@@ -171,7 +175,7 @@ components:
     padding: "{spacing.sm} {spacing.md}"; min-height: "{spacing.tap-min}"; cursor: pointer
   card:
     bg: "{card}"; fg: "{card-foreground}"; border: "{border}"
-    rounded: "{rounded.DEFAULT}"; padding: "{spacing.lg}"; shadow: "{elevation.card}"
+    rounded: "{rounded.DEFAULT}"; padding: "{spacing.md}"; padding-hero: "{spacing.space-20}"; shadow: "{elevation.card}"
   sheet:
     bg: "{popover}"; rounded-top: "{rounded.xl}"; shadow: "{elevation.sheet}"; z: "{zIndex.sheet}"
   credit-file-badge:                 # геройский элемент result (PM3)
@@ -207,25 +211,27 @@ components:
 
 **Различимость статусов в ч/б — не цветом.** На wireframe trap-severity, credit-file YES/NO, confidence различаются **иконкой + весом шрифта + заливкой/обводкой**, не оттенком. Бонус: это делает систему colorblind-safe по построению — когда добавится цвет, он станет усилением, а не единственным носителем смысла.
 
-**Доменные роли Decode** (выведены из [поэкранных контрактов](screens/)): `trap-high/med/info`, `credit-file-yes/no/cond` (геройский бейдж), `confidence-ok/check/unread`, `calculated` (бейдж «Calculated, not AI»), `ai-tag`, `renewal-due`, `overdue`. На дизайне они переотобразятся на hue (trap-high → red, credit-file-no → green и т.д.) сменой ссылок.
+**Доменные роли Decode** (выведены из [поэкранных контрактов](screens/)): `trap-high/med/info`, `credit-file-yes/no/cond` (геройский бейдж), `confidence-ok/check/unread`, `calculated` (бейдж «Calculated, not AI»), `ai-tag`, `renewal-due`, `overdue`. Плюс сервисная роль `icon` (иконки/глифы → `gray-400`) — используется на экранах наравне с `muted-foreground`, но отдельно, чтобы перекрасить глифы независимо от текста. На дизайне доменные роли переотобразятся на hue (trap-high → red, credit-file-no → green и т.д.) сменой ссылок.
+
+В Figma Primitives, помимо grayscale, уже лежат **зарезервированные hi-fi примитивы** для фазы дизайна (teal-50/100/600/700, green-100/600, amber-100/600, red-100/600, blue-100/600, gray-800 — подготовка палитры из research/19); в Wireframe-режиме они не используются.
 
 Контраст: каждая пара текст/фон обязана давать **WCAG AA** — 4.5:1 для текста <18px, 3:1 для крупного и UI-элементов. Все `*-foreground` роли заданы.
 
 ## Typography
 
-Системный стек **SF Pro** (`-apple-system, …`) — не подключаем шрифты с CDN; кастомный (если появится) — через `next/font`/нативно. Уровни — только реально нужные продукту:
+Системный стек **SF Pro** (`-apple-system, …`) — не подключаем шрифты с CDN; кастомный (если появится) — через `next/font`/нативно. **В Figma рампа собрана на Inter** — легитимный стенд-ин SF Pro (близкие метрики); в продакшен-коде остаётся системный SF Pro-стек. Уровни — только реально нужные продукту:
 
 - `display` — aha-число «True cost: £412» на result.
 - `h1` — заголовок экрана; `h2` — секции, имя оффера.
 - `body` (17px, iOS-норма) + `body-strong`; `caption` — мета/даты/сноски/дисклеймер.
-- `label` — секционные ярлыки в caps (`NEEDS ATTENTION`, `TRUE COST`, `KEY TERMS`) и eyebrow-надписи. Реально используется на экранах и на Foundations-борде.
-- **`figures-lg` / `figures-md` с `tabular-nums`** — для всех денежных сумм, процентов и дат (финансовые числа обязаны выравниваться по разрядам). Размеры в rem — уважение к Dynamic Type.
+- `label` — секционные ярлыки в caps (`NEEDS ATTENTION`, `TRUE COST`, `KEY TERMS`) и eyebrow-надписи (12/Medium; caps набирается в тексте — у Figma-стиля нет ни transform, ни tracking).
+- **`figures-lg` / `figures` с `tabular-nums`** — для всех денежных сумм, процентов и дат (финансовые числа обязаны выравниваться по разрядам). Размеры в rem — уважение к Dynamic Type.
 
-> **Канон рампы:** источник правды — этот файл + **Foundations-борд** (`design/wireframes/figma/foundations-wireframe.png`), они совпадают (`display / h1 / h2 / body / body-strong / caption / label / figures-*`). Старый `design-system-board.png` показывает иллюстративную iOS-лесенку с другими именами (Large title / Title / Callout / Subhead) — это НЕ контракт; при расхождении выигрывает рампа отсюда.
+> **Канон рампы:** источник правды — **этот файл** (`display / h1 / h2 / body / body-strong / caption / label / figures / figures-lg`), он сверен с живыми text-стилями Figma (`Decode/*`); **Foundations-борд** (`design/wireframes/figma/foundations-wireframe.png`) — витрина, догоняет канон. Старый `design-system-board.png` показывает иллюстративную iOS-лесенку с другими именами (Large title / Title / Callout / Subhead) — это НЕ контракт; при расхождении выигрывает рампа отсюда.
 
 ## Layout
 
-**Spacing — контракт с usage** (не одно число): `xs` иконка↔текст · `sm` между близкими · `md` поля экрана / между элементами в блоке · `lg` padding карточки / между блоками · `xl` между секциями · `2xl` крупные разрывы. База 4px, всё кратно. Плотность **spacious** (Apple/Things).
+**Spacing — контракт с usage** (не одно число): `xs` иконка↔текст · `sm` между близкими (внутри группы) · `space-12` компактный тир (плотные пары, паддинг кнопки/чипа) · `md` паддинг карточек/строк + поля экрана · `space-20` hero/feature-паддинг · `lg` между секциями · `xl` между регионами · `2xl` крупные разрывы. Итоговая шкала: **4 / 8 / 12 / 16 / 20 / 24 / 32 / 48** (`space-12`/`space-20` добавлены enforcement-проходом 2026-06-26, см. [guidelines/spacing-rhythm.md](guidelines/spacing-rhythm.md)). База 4px, всё кратно. Плотность **spacious** (Apple/Things).
 
 **iOS-каркас:**
 - Боковые поля экрана = `screen-padding` 16px.
@@ -234,7 +240,7 @@ components:
 - Модальные потоки (scan→result→ask) — bottom-sheets и полноэкранные modal, не центр-модалки.
 - `tap-min` 44px на каждом интерактивном элементе.
 
-Примеры контракта: карточка result — `padding: lg`, `gap` между полями `md`; секции cockpit разделяются `xl`; онбординг-разрывы `2xl`.
+Примеры контракта: обычная карточка result — `padding: md` (16), hero/feature-карточка — `space-20`; `gap` между полями `sm`/`space-12`; секции cockpit разделяются `lg` (24, соотношение 1:3 к внутригрупповым 8); онбординг-разрывы `2xl`. Детальное применение — [guidelines/spacing-rhythm.md](guidelines/spacing-rhythm.md).
 
 ## Elevation & Depth
 
