@@ -40,6 +40,7 @@
 
 - [refero-scan.md](refero-scan.md) — screen-паттерны под наши экраны (Subo=прямой конкурент: 3-колоночная стат-полоса, icon-box строки, двухуровневые действия; Copilot=overview; Claude=Ask). Скрины в `refero/`.
 - [monospace-code-aesthetic.md](monospace-code-aesthetic.md) — есть ли код/ASCII-стилистика: на мобиле почти нет, на вебе 2 семейства (dark-terminal vs light-ledger). Вердикт: dark-terminal Decode не подходит (холодно для сегмента), но light monospace-ledger-акцент рифмуется с «Calculated, not AI» — кандидат на hi-fi. Веб-превью в `refero/styles/`.
+- [ascii-motifs.md](ascii-motifs.md) — **(2026-08-10)** прицельно по ASCII-мотивам в приложениях. Мотив расслаивается на 4 приёма; главная находка — **Co–Star** (настоящий ASCII на белом, Gen Z, тёплый тон) снимает возражение «холодно для сегмента». Плюс `+`-сетка Hyundai Card, dot-matrix табло raum., ASCII-прогресс alias, лог-processing Vibecode/Manus, чековая математика PocketCU/GoPay. Ограничение: ASCII — язык формы, а не способ вёрстки (VoiceOver + Dynamic Type). Скрины в `ascii-motifs/`.
 
 ## Как пополнять
 Mobbin MCP: `search_screens` / `search_flows` → `image_url` → `curl` в нужную папку. Именование: `mobbin-<app>-<screen>.webp`. Каждый скрин цитировать по его `mobbin_url`.
