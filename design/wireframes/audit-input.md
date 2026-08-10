@@ -9,7 +9,7 @@ Notes: `instances` = component instances; `frames` = plain (detached/inline) fra
 
 | Screen | size | instances | frames | overflowRight | overflowBelow | PNG |
 |---|---|---|---|---|---|---|
-| Cockpit | 402×874 | 11 | 35 | **pill +10px** | — | cockpit-wireframe.png |
+| Overview | 402×874 | 11 | 35 | **pill +10px** | — | overview-wireframe.png |
 | Decode-Result | 402×1070 | 11 | 31 | — | — | decode-result-wireframe.png |
 | Ask | 402×874 | 4 | 24 | — | — | ask.png |
 | Scan-Camera | 402×874 | 0 (bespoke) | 7 | — | — | scan-camera-wireframe.png |
@@ -28,7 +28,7 @@ Notes: `instances` = component instances; `frames` = plain (detached/inline) fra
 | Scan-Review | 402×874 | 3 | 19 | — | — | scan-review.png |
 | QA-Signpost | 402×874 | 9 | 15 | — | — | qa-signpost.png |
 | Trust-Repair | 402×874 | 5 | 12 | — | — | trust-repair.png |
-| Cockpit-Empty | 402×874 | 4 | 13 | — | — | cockpit-empty.png |
+| Overview-Empty | 402×874 | 4 | 13 | — | — | overview-empty.png |
 | Result-Error | 402×874 | 3 | 13 | — | — | result-error.png |
 | Error-Offline | 402×874 | 5 | 4 | — | — | error-offline.png |
 | Error-DecodeFailed | 402×874 | 5 | 4 | — | — | error-decode-failed.png |
@@ -42,7 +42,7 @@ Notes: `instances` = component instances; `frames` = plain (detached/inline) fra
 - Molecules(12): StatusBar, ScreenHeader, SectionHeader, HeadlineStat, KeyValueRow, NoteBlock, FeatureRow, ListRow, CommitmentRow, TrapCard, CreditFileBadge, SheetHeader
 - Organisms(3): TabBar, AlertCard, StateScaffold
 
-**Known build-order gap to verify:** KeyValueRow, NoteBlock, FeatureRow, HeadlineStat, Chip, Dots were added AFTER several screens were built, so those screens may use INLINE equivalents instead of the component. Suspected: Decode-Result (terms→KeyValueRow, £412→HeadlineStat, summary→NoteBlock), Cockpit (£214→HeadlineStat), Vault-Detail & Alert-Detail (kv→KeyValueRow, £→HeadlineStat), Paywall (feature list→FeatureRow, timeline→NoteBlock), Onboarding-1/2/3 (pager dots→Dots, trust rows→FeatureRow), Vault-List & Ask (chips→Chip).
+**Known build-order gap to verify:** KeyValueRow, NoteBlock, FeatureRow, HeadlineStat, Chip, Dots were added AFTER several screens were built, so those screens may use INLINE equivalents instead of the component. Suspected: Decode-Result (terms→KeyValueRow, £412→HeadlineStat, summary→NoteBlock), Overview (£214→HeadlineStat), Vault-Detail & Alert-Detail (kv→KeyValueRow, £→HeadlineStat), Paywall (feature list→FeatureRow, timeline→NoteBlock), Onboarding-1/2/3 (pager dots→Dots, trust rows→FeatureRow), Vault-List & Ask (chips→Chip).
 
 ## Reference docs (for content/consistency review)
 - /Users/elenauvarova/git projects/decode/docs/product/jtbd.md

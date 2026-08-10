@@ -50,7 +50,7 @@
 - **Динамика без live-region:** на iOS `accessibilityLiveRegion` НЕ работает (только Android). Использовать `AccessibilityInfo.announceForAccessibility` для стриминга aha-числа, смены этапов `StageProgress`, «Recalculated», «Saved · watching 2 dates»; `setAccessibilityFocus` на заголовок шторки; `accessibilityViewIsModal` + `onAccessibilityEscape` на модалках.
 - **Dynamic Type до AX5 — отдельный тест-сценарий.** Не отключать `allowFontScaling`; `maxFontSizeMultiplier` на заголовках/UI не ниже 1.2; flexbox без фиксированных высот. Хрупкие: `AhaNumber` (большое число × AX5), `CommitmentRow` (→ многострочность).
 - **Tap targets 44pt** (Apple строже WCAG-24px), `hitSlop` где визуально меньше. Reduce Motion (`isReduceMotionEnabled`) — гейт для scan-line, count-up aha-числа, переходов sheet.
-- **Тест обязателен на реальном iPhone** (VoiceOver не в симуляторе): VoiceOver-проход result/cockpit/scan/ask + AX5 + Reduce Motion + Smart Invert. Встроить в verification-флоу из screen-contracts.
+- **Тест обязателен на реальном iPhone** (VoiceOver не в симуляторе): VoiceOver-проход result/overview/scan/ask + AX5 + Reduce Motion + Smart Invert. Встроить в verification-флоу из screen-contracts.
 
 ### 2.3 Pricing / монетизация ([21](21-pricing-monetization.md))
 

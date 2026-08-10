@@ -12,7 +12,7 @@ const H = {
   closeBtn: (to) => `<button class="nav-btn" data-nav="${to}" data-testid="nav-close" style="font-size:22px">✕</button>`,
   tabbar: (active) => `<nav class="tabbar" data-testid="tabbar">
     ${['home:Home:⌂', 'scan:Scan:＋', 'vault:Vault:▤'].map((t) => { const [id, lbl, g] = t.split(':');
-      const to = id === 'home' ? 'cockpit' : id === 'scan' ? 'scan-capture' : 'vault-list';
+      const to = id === 'home' ? 'overview' : id === 'scan' ? 'scan-capture' : 'vault-list';
       return `<button class="tab ${id === 'scan' ? 'scan' : ''} ${active === id ? 'active' : ''}" data-nav="${to}" data-testid="tab-${id}"><span class="glyph">${g}</span>${lbl}</button>`; }).join('')}
   </nav>`,
   group: (rows) => `<div class="list-group">${rows.join('')}</div>`,
@@ -34,7 +34,7 @@ const H = {
 };
 
 // ---------- shared state defaults ----------
-const DEFAULT_STATE = { consent: false, cockpitRange: 1, isPro: false };
+const DEFAULT_STATE = { consent: false, overviewRange: 1, isPro: false };
 const RANGES = [['Due 7d', '£86'], ['30 days', '£214'], ['60 days', '£402']];
 
 // ---------- state-scaffold (error/empty) ----------
@@ -107,7 +107,7 @@ const SCREENS = {
         H.row({ icon: '✉', title: 'Forward an email', sub: 'decode-me@inbox.decode.app', chevron: true, nav: 'scan-capture' }),
       ])}
     </div>
-    <div class="action-bar" style="border:none">${H.btn({ label: 'Skip for now', kind: 'plain', nav: 'cockpit-empty' })}</div></div>` },
+    <div class="action-bar" style="border:none">${H.btn({ label: 'Skip for now', kind: 'plain', nav: 'overview-empty' })}</div></div>` },
 
   'onboarding-4': { title: 'Onboarding · Sign in', group: 'Onboarding', html: () => `<div class="screen grouped">${H.status()}
     <div class="large-title">Save your Vault</div>
@@ -120,30 +120,30 @@ const SCREENS = {
       ])}
     </div>
     <div class="action-bar" style="flex-direction:column;border:none">
-      ${H.btn({ label: 'Sign in with Apple', kind: 'apple', nav: 'cockpit-empty', testid: 'apple-signin' })}
-      ${H.btn({ label: 'Continue with email', kind: 'gray', nav: 'cockpit-empty' })}
-      ${H.btn({ label: 'Skip — keep on this device', kind: 'plain', nav: 'cockpit-empty' })}
+      ${H.btn({ label: 'Sign in with Apple', kind: 'apple', nav: 'overview-empty', testid: 'apple-signin' })}
+      ${H.btn({ label: 'Continue with email', kind: 'gray', nav: 'overview-empty' })}
+      ${H.btn({ label: 'Skip — keep on this device', kind: 'plain', nav: 'overview-empty' })}
     </div></div>` },
 
-  // ===== cockpit (large title + bell→Radar entry + interactive segmented range) =====
-  'cockpit': { title: 'Cockpit (Home)', group: 'Core',
-    html: (ctx) => { const r = ctx.state.cockpitRange;
+  // ===== overview (large title + bell→Radar entry + interactive segmented range) =====
+  'overview': { title: 'Overview (Home)', group: 'Core',
+    html: (ctx) => { const r = ctx.state.overviewRange;
       return `<div class="screen grouped">${H.status()}
       <div class="large-title"><div class="lt-row"><span>Commitments</span>
         <span style="display:flex;gap:8px">
-          <button class="icon-btn" data-nav="alerts" data-testid="cockpit-bell">🔔<span class="badge">2</span></button>
-          <button class="icon-btn" data-nav="settings" data-testid="cockpit-settings">⚙</button></span></div></div>
+          <button class="icon-btn" data-nav="alerts" data-testid="overview-bell">🔔<span class="badge">2</span></button>
+          <button class="icon-btn" data-nav="settings" data-testid="overview-settings">⚙</button></span></div></div>
       <div class="screen-scroll">
         <div class="card outline" style="margin:0 16px 14px">
           <div class="footnote">Committed · ${RANGES[r][0]}</div>
-          <div style="font-size:40px;font-weight:800;letter-spacing:.5px" id="cockpit-total">${RANGES[r][1]}</div>
-          <div class="segmented" style="margin-top:12px" data-testid="cockpit-range">
+          <div style="font-size:40px;font-weight:800;letter-spacing:.5px" id="overview-total">${RANGES[r][1]}</div>
+          <div class="segmented" style="margin-top:12px" data-testid="overview-range">
             ${RANGES.map((x, i) => `<button class="seg ${i === r ? 'active' : ''}" data-action="range-${i}" data-testid="range-${i}">${x[0]}<span class="seg-val">${x[1]}</span></button>`).join('')}
           </div>
         </div>
         <div class="list-group" style="margin-bottom:14px"><div class="list-row tappable" data-nav="alerts"><span class="lr-icon sev-high glyph-badge"></span><div class="lr-main"><div class="lr-title">3 traps cost you £180/yr</div><div class="lr-sub">Tap to see what to do →</div></div><span class="lr-chevron">›</span></div></div>
         <div class="section-header">⚠ Needs attention</div>
-        ${H.group([H.row({ icon: 'K', title: 'Klarna · 3 plans', sub: '£294 due this week · overlap', value: '£294', chevron: true, nav: 'vault-detail', testid: 'cockpit-commitment' })])}
+        ${H.group([H.row({ icon: 'K', title: 'Klarna · 3 plans', sub: '£294 due this week · overlap', value: '£294', chevron: true, nav: 'vault-detail', testid: 'overview-commitment' })])}
         <div class="section-header">Renewing soon</div>
         ${H.group([H.row({ icon: 'B', title: 'Boiler cover', sub: 'Renews in 14 days · 24 Jun', value: '£312', chevron: true, nav: 'alert-detail' })])}
         <div class="section-header">Active</div>
@@ -153,11 +153,11 @@ const SCREENS = {
       ${H.tabbar('home')}</div>`; },
     mount: (root, ctx) => {
       root.querySelectorAll('[data-action^="range-"]').forEach((el) => el.addEventListener('click', () => {
-        ctx.state.cockpitRange = +el.dataset.action.split('-')[1]; ctx.rerender();
+        ctx.state.overviewRange = +el.dataset.action.split('-')[1]; ctx.rerender();
       }));
     } },
 
-  'cockpit-empty': { title: 'Cockpit · Empty', group: 'Core', html: () => `<div class="screen grouped">${H.status()}
+  'overview-empty': { title: 'Overview · Empty', group: 'Core', html: () => `<div class="screen grouped">${H.status()}
     <div class="large-title"><div class="lt-row"><span>Commitments</span><button class="icon-btn" data-nav="settings">⚙</button></div></div>
     <div class="screen-scroll" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:14px">
       <div style="width:96px;height:96px;border-radius:24px;background:var(--fill-2)"></div>
@@ -177,7 +177,7 @@ const SCREENS = {
         H.row({ icon: '🖼', title: 'Choose from library', sub: 'Screenshots & saved PDFs', chevron: true, nav: 'scan-review' }),
         H.row({ icon: '✉', title: 'Forward an email', sub: 'decode-me@inbox.decode.app', chevron: true, nav: 'scan-review' }),
       ])}
-      <div style="padding:16px">${H.btn({ label: 'Cancel', kind: 'gray', nav: 'cockpit' })}</div>
+      <div style="padding:16px">${H.btn({ label: 'Cancel', kind: 'gray', nav: 'overview' })}</div>
     </div></div></div>` },
 
   'scan-camera': { title: 'Scan · Camera', group: 'Scan', html: () => `<div class="screen" style="background:#111;color:#fff">${H.status()}
@@ -215,7 +215,7 @@ const SCREENS = {
 
   // ===== decode-result (HIG nav with Done · 3-language provenance + legend · severity glyphs · efficacy) =====
   'decode-result': { title: 'Decode result', group: 'Core', html: () => `<div class="screen">${H.status()}
-    ${H.nav({ title: 'Klarna offer', left: H.doneBtn('cockpit', 'Done'), right: `<button class="nav-btn" data-nav="trust-repair" data-testid="flag-number">⚑</button>` })}
+    ${H.nav({ title: 'Klarna offer', left: H.doneBtn('overview', 'Done'), right: `<button class="nav-btn" data-nav="trust-repair" data-testid="flag-number">⚑</button>` })}
     <div class="screen-scroll pad-h" style="padding-top:4px">
       <div class="footnote">TRUE COST &nbsp; ${H.prov('calc')}</div>
       <div style="font-size:44px;font-weight:800;letter-spacing:.5px">£412</div>
@@ -248,7 +248,7 @@ const SCREENS = {
         <div class="footnote" style="color:var(--label)">A credit agreement for £348 over 6 payments of £58. Pay on time and it costs nothing extra. Miss one and you face a £5 fee and it may show on your credit file.</div></div>
       <div class="footnote" style="margin:12px 0 16px">Decode explains your documents — it doesn't give financial advice. Free help: MoneyHelper · StepChange.</div>
     </div>
-    <div class="action-bar">${H.btn({ label: 'Ask', kind: 'gray', nav: 'ask', testid: 'result-ask' })}${H.btn({ label: 'Save & watch', nav: 'cockpit', testid: 'result-save' })}</div></div>` },
+    <div class="action-bar">${H.btn({ label: 'Ask', kind: 'gray', nav: 'ask', testid: 'result-ask' })}${H.btn({ label: 'Save & watch', nav: 'overview', testid: 'result-save' })}</div></div>` },
 
   // ===== ask (typing indicator + citations + distress signpost) =====
   'ask': { title: 'Ask', group: 'Core',
@@ -290,9 +290,9 @@ const SCREENS = {
     </div>
     <div class="action-bar" style="flex-direction:column">${H.btn({ label: 'Re-check with my correction', nav: 'decode-result' })}${H.btn({ label: 'Actually, it was right', kind: 'plain', nav: 'decode-result' })}</div></div>` },
 
-  // ===== watch / radar (entry from cockpit bell + free/Pro gate) =====
+  // ===== watch / radar (entry from overview bell + free/Pro gate) =====
   'alerts': { title: 'Renewal Radar', group: 'Watch', html: (ctx) => `<div class="screen grouped">${H.status()}
-    ${H.nav({ title: 'Renewal Radar', left: H.backBtn('cockpit') })}
+    ${H.nav({ title: 'Renewal Radar', left: H.backBtn('overview') })}
     <div class="screen-scroll">
       <div class="section-header">Coming up · next 14 days</div>
       ${H.group([
@@ -317,7 +317,7 @@ const SCREENS = {
       ])}</div>
       <div class="card" style="margin-top:14px;background:var(--fill);display:flex;gap:10px"><span class="glyph-badge sev-high"></span><div class="footnote">This lands the same week as Clearpay (£62) and PayPal (£40) — £396 leaving by 28 Jun.</div></div>
     </div>
-    <div class="action-bar" style="flex-direction:column">${H.btn({ label: 'Move money / open Klarna', nav: 'cockpit' })}${H.btn({ label: 'Snooze 3 days', kind: 'plain', nav: 'alerts' })}</div></div>` },
+    <div class="action-bar" style="flex-direction:column">${H.btn({ label: 'Move money / open Klarna', nav: 'overview' })}${H.btn({ label: 'Snooze 3 days', kind: 'plain', nav: 'alerts' })}</div></div>` },
 
   // ===== vault =====
   'vault-list': { title: 'Vault · List', group: 'Vault', html: () => `<div class="screen grouped">${H.status()}
@@ -345,7 +345,7 @@ const SCREENS = {
 
   // ===== settings =====
   'settings': { title: 'Settings', group: 'System', html: () => `<div class="screen grouped">${H.status()}
-    ${H.nav({ title: 'Settings', left: H.backBtn('cockpit') })}
+    ${H.nav({ title: 'Settings', left: H.backBtn('overview') })}
     <div class="screen-scroll">
       <div class="section-header">Subscription</div>
       ${H.group([H.row({ title: 'Manage subscription', sub: 'Free · 3 of 5 decodes used', chevron: true, nav: 'paywall', testid: 'settings-sub' }), H.row({ title: 'Account', sub: 'eluvrv@gmail.com', chevron: true, nav: 'account' })])}
@@ -361,7 +361,7 @@ const SCREENS = {
 
   // ===== paywall =====
   'paywall': { title: 'Paywall · Decode Pro', group: 'System', html: () => `<div class="screen grouped">${H.status()}
-    ${H.nav({ title: 'Decode Pro', left: H.closeBtn('cockpit') })}
+    ${H.nav({ title: 'Decode Pro', left: H.closeBtn('overview') })}
     <div class="screen-scroll pad-h" style="padding-top:4px">
       <div class="title1" style="padding:0">Keep decoding without limits</div>
       <div class="footnote">You've used 5 of 5 free decodes this month.</div>
@@ -375,12 +375,12 @@ const SCREENS = {
         H.row({ title: 'Monthly', sub: 'Billed monthly', value: '£4.99' }),
       ])}</div>
     </div>
-    <div class="action-bar" style="flex-direction:column">${H.btn({ label: 'Start 7-day free trial', nav: 'cockpit', testid: 'paywall-cta' })}<div class="footnote center" style="padding:4px 8px 0">Then £41.99/year. Cancel anytime. Billed by Apple.</div></div></div>` },
+    <div class="action-bar" style="flex-direction:column">${H.btn({ label: 'Start 7-day free trial', nav: 'overview', testid: 'paywall-cta' })}<div class="footnote center" style="padding:4px 8px 0">Then £41.99/year. Cancel anytime. Billed by Apple.</div></div></div>` },
 
   // ===== error / empty states =====
-  'error-offline': { title: 'Error · Offline', group: 'States', html: stateScaffold({ glyph: '⚠', navTitle: 'Connection', title: "You're offline", body: 'Decode needs a connection to read new documents. Your saved Vault still works offline.', primary: { label: 'Try again', to: 'cockpit' }, secondary: { label: 'Open Vault', to: 'vault-list' } }) },
-  'error-decode-failed': { title: 'Error · Decode failed', group: 'States', html: stateScaffold({ glyph: '⚠', navTitle: 'Decoding', title: "That didn't work — and it's on us", body: "We couldn't finish reading this. You haven't used a decode. Try again, or send it over.", primary: { label: 'Try again', to: 'scan-processing' }, secondary: { label: 'Send to support', to: 'cockpit' } }) },
-  'error-limit-reached': { title: 'Error · Free limit', group: 'States', html: stateScaffold({ glyph: '✦', navTitle: 'Free limit', title: "You've used your 5 free decodes", body: 'They reset on 1 Jul. Unlock unlimited scanning, the full Vault and Renewal Radar with Pro.', primary: { label: 'See Pro', to: 'paywall' }, secondary: { label: 'Maybe next month', to: 'cockpit' } }) },
+  'error-offline': { title: 'Error · Offline', group: 'States', html: stateScaffold({ glyph: '⚠', navTitle: 'Connection', title: "You're offline", body: 'Decode needs a connection to read new documents. Your saved Vault still works offline.', primary: { label: 'Try again', to: 'overview' }, secondary: { label: 'Open Vault', to: 'vault-list' } }) },
+  'error-decode-failed': { title: 'Error · Decode failed', group: 'States', html: stateScaffold({ glyph: '⚠', navTitle: 'Decoding', title: "That didn't work — and it's on us", body: "We couldn't finish reading this. You haven't used a decode. Try again, or send it over.", primary: { label: 'Try again', to: 'scan-processing' }, secondary: { label: 'Send to support', to: 'overview' } }) },
+  'error-limit-reached': { title: 'Error · Free limit', group: 'States', html: stateScaffold({ glyph: '✦', navTitle: 'Free limit', title: "You've used your 5 free decodes", body: 'They reset on 1 Jul. Unlock unlimited scanning, the full Vault and Renewal Radar with Pro.', primary: { label: 'See Pro', to: 'paywall' }, secondary: { label: 'Maybe next month', to: 'overview' } }) },
   'error-camera-denied': { title: 'Error · Camera off', group: 'States', html: stateScaffold({ glyph: '📷', navTitle: 'Camera', title: 'Camera access is off', body: "Decode needs the camera to scan. Turn it on in Settings — we only use it while you scan.", primary: { label: 'Open Settings', to: 'settings' }, secondary: { label: 'Choose from library', to: 'scan-review' } }) },
   'empty-no-results': { title: 'Empty · No results', group: 'States', html: stateScaffold({ glyph: '🔍', navTitle: 'Vault', title: 'No documents match', body: 'Nothing in your Vault matches that search. Try a different word, or scan something new.', primary: { label: 'Clear search', to: 'vault-list' } }) },
   'error-purchase-failed': { title: 'Error · Purchase failed', group: 'States', html: stateScaffold({ glyph: '⚠', navTitle: 'Decode Pro', title: "Payment didn't go through", body: "Apple couldn't complete the purchase and you haven't been charged. Try again or change method.", primary: { label: 'Try again', to: 'paywall' }, secondary: { label: 'Not now', to: 'settings' } }) },
@@ -391,7 +391,7 @@ const SCREENS = {
     const btnStates = (kind) => `<div class="sg-row">
       ${b('btn-' + kind, 'Default')}${b('btn-' + kind + ' is-pressed', 'Pressed')}${b('btn-' + kind, 'Disabled', 'aria-disabled="true"')}${b('btn-' + kind + ' is-loading', 'Loading')}</div>`;
     return `<div class="screen grouped">${H.status()}
-      ${H.nav({ title: 'Design system', left: H.backBtn('cockpit') })}
+      ${H.nav({ title: 'Design system', left: H.backBtn('overview') })}
       <div class="screen-scroll">
         <div class="sg-section">Type scale</div>
         <div style="padding:2px 16px 8px"><div class="title1">Large title</div><div class="title2">Title 2</div><div class="headline">Headline</div><div>Body 17</div><div class="footnote">Footnote 13</div></div>
@@ -445,9 +445,9 @@ const SCREENS = {
 
   // ===== App Store P0 + insurance (parity with Figma) =====
   'perm-camera': { title: 'Permission · Camera', group: 'App Store', html: stateScaffold({ glyph: '📷', navTitle: 'Camera', title: 'Scan with the camera', body: 'Decode needs the camera to read your documents. We only use it while you scan — and delete the photo afterwards.', primary: { label: 'Allow camera', to: 'scan-camera' }, secondary: { label: 'Choose from library', to: 'scan-review' } }) },
-  'perm-notifications': { title: 'Permission · Notifications', group: 'App Store', html: stateScaffold({ glyph: '🔔', navTitle: 'Notifications', title: 'Never miss a payment', body: 'Renewal Radar reminds you before each due date. Reminders stay on your phone — no account needed.', primary: { label: 'Allow notifications', to: 'cockpit' }, secondary: { label: 'Maybe later', to: 'cockpit' } }) },
-  'perm-faceid': { title: 'Permission · Face ID', group: 'App Store', html: stateScaffold({ glyph: '🔒', navTitle: 'Face ID', title: 'Lock your Vault with Face ID', body: 'Your documents are private. Face ID makes sure only you can open the Vault.', primary: { label: 'Use Face ID', to: 'cockpit' }, secondary: { label: 'Use a passcode', to: 'cockpit' } }) },
-  'delete-account': { title: 'Delete account', group: 'App Store', html: stateScaffold({ glyph: '⚠', navTitle: 'Delete account', title: 'Delete everything?', body: "This permanently removes your Vault, every decoded document and your account. This can't be undone.", primary: { label: 'Delete everything', to: 'cockpit-empty' }, secondary: { label: 'Cancel', to: 'account' } }) },
+  'perm-notifications': { title: 'Permission · Notifications', group: 'App Store', html: stateScaffold({ glyph: '🔔', navTitle: 'Notifications', title: 'Never miss a payment', body: 'Renewal Radar reminds you before each due date. Reminders stay on your phone — no account needed.', primary: { label: 'Allow notifications', to: 'overview' }, secondary: { label: 'Maybe later', to: 'overview' } }) },
+  'perm-faceid': { title: 'Permission · Face ID', group: 'App Store', html: stateScaffold({ glyph: '🔒', navTitle: 'Face ID', title: 'Lock your Vault with Face ID', body: 'Your documents are private. Face ID makes sure only you can open the Vault.', primary: { label: 'Use Face ID', to: 'overview' }, secondary: { label: 'Use a passcode', to: 'overview' } }) },
+  'delete-account': { title: 'Delete account', group: 'App Store', html: stateScaffold({ glyph: '⚠', navTitle: 'Delete account', title: 'Delete everything?', body: "This permanently removes your Vault, every decoded document and your account. This can't be undone.", primary: { label: 'Delete everything', to: 'overview-empty' }, secondary: { label: 'Cancel', to: 'account' } }) },
 
   'account': { title: 'Account', group: 'App Store', html: () => `<div class="screen grouped">${H.status()}
     ${H.nav({ title: 'Account', left: H.backBtn('settings', 'Settings') })}
@@ -493,7 +493,7 @@ const SCREENS = {
     </div></div>` },
 
   'decode-result-insurance': { title: 'Decode · Insurance', group: 'Core', html: () => `<div class="screen">${H.status()}
-    ${H.nav({ title: 'Boiler cover renewal', left: H.doneBtn('cockpit', 'Done') })}
+    ${H.nav({ title: 'Boiler cover renewal', left: H.doneBtn('overview', 'Done') })}
     <div class="screen-scroll pad-h" style="padding-top:4px">
       <div class="footnote">THIS YEAR · RENEWS 24 JUN &nbsp; ${H.prov('calc')}</div>
       <div style="font-size:44px;font-weight:800">£312</div>
@@ -512,20 +512,20 @@ const SCREENS = {
       ])}
       <div class="footnote" style="margin:12px 0 16px">Decode explains your documents — it doesn't give advice. Free help: MoneyHelper · Citizens Advice.</div>
     </div>
-    <div class="action-bar">${H.btn({ label: 'Ask', kind: 'gray', nav: 'ask' })}${H.btn({ label: 'Save & watch', nav: 'cockpit' })}</div></div>` },
+    <div class="action-bar">${H.btn({ label: 'Ask', kind: 'gray', nav: 'ask' })}${H.btn({ label: 'Save & watch', nav: 'overview' })}</div></div>` },
 };
 
 const FLOWS = {
-  'first-decode': { name: 'First decode (J1)', sub: 'Onboarding → scan → result', steps: ['onboarding-1', 'onboarding-2', 'onboarding-3', 'scan-capture', 'perm-camera', 'scan-camera', 'scan-review', 'scan-processing', 'decode-result', 'cockpit'] },
+  'first-decode': { name: 'First decode (J1)', sub: 'Onboarding → scan → result', steps: ['onboarding-1', 'onboarding-2', 'onboarding-3', 'scan-capture', 'perm-camera', 'scan-camera', 'scan-review', 'scan-processing', 'decode-result', 'overview'] },
   'ask': { name: 'Ask (J4)', sub: 'Result → ask → signpost', steps: ['decode-result', 'ask', 'qa-signpost'] },
-  'insurance': { name: 'Insurance renewal (doc #2)', sub: 'Scan → insurance decode', steps: ['scan-capture', 'scan-processing', 'decode-result-insurance', 'cockpit'] },
+  'insurance': { name: 'Insurance renewal (doc #2)', sub: 'Scan → insurance decode', steps: ['scan-capture', 'scan-processing', 'decode-result-insurance', 'overview'] },
   'permissions': { name: 'Permissions', sub: 'Camera · notifications · Face ID', steps: ['perm-camera', 'perm-notifications', 'perm-faceid'] },
   'account-legal': { name: 'Account & legal (App Store)', sub: 'Settings → account/privacy/legal', steps: ['settings', 'account', 'delete-account', 'consent-center', 'privacy-policy', 'legal-disclaimer'] },
-  'watch': { name: 'Watch / Radar (J3)', sub: 'Cockpit → bell → alert', steps: ['cockpit', 'alerts', 'alert-detail'] },
-  'vault': { name: 'Vault (J6)', sub: 'Cockpit → vault → detail', steps: ['cockpit', 'vault-list', 'vault-detail'] },
-  'monetize': { name: 'Monetize', sub: 'Limit → paywall', steps: ['error-limit-reached', 'paywall', 'cockpit'] },
+  'watch': { name: 'Watch / Radar (J3)', sub: 'Overview → bell → alert', steps: ['overview', 'alerts', 'alert-detail'] },
+  'vault': { name: 'Vault (J6)', sub: 'Overview → vault → detail', steps: ['overview', 'vault-list', 'vault-detail'] },
+  'monetize': { name: 'Monetize', sub: 'Limit → paywall', steps: ['error-limit-reached', 'paywall', 'overview'] },
   'trust': { name: 'Trust repair', sub: 'Result → flag → re-check', steps: ['decode-result', 'trust-repair', 'decode-result'] },
-  'onboarding': { name: 'Onboarding', sub: 'Welcome → consent → sample', steps: ['onboarding-1', 'onboarding-2', 'onboarding-3', 'onboarding-4', 'cockpit-empty'] },
+  'onboarding': { name: 'Onboarding', sub: 'Welcome → consent → sample', steps: ['onboarding-1', 'onboarding-2', 'onboarding-3', 'onboarding-4', 'overview-empty'] },
   'errors': { name: 'Error & empty states', sub: 'All 6 states', steps: ['error-offline', 'error-decode-failed', 'error-limit-reached', 'error-camera-denied', 'empty-no-results', 'error-purchase-failed'] },
 };
 

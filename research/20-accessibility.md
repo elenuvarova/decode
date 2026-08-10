@@ -1,6 +1,6 @@
 # 20 — Accessibility (WCAG 2.2 AA + Apple) под экраны Decode
 
-> Трек: a11y под конкретные экраны Decode (decode-result, cockpit, scan, ask).
+> Трек: a11y под конкретные экраны Decode (decode-result, overview, scan, ask).
 > Цель — не абстрактный чек-лист, а правила для НАШИХ компонентов: `AhaNumber`,
 > `CreditFileBadge`, `TrapCard`, `ConfidenceTag`, `CalculatedBadge`, `StageProgress`,
 > `CitationChip`, `CommitmentRow`. Стек: Expo / React Native, iPhone, последняя iOS,
@@ -62,7 +62,7 @@
 5. **`CalculatedBadge`** «Calculated, not AI» — текст ≥ 4.5:1 (этот бейдж снижает риск F3 «ошибка в числах = снос», его обязаны читать).
 6. **`StageProgress`** (SC-4) — текст этапов ≥ 4.5:1; индикаторы done/active/pending различимы по контрасту ≥ 3:1 И не только цветом (см. §4).
 7. **`CitationChip`** «p.2 §4» — текст ≥ 4.5:1; бордер чипа ≥ 3:1.
-8. **`CommitmentRow`** (cockpit) — относительная дата «Due in 4 days», £-сумма (tabular-nums), `TrapBadge` ⚠ — все ≥ 4.5:1 для текста.
+8. **`CommitmentRow`** (overview) — относительная дата «Due in 4 days», £-сумма (tabular-nums), `TrapBadge` ⚠ — все ≥ 4.5:1 для текста.
 9. **Disclaimer/signpost** в футере result и `SignpostCard` (Ask) — это юридически значимый текст (FCA-граница), он НЕ должен быть «серым мелким» ниже контраста. Держать ≥ 4.5:1 несмотря на то, что визуально это «вторичный» текст.
 
 ### 2.3 Как НЕ потерять доступность при переходе grayscale → цвет
@@ -117,7 +117,7 @@ VoiceOver читает в порядке дерева элементов; пор
 - **`CalculatedBadge`** — `accessibilityLabel="Calculated, not AI."` рядом с числом, в той же группе, чтобы юзер слышал происхождение числа сразу (анти-F3).
 - **`CitationChip`** «p.2 §4» — `accessibilityLabel="Source: page 2, section 4."` + `accessibilityRole="button"` + hint «Double tap to see this in the document.» (НЕ читать «p точка 2 §» — расшифровать сокращения в label).
 - **`StageProgress`** (SC-4) — каждый этап как `accessibilityRole="text"` со state busy/done; при смене этапа — `announceForAccessibility("Calculating true cost")`, иначе VoiceOver-юзер не узнает, что процесс идёт (RN не объявляет смену состояния сам, [RN screen reader support](https://oneuptime.com/blog/post/2026-01-15-react-native-screen-reader-support/view)).
-- **`CommitmentRow`** (cockpit) — группа, один label: `"Klarna. Due in 4 days, 28 November. 42 pounds. 1 trap flagged."` Не свайпать по иконке/имени/дате/сумме отдельно ([grouping financial cards](https://thoughtbot.com/blog/grouping-elements-for-better-accessibility-on-ios)).
+- **`CommitmentRow`** (overview) — группа, один label: `"Klarna. Due in 4 days, 28 November. 42 pounds. 1 trap flagged."` Не свайпать по иконке/имени/дате/сумме отдельно ([grouping financial cards](https://thoughtbot.com/blog/grouping-elements-for-better-accessibility-on-ios)).
 - **`SignpostCard`** (QA-sign, debt-distress) — спокойный тон в т.ч. в озвучке: `accessibilityLabel="If you're worried about debt, free, confidential help is available."` кнопки StepChange/MoneyHelper — `accessibilityRole="link"`, hint «Opens StepChange in your browser.»
 
 ### 3.3 Роли и трейты (RN → iOS VoiceOver)
@@ -156,7 +156,7 @@ VoiceOver читает в порядке дерева элементов; пор
 
 ### 4.2 Почему для Decode это не «галочка комплаенса», а ядро продукта
 
-Весь продукт построен на статусах (severity traps, confidence, credit-file YES/NO, cockpit-секции needs_attention/renewing). Если статус читается только цветом — половина наших ключевых сигналов невидима части аудитории И невидима VoiceOver. У нас уже заложено правильно ([design-system.md] §wireframe: «различимость статусов через иконку/вес/заливку, НЕ цвет»; [decode-result.md]: «severity передаётся порядком/иконкой/весом, НЕ кроваво-красной типографикой»). Задача — НЕ растерять это при покраске.
+Весь продукт построен на статусах (severity traps, confidence, credit-file YES/NO, overview-секции needs_attention/renewing). Если статус читается только цветом — половина наших ключевых сигналов невидима части аудитории И невидима VoiceOver. У нас уже заложено правильно ([design-system.md] §wireframe: «различимость статусов через иконку/вес/заливку, НЕ цвет»; [decode-result.md]: «severity передаётся порядком/иконкой/весом, НЕ кроваво-красной типографикой»). Задача — НЕ растерять это при покраске.
 
 ### 4.3 Правила по компонентам (двойное/тройное кодирование)
 
@@ -171,7 +171,7 @@ VoiceOver читает в порядке дерева элементов; пор
 | **CreditFile YES** | акцент | **слово YES** крупно + иконка |
 | **CreditFile NO** | нейтральный | **слово NO** крупно + иконка |
 | **CreditFile only-if-collections** | warning | полный текст, не цвет |
-| **Cockpit ⚠ Needs attention** | акцент | иконка ⚠ + заголовок секции + позиция вверху |
+| **Overview ⚠ Needs attention** | акцент | иконка ⚠ + заголовок секции + позиция вверху |
 | **StageProgress done/active/pending** | разные | разные иконки/формы (✓ / спиннер / пусто), не только цвет |
 
 Ключевое: **severity-слово ВСЕГДА в тексте/label**, не выводится «из красноты». Это одновременно: 1.4.1-комплаенс, VoiceOver-дружелюбность (§3.2), и совпадает с FCA-требованием спокойного тона (severity передаётся фактом, не «кровью»).
@@ -197,7 +197,7 @@ VoiceOver читает в порядке дерева элементов; пор
 - **`AhaNumber`** (display) — самый большой риск переполнения. Разрешить умеренный скейл, но число «£1,234,567.89» при AX5 не должно вытолкнуть «£64 more» за экран. Решение: aha-блок вертикальный (число над подписью), wrap, без фиксированной высоты. Прогон edge-case: большое число × AX5 (наш edge-list уже требует «Dynamic Type XL → aha-число масштабируется, не наезжает», [decode-result.md]).
 - **`CreditFileBadge`** — слово YES/NO + named CRA при XL: бейдж растёт по высоте, не обрезает текст; «Reported to Experian» переносится.
 - **`TrapCard`** — severity-слово + факт + £ при XL: карточка растёт, кнопка `[Why this matters]` не выезжает.
-- **`CommitmentRow`** (cockpit) — самая хрупкая строка: иконка · name · «Due in 4 days · 28 Nov» · £ · ⚠. При XL она ДОЛЖНА переходить в многострочную/вертикальную раскладку, а не сжимать £ в нечитаемое. TabBar при XL не наезжает на контент.
+- **`CommitmentRow`** (overview) — самая хрупкая строка: иконка · name · «Due in 4 days · 28 Nov» · £ · ⚠. При XL она ДОЛЖНА переходить в многострочную/вертикальную раскладку, а не сжимать £ в нечитаемое. TabBar при XL не наезжает на контент.
 - **`StageProgress`, `CitationChip`, `ConfidenceTag`** — короткий текст, но при XL чипы wrap-ом, не уезжают за край.
 - **Body минимум 17px-эквивалент** (iOS-норма, уже в [design-system.md] §типографика); размеры в rem/scaled units, tabular-nums для всех сумм.
 - **Тест:** прогнать каждый ключевой экран на крупнейшем AX-размере на устройстве, не только в дефолте. Включить в Playwright/визуальный прогон как отдельный «extreme content» сценарий.
@@ -208,7 +208,7 @@ VoiceOver читает в порядке дерева элементов; пор
 - WCAG 2.2 **2.5.8 Target Size (Minimum), AA: 24×24 CSS px**; исключения — инлайновые ссылки, достаточный отступ (24px свободного пространства вокруг засчитывается), эквивалентная альтернатива ([W3C 2.5.8 / TestParty](https://testparty.ai/blog/wcag-22-new-success-criteria), [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/)).
 - **Apple HIG: минимум 44×44 pt** — это наша рабочая планка (строже WCAG), исследования: меньшие цели → ≥25% ошибок тапа, особенно при моторных нарушениях ([Apple HIG](https://developer.apple.com/design/human-interface-guidelines/accessibility), [LogRocket — touch target sizes](https://blog.logrocket.com/ux-design/all-accessible-touch-target-sizes/)). У нас уже в screen-contracts: «tap-targets ≥ 44×44».
 - **RN:** где визуально меньше 44 — использовать `hitSlop` для расширения зоны без изменения layout (но предпочтительно реальный padding — предсказуемее по плотностям) ([RN issue 32089 / Medium a11y strategies](https://medium.com/@mayurkadampro/make-your-app-inclusive-accessibility-strategies-that-every-react-native-developer-should-know-aaab1fad4228)).
-- **Decode-риски:** `CitationChip` «p.2 §4» (мелкий, но тапается → highlight); `ConfidenceTag` «Check this»; `thumbs up/down` и `[Wrong?]`; collapse-стрелка «6 terms look standard ⌃»; bell/gear в шапке cockpit; `RadarToggle`. Каждый — ≥44pt или hitSlop до 44. `ShutterButton` уже заложен ≥64pt ([scan.md]) — хорошо.
+- **Decode-риски:** `CitationChip` «p.2 §4» (мелкий, но тапается → highlight); `ConfidenceTag` «Check this»; `thumbs up/down` и `[Wrong?]`; collapse-стрелка «6 terms look standard ⌃»; bell/gear в шапке overview; `RadarToggle`. Каждый — ≥44pt или hitSlop до 44. `ShutterButton` уже заложен ≥64pt ([scan.md]) — хорошо.
 
 **Focus order:**
 - Порядок фокуса = логический порядок (§3.1). На модалках (Ask sheet, SV sheet, RS-c) — `accessibilityViewIsModal={true}` (iOS), чтобы VoiceOver не уходил на элементы под шторкой ([RN docs](https://reactnative.dev/docs/accessibility)).
@@ -290,7 +290,7 @@ VoiceOver читает в порядке дерева элементов; пор
 ## 8. Процесс и тестирование
 
 - **Контраст — на уровне токенов, не компонентов.** Валидные foreground/background-пары задокументированы, прогоняются чекером при каждой смене палитры; в DESIGN.md уже есть пункт «Контраст ключевых пар ≥ 4.5:1» — расширить до полной матрицы пар × (light/dark). Инструменты: [accessibility.build](https://accessibility.build/tools/contrast-checker), [colorcontrast.app](https://colorcontrast.app/), [InclusiveColors](https://www.inclusivecolors.com/).
-- **«Если a11y не тестировали — её нет.»** Метки/props могут выглядеть идеально, но пока не включил VoiceOver — не знаешь ([RN guide](https://reactnativerelay.com/article/react-native-accessibility-guide-building-inclusive-apps-expo)). Обязательный ручной прогон на iPhone: VoiceOver-проход по result/cockpit/scan/ask + Dynamic Type на крупнейшем AX + Reduce Motion ON + Smart Invert.
+- **«Если a11y не тестировали — её нет.»** Метки/props могут выглядеть идеально, но пока не включил VoiceOver — не знаешь ([RN guide](https://reactnativerelay.com/article/react-native-accessibility-guide-building-inclusive-apps-expo)). Обязательный ручной прогон на iPhone: VoiceOver-проход по result/overview/scan/ask + Dynamic Type на крупнейшем AX + Reduce Motion ON + Smart Invert.
 - **Добавить в существующий verification-флоу** ([screen-contracts.md] §верификация): к Playwright-прогону на 4 ширинах — добавить «Dynamic Type AX5» и «Reduce Motion» как extreme-content сценарии; к grep-проверкам — линт на icon-only кнопки без `accessibilityLabel`.
 - **Авто-линт:** ESLint-плагины RN a11y / react-native-accessibility-engine как ранний сигнал (не замена ручному тесту) ([Medium — RN a11y engine](https://medium.com/reactbrasil/introducing-react-native-accessibility-engine-fcf78f2a3805)).
 
@@ -314,6 +314,6 @@ VoiceOver читает в порядке дерева элементов; пор
 
 8. **Reduce Motion — обязательный гейт для scan-line, стриминга aha-числа, переходов sheet.** Читать `AccessibilityInfo.isReduceMotionEnabled()`; при ON — fade/статика вместо бегущей линии и count-up. Длительности из токенов, не хардкод.
 
-9. **«A11y не тестировали — её нет»: ручной прогон на iPhone обязателен** (VoiceOver не работает в симуляторе). Минимум перед билд-вехой: VoiceOver-проход result/cockpit/scan/ask + AX5 + Reduce Motion + Smart Invert. Встроить в наш verification-флоу из [screen-contracts.md].
+9. **«A11y не тестировали — её нет»: ручной прогон на iPhone обязателен** (VoiceOver не работает в симуляторе). Минимум перед билд-вехой: VoiceOver-проход result/overview/scan/ask + AX5 + Reduce Motion + Smart Invert. Встроить в наш verification-флоу из [screen-contracts.md].
 
 10. **Камера/скан — не забыть:** ShutterButton/PageCounter с label, авто-capture и quality-fail озвучивать словами (не только ✗/✓ и оверлей), `accessibilityIgnoresInvertColors` на фото документа. Это вход в продукт — нельзя терять VoiceOver-юзера на первом шаге.

@@ -34,7 +34,7 @@
 
 - Tab bar теперь **плавающая капсула, вписанная (inset) от краёв** экрана, с фоном Liquid Glass ([learnui.design — iOS 26 patterns](https://www.learnui.design/blog/ios-design-guidelines-templates.html); [Donny Wals](https://www.donnywals.com/exploring-tab-bars-on-ios-26-with-liquid-glass/)).
 - **Search** может выноситься в отдельный круглый «island» из стекла справа от таб-бара ([learnui.design](https://www.learnui.design/blog/ios-design-guidelines-templates.html)).
-- HIG напоминает: tab bar — для **переключения между крупными разделами** приложения (top-level), не для действий ([Donny Wals](https://www.donnywals.com/exploring-tab-bars-on-ios-26-with-liquid-glass/)). Для Decode это значит: tab bar = крупные зоны (напр. Cockpit / Scan / Vault / Ask), а не «кнопки-действия».
+- HIG напоминает: tab bar — для **переключения между крупными разделами** приложения (top-level), не для действий ([Donny Wals](https://www.donnywals.com/exploring-tab-bars-on-ios-26-with-liquid-glass/)). Для Decode это значит: tab bar = крупные зоны (напр. Overview / Scan / Vault / Ask), а не «кнопки-действия».
 - Размеры tab bar в iOS 26 **адаптивные** (height/padding зависят от устройства и safe area), фиксированных чисел Apple не публикует — проверять на устройстве ([Medium — iOS 26 UI changes](https://medium.com/@bharathibala21/ios-26-ui-changes-what-developers-must-know-about-tab-bars-and-navigation-bars-524b80f116de)). Практические ориентиры из разбора: tab bar inset ≈ **21pt** слева/справа/снизу, home indicator ≈ **21pt** ([learnui.design](https://www.learnui.design/blog/ios-design-guidelines-templates.html)).
 
 ### 1.4 Sheets, modals
@@ -100,7 +100,7 @@ iOS-стили текста (Body, Title, Caption…) масштабируютс
 
 - В RN системный шрифт масштабируется через `allowFontScaling` (по умолчанию `true`) — не отключать его глобально для контента.
 - Не верстать по фиксированной высоте текстовых контейнеров: **разрешать перенос строк, не truncate**; на AX-размерах разрешать вертикальный скролл; иконки масштабировать вместе с текстом ([Medium — designer's guide](https://medium.com/design-bootcamp/a-product-designers-guide-to-dynamic-type-in-ios-a105dda39a95)).
-- Тестировать ключевые экраны (decode-result, cockpit) на AX1–AX5 — там длинные суммы/лейблы рвут лейаут.
+- Тестировать ключевые экраны (decode-result, overview) на AX1–AX5 — там длинные суммы/лейблы рвут лейаут.
 - WWDC24 «Get started with Dynamic Type» — методика ([Apple Developer](https://developer.apple.com/videos/play/wwdc2024/10074/)).
 
 ### 2.4 Tabular figures для денег (важно для Decode)
@@ -223,7 +223,7 @@ Foreground/background пары (на проходимость WCAG AA = 4.5:1 т
 
 1. **Стекло — только на навигации, контент плоский.** Liquid Glass (iOS 26) применять к tab bar / nav bar / sheets (вариант **Regular**), и **никогда** к карточкам decode-результата, суммам, severity-бейджам и citations. У стекла реальная проблема контраста (замеры до 1.5:1) — для финтеха это риск доверия. Система сама уважает Reduce Transparency / Increase Contrast / Reduce Motion — на это можно положиться, но не строить на стекле читаемость данных. [Liquid Glass Ref](https://github.com/conorluddy/LiquidGlassReference), [NN/g](https://www.nngroup.com/articles/liquid-glass/)
 
-2. **Типографику не трогаем — она уже iOS-native.** Текущая рампа Decode (display 34 / h2 20 / body 17 / caption 13) совпадает с Dynamic Type. На hi-fi: переименовать уровни в имена iOS-стилей, не отключать `allowFontScaling`, протестировать decode-result и cockpit на AX1–AX5 (длинные суммы рвут лейаут), всюду где есть £/%/даты — включить **tabular-nums** (токен уже есть).
+2. **Типографику не трогаем — она уже iOS-native.** Текущая рампа Decode (display 34 / h2 20 / body 17 / caption 13) совпадает с Dynamic Type. На hi-fi: переименовать уровни в имена iOS-стилей, не отключать `allowFontScaling`, протестировать decode-result и overview на AX1–AX5 (длинные суммы рвут лейаут), всюду где есть £/%/даты — включить **tabular-nums** (токен уже есть).
 
 3. **Лицензия SF Pro / SF Symbols — для Decode «зелёная зона», но с границами.** Т.к. Decode компилируется в нативный iOS: SF Pro = системный шрифт через `fontFamily:'System'` (не встраивать файл); SF Symbols = рендерить нативно через **`expo-symbols`** (не экспортировать в SVG/PNG). **Запрещено:** SF Symbols в иконке приложения/логотипе и любое использование SF Pro/Symbols на Android/web/в маркетинге — там Material Symbols + кастомная бренд-иконка. [Apple Fonts](https://developer.apple.com/fonts/), [Expo Symbols](https://docs.expo.dev/versions/latest/sdk/symbols/)
 

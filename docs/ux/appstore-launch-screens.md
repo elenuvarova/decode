@@ -1,6 +1,6 @@
 # Decode — что ещё нарисовать для реальной выкладки в App Store
 
-Сейчас отрисованы **P0-флоу wedge** (~27 экранов: scan→decode→cockpit→ask→watch→vault + states + onboarding + paywall). Ниже — что ещё нужно **до сабмита** в App Store, сгруппировано и приоритизировано. Делю на: **A. In-app экраны рисовать**, **B. App Store Connect deliverables (не экраны приложения)**, **C. Регуляторика UK**.
+Сейчас отрисованы **P0-флоу wedge** (~27 экранов: scan→decode→overview→ask→watch→vault + states + onboarding + paywall). Ниже — что ещё нужно **до сабмита** в App Store, сгруппировано и приоритизировано. Делю на: **A. In-app экраны рисовать**, **B. App Store Connect deliverables (не экраны приложения)**, **C. Регуляторика UK**.
 
 Приоритеты: **P0** = блокирует сабмит/ревью; **P1** = нужно к публичному запуску 15.07; **P2** = быстрый follow-up.
 

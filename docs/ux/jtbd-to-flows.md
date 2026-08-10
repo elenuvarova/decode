@@ -11,14 +11,14 @@
 
 **Core loop продукта:** `Scan → Understand → Decide → Watch`.
 **6 требований pre-mortem встроены в flows** (помечены `[PMx]`):
-- `[PM1]` Home = Cockpit (не последний result)
+- `[PM1]` Home = Overview (не последний result)
 - `[PM2]` Онбординг-ветка «нет документа сейчас» (demo + скан старого письма)
 - `[PM3]` Бейдж credit-file — геройский элемент result
 - `[PM4]` Пейволл: free = N decodes/мес (полный wedge, но лимит) · Pro = unlimited + полный Vault + Watch/Radar; пейволл **после первого decode** *(ревизия по [research/21](../../research/21-pricing-monetization.md))*
 - `[PM5]` Q&A detect-and-signpost для debt-distress
 - `[PM6]` Три языка достоверности на result (From document / Calculated / AI)
 
-**Инварианты VoC/комплаенс на всех flows:** no bank connection; биллинг Apple-IAP-only без карты на free; отмена в 2 тапа; тон без осуждения; запрещены «you should / recommend / switch» (FCA).
+**Инварианты VoC/комплаенс на всех flows:** no bank connection **на входе** (ввод = share sheet / камера / upload / email-forward — не account-link; опциональный read-only open banking возможен позже как Pro-автоматизация, не как условие входа — [research/33](../../research/33-scope-and-input-strategy.md)); биллинг Apple-IAP-only без карты на free; отмена в 2 тапа; тон без осуждения; запрещены «you should / recommend / switch» (FCA).
 
 Легенда экранов: `[Screen]` = полноэкранный, `{Sheet}` = bottom-sheet, `(System)` = системный диалог. ID экранов сверены с [screen-sitemap.md](screen-sitemap.md).
 
@@ -29,7 +29,7 @@
 | Job | Pri | Flow | Шаг loop | Главный сигнал успеха (activation) |
 |---|---|---|---|---|
 | J1 Понять, что подписываю | P0 | **F2 Scan & Decode** | Scan→Understand | Первый decode + просмотр aha-числа и credit-file бейджа |
-| J2 Всё в одном месте | P0 | **F5 Cockpit** | Watch | ≥2 документа в Vault, возврат в cockpit |
+| J2 Всё в одном месте | P0 | **F5 Overview** | Watch | ≥2 документа в Vault, возврат в overview |
 | J3 Напоминание с суммой+последствием | P0 | **F6 Radar** | Watch | Включён первый reminder; открыт alert |
 | J4 Спросить простым языком | P0 | **F3 Ask** | Decide | Первый заданный вопрос с переходом к источнику |
 | J5 Как выйти/отменить | P1 | **F3 Ask** (под-ветка) | Decide | Просмотр «cancel channel + deadline» |
@@ -64,7 +64,7 @@
    │    • «Continue with email» ─► [email-auth]
    │    • «Skip — keep on device» ─► гостевой/локальный режим (ценность до регистрации)
    ▼
-   Cockpit (empty) → guided first scan
+   Overview (empty) → guided first scan
    (push-permission — НЕ здесь, а после первого result, на данных этого документа)
 ```
 **Состояния:** default; «уже есть аккаунт» → email-auth; отказ камеры → upload-путь (в scan-флоу; отдельный camera-праймер в онбординг не вошёл).
@@ -104,7 +104,7 @@
    ├──► [Save & watch] ─► [Saved & watching]  (Save-Watch-Success — обновлено 2026-07-02)
    │       zero-config save: авто-имя «Klarna BNPL offer — 14 May 2026» и даты Radar — автоматически, без шита
    │       строка-подтверждение: «Watching the 28 May payment — we'll remind you 2 days before.»
-   │       CTA: Back to Cockpit · View in Vault · тихий «Adjust reminders» → {Reminder settings}
+   │       CTA: Back to Overview · View in Vault · тихий «Adjust reminders» → {Reminder settings}
    └──► [Scan another]     возврат в F2 (Jordan сканирует 4 оффера)
 ```
 **Состояния:** loading (этапы); success (result); partial («couldn't read» секции — честно, экран Result-Error заведён из processing); error (capture-quality / сеть / AI-fail → retake/retry/ручной ввод).
@@ -146,10 +146,10 @@
 
 ---
 
-### F5 · Cockpit — обзор `[PM1]` (J2, Watch) — это HOME
+### F5 · Overview — обзор `[PM1]` (J2, Watch) — это HOME
 
 ```
-[Home / Cockpit]  ← дефолтный таб, не последний result
+[Home / Overview]  ← дефолтный таб, не последний result
    │  headline: «Committed this month: £214»  +  срезы «Due in 7 / 30 / 60 days»  (считается без банка)
    │  тоггл month ⇄ year: «6 commitments — £86/mo ⇄ £1,032/yr»
    │  секции по статусу с субтоталами:
@@ -163,8 +163,8 @@
    └──► bell/Alerts ──► [Renewal Radar] (F6, полноэкранный)
 ```
 **Состояния:** empty (0 документов → guided «Scan your first document — true cost in 30s» + кнопка Scan, антипаттерн-тупик закрыт); 1 документ; many; all-clear.
-**Контракт:** home всегда cockpit (`[PM1]`); никаких bank-link механик, промо-баннеров, перегруза графиками; спокойный «банковский» тон.
-**Успех:** возврат в cockpit при ≥2 документах (J2 + retention против F1 pre-mortem).
+**Контракт:** home всегда overview (`[PM1]`); никаких bank-link механик, промо-баннеров, перегруза графиками; спокойный «банковский» тон.
+**Успех:** возврат в overview при ≥2 документах (J2 + retention против F1 pre-mortem).
 **Референсы:** Afterpay headline+срезы, Orbit count/total, Rocket Money копирайт, Apple Wallet all-clear.
 
 ---
@@ -205,7 +205,7 @@
    │  J6: «View as a lender would» / export — сводка обязательств (P2/P3)
    │  CTA-пара: основное действие + тихий деструктив (Delete/Stop watching)
 ```
-**Состояния:** default; пустой Vault (= empty cockpit, guided scan); single; many.
+**Состояния:** default; пустой Vault (= empty overview, guided scan); single; many.
 **Контракт:** Face ID на Vault (`expo-local-authentication`) — дешёвый trust-сигнал; авто-именование, не «Scan 47.pdf».
 **Успех:** открыт detail / использован export (J6).
 **Референсы:** Orbit detail-sheet, Fabric empty-state.
@@ -256,13 +256,13 @@
                      │   │                   │  └─► F3 Ask     │          ▼       │
                      │   └── Scan another ◄──┘     (J4/J5)     │     [notification]
                      │                                          ▼          │
-   [Scan tab] ───────┘                              F5 Cockpit (HOME) ◄────┘
+   [Scan tab] ───────┘                              F5 Overview (HOME) ◄────┘
                                                        │  [PM1]
                                                        ├─► F7 Vault detail (J6)
                                                        └─► F8 Upgrade (Watch-gate) ─► Apple IAP
    [Settings] ─────────────────────────────────────────────► F9 Cancel/Privacy
 ```
-Сквозной шов продукта — **Scan → Watch** (обновлено 2026-07-02): каждый завершённый decode сохраняется в один тап — zero-config, имя и даты наблюдения ставятся автоматически (SW-success = «Saved & watching»); cockpit — постоянная причина возврата. В кликабельном прототипе связка материализована как 49 экранов / 14 флоу.
+Сквозной шов продукта — **Scan → Watch** (обновлено 2026-07-02): каждый завершённый decode сохраняется в один тап — zero-config, имя и даты наблюдения ставятся автоматически (SW-success = «Saved & watching»); overview — постоянная причина возврата. В кликабельном прототипе связка материализована как 49 экранов / 14 флоу.
 
 ---
 
@@ -270,7 +270,7 @@
 
 ```
 Install → Onboarding complete → First scan started → First result viewed*  ← АКТИВАЦИЯ (J1)
-        → Saved to Vault → Radar reminder set → Return to Cockpit (≥2 docs)  ← RETENTION (J2/J3)
+        → Saved to Vault → Radar reminder set → Return to Overview (≥2 docs)  ← RETENTION (J2/J3)
         → Watch-limit hit → Upgrade                                          ← MONETIZATION
 ```
 `*` включая demo-ветку `[PM2]` для пользователей без документа.
@@ -286,7 +286,7 @@ Install → Onboarding complete → First scan started → First result viewed* 
 | J4 | F3 | ✅ |
 | J5 | F3 под-ветка | ✅ |
 | J6 | F7 | ✅ (P2-глубина) |
-| PM1 Home=Cockpit | F5 — дефолтный таб | ✅ |
+| PM1 Home=Overview | F5 — дефолтный таб | ✅ |
 | PM2 ветка «нет документа» | F1 | ✅ |
 | PM3 credit-file бейдж-герой | F2 result ② | ✅ |
 | PM4 пейволл на Watch | F8 / F6 | ✅ |

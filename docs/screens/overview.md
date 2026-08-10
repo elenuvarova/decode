@@ -1,8 +1,8 @@
-# Экран-контракт: Cockpit / Home (HM)
+# Экран-контракт: Overview / Home (HM)
 
 **Route:** `(app)/` — **дефолтный таб** · **Flow:** [F5](../ux/jtbd-to-flows.md#f5) · **Шаг loop:** Watch · **Job:** J2
 **Персоны:** все; Jordan (всё в одном месте, retention-якорь) · **Доступ:** авторизован
-**Sitemap:** [HM](../ux/screen-sitemap.md#группа-b--app-shell-tabs) · **Pre-mortem:** PM1 (home = cockpit, не последний result); митигирует F1 (retention)
+**Sitemap:** [HM](../ux/screen-sitemap.md#группа-b--app-shell-tabs) · **Pre-mortem:** PM1 (home = overview, не последний result); митигирует F1 (retention)
 **Инварианты:** никаких bank-link механик; без промо-баннеров на главной; без перегруза графиками; спокойный «банковский» тон (Wise/Apple Wallet); суммы считаются детерминированно, без банка.
 
 ---
@@ -21,7 +21,7 @@
 ### Состояния
 - **empty (0 документов):** guided — «Scan your first document — see its true cost in 30 seconds» + крупная `[Scan]`. НЕ пустой экран (анти-тупик). Каждый empty содержит Scan-CTA.
 - **1 commitment:** headline + одна строка + подсказка добавить ещё.
-- **many:** полный cockpit с секциями.
+- **many:** полный overview с секциями.
 - **all-clear:** есть коммитменты, но ничего не требует внимания → «Nothing needs attention until 28 June ✓» (Apple Wallet-паттерн).
 - **loading:** skeleton строк (первый заход/refresh).
 - **error:** данные не подгрузились → ErrorState + retry (но коммитменты локальны/кешированы → офлайн показывает последнее).
@@ -53,7 +53,7 @@ HM → Vault detail, [scan](scan.md), [alerts](alerts.md), Settings. Вход: �
 - **Низ:** TabBar (Home активен · ⊕Scan центр · Vault). Safe-area bottom.
 
 ### Layout Desktop (вторичный)
-- Не приоритет (shell = Expo). Web-версия cockpit — только если делаем web-демо; центр-колонка max-width.
+- Не приоритет (shell = Expo). Web-версия overview — только если делаем web-демо; центр-колонка max-width.
 
 ### Компоненты → UI-кит
 Доменные: `Headline`, `CommitmentRow`, `TrapBadge`, `SectionList`. Базовые: `SegmentedToggle` (RangeToggle, month/year), `EmptyState`, `Skeleton`, `ErrorState`, `Badge` (bell-счётчик).
@@ -75,7 +75,7 @@ HM → Vault detail, [scan](scan.md), [alerts](alerts.md), Settings. Вход: �
 - Нулевые значения / «—» → «Nothing due in 7 days» осмысленно.
 
 ### Открытые вопросы / TODO
-- TODO: Vault — отдельный таб vs секция Home? (sitemap §4.2) — проверить на wireframes, не дублирует ли cockpit.
+- TODO: Vault — отдельный таб vs секция Home? (sitemap §4.2) — проверить на wireframes, не дублирует ли overview.
 - TODO: что показывает headline, если все коммитменты — без дат списания (decoded_no_action many) — не должно быть «£0» как дыра.
 - TODO: North Star метрика на главной (watched commitments / £ saved / decoded docs) — открытый вопрос ресёрча §9.7; влияет, что выносим в headline.
 - TODO: «traps costing you £X/year» — формулировка должна быть фактом-агрегатом, не оценкой (FCA).

@@ -181,7 +181,7 @@
 - **Trap-тон «спокойный эксперт»:** факт + цена в £ + 1–2 next step, severity порядком/количеством, не кроваво-красной типографикой. Feedback: thumbs up/down + «Wrong?» ([Lovi](https://mobbin.com/flows/12e8692d-5da8-40a3-a51d-a48d2d39fa8a)).
 - **Q&A:** шторка поверх документа с названием оффера ([ElevenReader](https://mobbin.com/screens/6820bde5-a6b5-490d-a172-8cb16463f97b)); 3 чипа-подсказки из найденных trap-флагов ([Grok](https://mobbin.com/flows/1fdf3416-da7c-49f1-b9be-8f481dc6f586), [Me+](https://mobbin.com/screens/a7b81fe1-3bb4-42ff-ac61-9a528ca0dc76)); двухуровневые citations «p.2 §4» → bottom sheet с подсвеченным фрагментом ([ChatGPT](https://mobbin.com/screens/a4030d26-a7d6-4f91-8277-8a15b8dabae6), [Gemini Evidence](https://mobbin.com/screens/449ffd04-1038-4da5-b590-0ebedb5b60ce)); честное «This isn't specified in your agreement» вместо галлюцинации; verbalized uncertainty («I think… — double-check the highlighted line») вместо процентов. Чат всегда скоуплен на документ (модель NotebookLM), не general assistant.
 
-### 6.4 Cockpit / Home
+### 6.4 Overview / Home
 - **Headline «сколько я должен» + временные срезы** ([Afterpay](https://mobbin.com/screens/1256bb0e-c477-4d46-80b6-29be1cc9f12b)): «Committed this month: £214» + колонки «Due in 7 / 30 / 60 days» — считается детерминированно, без банка.
 - **Двойная метрика count + total с тогглом month/year** ([Orbit](https://mobbin.com/flows/e0d2902c-4de8-4584-856f-c2972b802519)): «6 commitments — £86/mo ⇄ £1,032/yr».
 - **Секции по статусу с субтоталами:** «Trials ending» / «Renewing soon» / «Active» / «Decoded, no action». Анатомия строки: иконка типа + имя + «Renews in 4 days • 28 Nov» (относительная И абсолютная дата) + сумма + слот для ⚠︎ trap-флага.
@@ -221,7 +221,7 @@
 | Decide: вопросы | Q&A sheet | Чипы-подсказки + citations + честный отказ | Grok, ChatGPT, Gemini ([14](14-mobbin-ai-explanation.md)) |
 | Watch: сохранение | Vault | Авто-имя + предложение дат для Radar | Orbit detail ([13](13-mobbin-fintech-home.md)) |
 | Watch: радар | Radar / Alerts | Uber One-карточка + двухслойный список + «all clear» | Uber Eats, Rocket Money, Apple Wallet ([16](16-mobbin-alerts-reminders.md)) |
-| Watch: обзор | Home / Cockpit | Headline + срезы 7/30/60 + секции по статусу | Afterpay, Orbit ([13](13-mobbin-fintech-home.md)) |
+| Watch: обзор | Home / Overview | Headline + срезы 7/30/60 + секции по статусу | Afterpay, Orbit ([13](13-mobbin-fintech-home.md)) |
 | Ошибки везде | Error states | Диагностика + плохо/хорошо + ручной fallback | Chime, Starling ([12](12-mobbin-capture-flows.md), [05](05-ux-document-capture.md)) |
 
 ---
@@ -255,7 +255,7 @@
 ## 9. Открытые вопросы к фазе product analysis
 
 1. **Какой wedge первичен для сегментации:** BNPL/credit offers (18–25, защита от необратимого, тайминг 15.07.2026) vs insurance auto-renewal (старше, выше частота и WTP, боль 5×5)? Данные [10](10-market-uk-bnpl-credit.md) и [11](11-users-pain-points.md) тянут в разные стороны — нужен выбор сегмента и primary JTBD.
-2. **Renewal Radar: следствие скана или равноправный вход?** Урок Little Birdie (standalone-алерты не продаются) vs боль №1 (renewal-письма). Влияет на sitemap: что на home — cockpit или результат последнего скана.
+2. **Renewal Radar: следствие скана или равноправный вход?** Урок Little Birdie (standalone-алерты не продаются) vs боль №1 (renewal-письма). Влияет на sitemap: что на home — overview или результат последнего скана.
 3. **Free tier: сколько сканов/мес и что именно за paywall** (Vault-объём? Radar по всем датам? unlimited Q&A?), чтобы free давал завершённый акт ценности (анти-Emma), но конвертил.
 4. ~~**Верификация опровергнутых/неподтверждённых фактов**~~ → **ЗАКРЫТО проходом 2026-06-14** (§0.5): треки 09/11 верифицированы ([09b](09b-fca-boundary-verified.md), [11b](11b-user-pains-verified.md)), trap-каталог по всем провайдерам прогнан ([10b](10b-trap-tc-corpus.md)). Остаточно: compliance-review у юриста до запуска; мониторинг CP26/15 (due 17.06.2026).
 5. **Документ-тип №2 после credit/BNPL:** insurance renewal letters (боль №1, но FCA insurance distribution на P3) vs subscription letters (проще, DMCC-окно до осени 2026)?
@@ -317,7 +317,7 @@
 | [10-market-uk-bnpl-credit.md](10-market-uk-bnpl-credit.md) | Каталог 14 trap types с £-ценой и формулировками-маркерами, таблица BNPL-провайдеров, pattern library для промптов. ⚠️ Условия Klarna исправлены (см. шапку) |
 | [11-users-pain-points.md](11-users-pain-points.md) | ⚠️ Топ-5 болей с verbatim-цитатами (MSE/Trustpilot/Reddit), триггер-моменты, язык пользователей, кластеризация частота×сила. Не подтверждено независимой проверкой |
 | [12-mobbin-capture-flows.md](12-mobbin-capture-flows.md) | Mobbin: камера/crop/processing/ошибки (Docusign, Apple Notes, Yazio, Chime) + карта паттернов на core loop |
-| [13-mobbin-fintech-home.md](13-mobbin-fintech-home.md) | Mobbin: home/cockpit (Afterpay headline+срезы, Orbit-структура списка, Rocket Money копирайт, «all clear» Apple Wallet) |
+| [13-mobbin-fintech-home.md](13-mobbin-fintech-home.md) | Mobbin: home/overview (Afterpay headline+срезы, Orbit-структура списка, Rocket Money копирайт, «all clear» Apple Wallet) |
 | [14-mobbin-ai-explanation.md](14-mobbin-ai-explanation.md) | Mobbin: AI summary/Q&A/citations/confidence (Yuka-схема результата, ChatGPT sources, Gemini Evidence, Grok follow-ups) |
 | [15-mobbin-onboarding.md](15-mobbin-onboarding.md) | Mobbin: value prop (Wise/Plum/Fabric), permission priming (камера/пуши раздельно), aha-момент Plum, empty states |
 | [16-mobbin-alerts-reminders.md](16-mobbin-alerts-reminders.md) | Mobbin: alert-карточки (Uber One), двухслойный радар (Rocket Money), trial/price-rise паттерны, notification settings (Tabby/Runna) |

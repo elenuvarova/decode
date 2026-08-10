@@ -15,7 +15,7 @@
 - **Destructive actions have zero friction.** "Delete everything" (Consent Center), "Delete" (vault-detail), and × close on scan-review all fire with a single tap and no confirmation. Three separate data-loss paths with no recovery.
 - **Legal and App Store compliance gaps.** The onboarding consent toggle defaults ON (GDPR), the Paywall has no "Restore purchases" button (App Store Guideline 3.1.1), and the billing disclosure may fall below the home-indicator safe area (also 3.1.1). These block submission.
 - **State coverage is near-zero outside the happy path.** Across all 50+ screens, loading skeletons are universally absent, error recovery paths are sporadically defined, and empty states exist on only a handful of screens. The product looks complete in the happy path and breaks invisibly everywhere else.
-- **Navigation graph has orphaned and disconnected screens.** payment-calendar, compare-offers, and the Appearance settings screen have no confirmed entry points in the wireframe set. Several screens (alerts-inbox, cockpit-wireframe) have tappable elements whose destinations are undefined.
+- **Navigation graph has orphaned and disconnected screens.** payment-calendar, compare-offers, and the Appearance settings screen have no confirmed entry points in the wireframe set. Several screens (alerts-inbox, overview-wireframe) have tappable elements whose destinations are undefined.
 
 ### Top 3 blockers
 
@@ -83,23 +83,23 @@
 
 ---
 
-### Section D — Cockpit & Vault (screens: cockpit-empty, cockpit-wireframe, payment-calendar, vault-list, vault-detail, compare-offers)
+### Section D — Overview & Vault (screens: overview-empty, overview-wireframe, payment-calendar, vault-list, vault-detail, compare-offers)
 
 **vault-detail "Delete" has no confirmation.** "Stop watching · Delete" is a single line of ~22 pt grey text. Both are tap targets well below 44 pt minimum. "Delete" fires with one tap and no confirmation sheet. This is irreversible data loss with zero recovery.
 
 **compare-offers has no entry point defined.** There is no "Compare" button on vault-list or vault-detail. The screen exists in isolation. The entire Compare flow is unreachable.
 
-**payment-calendar has no entry point from the Cockpit.** cockpit-wireframe shows date-bucketed amounts (£86/7d, £214/30d) but no clearly labelled tappable element leading to the calendar view. The screen is orphaned.
+**payment-calendar has no entry point from the Overview.** overview-wireframe shows date-bucketed amounts (£86/7d, £214/30d) but no clearly labelled tappable element leading to the calendar view. The screen is orphaned.
 
-**The Cockpit "3 traps cost you £180/year — Tap to see what to do →" row has no destination.** It is explicitly labelled as tappable but its destination is not in the wireframe set.
+**The Overview "3 traps cost you £180/year — Tap to see what to do →" row has no destination.** It is explicitly labelled as tappable but its destination is not in the wireframe set.
 
-**"Try a sample first" on cockpit-empty has no defined destination.** For a high-anxiety first-time user (the core segment), this is the primary exploration path. It must navigate to a pre-loaded read-only vault-detail.
+**"Try a sample first" on overview-empty has no defined destination.** For a high-anxiety first-time user (the core segment), this is the primary exploration path. It must navigate to a pre-loaded read-only vault-detail.
 
 **"Stop watching" has no explanation of what it does.** The label is ambiguous: does it delete? mute? archive? It should explain the consequence inline ("document stays in Vault, removed from Home") or at minimum via a confirmation bottom sheet.
 
-**"Overlap" and "Auto-renew" badges on Cockpit rows are unexplained jargon.** No tooltip, no popover. The term "Overlap" is particularly opaque for a financially anxious 18–25 user. Each badge should be tappable with a one-sentence explanation.
+**"Overlap" and "Auto-renew" badges on Overview rows are unexplained jargon.** No tooltip, no popover. The term "Overlap" is particularly opaque for a financially anxious 18–25 user. Each badge should be tappable with a one-sentence explanation.
 
-**No loading skeletons or error states exist on any of the 6 screens.** cockpit-wireframe and vault-list aggregate all user documents from an async source; at minimum these two screens need defined skeleton and error states.
+**No loading skeletons or error states exist on any of the 6 screens.** overview-wireframe and vault-list aggregate all user documents from an async source; at minimum these two screens need defined skeleton and error states.
 
 ---
 
@@ -191,10 +191,10 @@ Sorted by severity: BLOCKER → FRICTION → POLISH.
 | 20 | Result/Ask | trust-repair | No post-submission state after "Re-check" — zero feedback | Loading overlay → success state returning to updated Decode Result | BLOCKER |
 | 21 | Result/Ask | ask, ask-wireframe | No error/unavailable state for network failure or AI unavailability | Inline error message ("Couldn't connect") with retry chip | BLOCKER |
 | 22 | Result/Ask | share-decode | No success or failure state for any share action | Success toast per action; error state for storage-full / permission-denied | BLOCKER |
-| 23 | Cockpit/Vault | vault-detail | "Delete" fires with one tap, no confirmation, no destructive styling | Separate "Stop watching" (outlined) and "Delete" (red, danger token); add action sheet confirmation | BLOCKER |
-| 24 | Cockpit/Vault | compare-offers | No entry point to Compare screen exists anywhere in the flow | Add multi-select mode to vault-list or "Compare" CTA on vault-detail | BLOCKER |
-| 25 | Cockpit/Vault | payment-calendar | No entry point from Cockpit — screen is orphaned | Make 7d/30d/60d strip tappable with chevron, or add "Coming up" row | BLOCKER |
-| 26 | Cockpit/Vault | cockpit-wireframe | "Tap to see what to do →" insight row has no destination | Define destination (trap bottom sheet or filtered vault-list) | BLOCKER |
+| 23 | Overview/Vault | vault-detail | "Delete" fires with one tap, no confirmation, no destructive styling | Separate "Stop watching" (outlined) and "Delete" (red, danger token); add action sheet confirmation | BLOCKER |
+| 24 | Overview/Vault | compare-offers | No entry point to Compare screen exists anywhere in the flow | Add multi-select mode to vault-list or "Compare" CTA on vault-detail | BLOCKER |
+| 25 | Overview/Vault | payment-calendar | No entry point from Overview — screen is orphaned | Make 7d/30d/60d strip tappable with chevron, or add "Coming up" row | BLOCKER |
+| 26 | Overview/Vault | overview-wireframe | "Tap to see what to do →" insight row has no destination | Define destination (trap bottom sheet or filtered vault-list) | BLOCKER |
 | 27 | Radar/Alerts | alert-detail | No "mark as handled" action — alert persists after user acts externally | Add "Mark as done" primary CTA; show resolved state | BLOCKER |
 | 28 | Radar/Alerts | add-commitment | No post-save state after "Add to Radar" | Navigate to radar-settings or alerts-inbox with success toast | BLOCKER |
 | 29 | Radar/Alerts | radar-settings | No entry point to add-commitment visible on this screen | Add "+ Add commitment" button or row | BLOCKER |
@@ -220,14 +220,14 @@ Sorted by severity: BLOCKER → FRICTION → POLISH.
 | 49 | Result/Ask | share-decode | "Send to someone" is undefined | Label as "Share via…" (native iOS share sheet) or define behaviour explicitly | FRICTION |
 | 50 | Result/Ask | decode-result-wireframe | Four competing bottom actions without visual priority | "Save & watch" = filled primary; "Ask" = outlined secondary; "number wrong?" = inline text link | FRICTION |
 | 51 | Result/Ask | trust-repair | Input field missing visible persistent label — VoiceOver/accessibility failure | Add label "Your corrected value" above the field; retain placeholder as hint | FRICTION |
-| 52 | Cockpit/Vault | cockpit-empty | "Try a sample first" destination undefined | Navigate to pre-loaded read-only vault-detail showing sample Klarna BNPL decode | FRICTION |
-| 53 | Cockpit/Vault | vault-detail | "Stop watching" label is ambiguous | Rename to "Remove from Home" with one-line subtitle explaining the consequence | FRICTION |
-| 54 | Cockpit/Vault | compare-offers | No post-verdict action — VERDICT is a dead-end | Add "Open [winning offer]" primary and "Dismiss [losing offer]" secondary CTAs | FRICTION |
-| 55 | Cockpit/Vault | vault-list | No empty state for Vault tab (first-use) | Add vault-specific empty state with "Scan your first document" CTA | FRICTION |
-| 56 | Cockpit/Vault | vault-list | No empty-results state for filtered chips | Inline empty-no-results with message "No [filter] documents yet" + "Scan one" shortcut | FRICTION |
-| 57 | Cockpit/Vault | cockpit-wireframe | "Overlap" and "Auto-renew" badges are unexplained jargon | Make each badge tappable with a one-sentence popover explanation | FRICTION |
-| 58 | Cockpit/Vault | payment-calendar | Nudge bubble has no action — informational dead-end | Add "Set reminder" or "Share" action; or "Got it" dismiss | FRICTION |
-| 59 | Cockpit/Vault | vault-detail | "from your document ›" provenance links have no destination | Define destination (bottom sheet with highlighted document excerpt) | FRICTION |
+| 52 | Overview/Vault | overview-empty | "Try a sample first" destination undefined | Navigate to pre-loaded read-only vault-detail showing sample Klarna BNPL decode | FRICTION |
+| 53 | Overview/Vault | vault-detail | "Stop watching" label is ambiguous | Rename to "Remove from Home" with one-line subtitle explaining the consequence | FRICTION |
+| 54 | Overview/Vault | compare-offers | No post-verdict action — VERDICT is a dead-end | Add "Open [winning offer]" primary and "Dismiss [losing offer]" secondary CTAs | FRICTION |
+| 55 | Overview/Vault | vault-list | No empty state for Vault tab (first-use) | Add vault-specific empty state with "Scan your first document" CTA | FRICTION |
+| 56 | Overview/Vault | vault-list | No empty-results state for filtered chips | Inline empty-no-results with message "No [filter] documents yet" + "Scan one" shortcut | FRICTION |
+| 57 | Overview/Vault | overview-wireframe | "Overlap" and "Auto-renew" badges are unexplained jargon | Make each badge tappable with a one-sentence popover explanation | FRICTION |
+| 58 | Overview/Vault | payment-calendar | Nudge bubble has no action — informational dead-end | Add "Set reminder" or "Share" action; or "Got it" dismiss | FRICTION |
+| 59 | Overview/Vault | vault-detail | "from your document ›" provenance links have no destination | Define destination (bottom sheet with highlighted document excerpt) | FRICTION |
 | 60 | Radar/Alerts | alerts-inbox | No empty state for first-time user with no commitments | Add empty state with "Add your first commitment" CTA | FRICTION |
 | 61 | Radar/Alerts | alerts-inbox | "Coming Later (PRO)" rows show disclosure chevron but cannot be navigated | Replace chevron with lock icon + "Pro" badge | FRICTION |
 | 62 | Radar/Alerts | alert-detail | "Snooze 3 days" is hardcoded — no custom-date option | Add date picker or at minimum "3 days / 7 days / custom" options | FRICTION |
@@ -263,12 +263,12 @@ Sorted by severity: BLOCKER → FRICTION → POLISH.
 | 92 | Result/Ask | trust-repair | "Calculated, not AI" provenance label has low visual weight | Match visual weight to "AI summary" badge on result screen | POLISH |
 | 93 | Result/Ask | share-decode | Privacy notice below action list — most users will tap before reading | Move privacy notice above the action rows | POLISH |
 | 94 | Result/Ask | decode-result-wireframe | "Calculated, not AI" vs "AI summary" labelling is visually inconsistent | Standardise provenance badges across the result screen | POLISH |
-| 95 | Cockpit/Vault | cockpit-wireframe | "3 traps" insight row uses "→" in-text instead of trailing "›" chevron | Replace with trailing DS chevron to match all other tappable rows | POLISH |
-| 96 | Cockpit/Vault | payment-calendar | Boiler cover row mixes renewal semantics into a payment-due list | Separate into a distinct "RENEWING SOON" section or add a "renewal" tag | POLISH |
-| 97 | Cockpit/Vault | compare-offers | Table cells for missing data are undefined | Show "—" or "N/A" in cells where data was not extractable | POLISH |
-| 98 | Cockpit/Vault | cockpit-wireframe, vault-list | Avatar circle top-right has no labelled destination | Ensure it links to Settings; add gear overlay or annotation | POLISH |
-| 99 | Cockpit/Vault | vault-detail | "Calculated, not AI" and "from your document" labels lack a legend | Add one-time tooltip or "How we calculate this" bottom-sheet link | POLISH |
-| 100 | Cockpit/Vault | compare-offers | "Add another to compare" disabled state undefined when no more docs exist | Disable or relabel when all documents are already in the comparison | POLISH |
+| 95 | Overview/Vault | overview-wireframe | "3 traps" insight row uses "→" in-text instead of trailing "›" chevron | Replace with trailing DS chevron to match all other tappable rows | POLISH |
+| 96 | Overview/Vault | payment-calendar | Boiler cover row mixes renewal semantics into a payment-due list | Separate into a distinct "RENEWING SOON" section or add a "renewal" tag | POLISH |
+| 97 | Overview/Vault | compare-offers | Table cells for missing data are undefined | Show "—" or "N/A" in cells where data was not extractable | POLISH |
+| 98 | Overview/Vault | overview-wireframe, vault-list | Avatar circle top-right has no labelled destination | Ensure it links to Settings; add gear overlay or annotation | POLISH |
+| 99 | Overview/Vault | vault-detail | "Calculated, not AI" and "from your document" labels lack a legend | Add one-time tooltip or "How we calculate this" bottom-sheet link | POLISH |
+| 100 | Overview/Vault | compare-offers | "Add another to compare" disabled state undefined when no more docs exist | Disable or relabel when all documents are already in the comparison | POLISH |
 | 101 | Radar/Alerts | alerts-inbox | Two different CTA labels ("Move money" vs "Review") with no pattern rationale | Define a consistent verb pattern for alert CTAs | POLISH |
 | 102 | Radar/Alerts | alert-detail | "WHY IT MATTERS" all-caps label reads as overly formal | Rename to "What this means" or add a warning icon | POLISH |
 | 103 | Radar/Alerts | radar-settings | "(PRO UNLOCKS ALL)" in section header is a marketing message | Move to a dedicated upsell inline row below the list | POLISH |
@@ -310,7 +310,7 @@ Scale: 1 (nearly frictionless) to 10 (severely broken). Score reflects the worst
 
 | Step | Tap count | Friction issues | Blockers hit |
 |---|---|---|---|
-| Cockpit → scan sheet | 1 tap | — | — |
+| Overview → scan sheet | 1 tap | — | — |
 | Scan sheet → camera | 1 tap | No torch; auto-capture feedback missing | — |
 | Camera → review | 0 or 1 | No back button | B: no exit from camera |
 | Review → processing | 1 tap | No discard confirmation on × | B: discard without confirm |
@@ -391,9 +391,9 @@ These findings cannot be fixed in Figma and must be addressed in code.
 | I2 | 44 pt minimum tap targets via `hitSlop` | All screens with ghost text CTAs (error-*, share-decode, vault-detail) | Visual size of secondary text links can remain small; add `hitSlop={{ top: 10, bottom: 10, left: 16, right: 16 }}` (React Native) to each. |
 | I3 | `tel:` links for phone numbers in qa-signpost and radar-settings | qa-signpost, contact-support footer | `Linking.openURL('tel:08001381111')` wrapped in a Pressable with accessible label. |
 | I4 | Keyboard-aware layout for contact-support Send button | contact-support | `KeyboardAvoidingView` or `useKeyboardHeight` hook to ensure "Send message" button stays above keyboard on all devices. |
-| I5 | Loading skeletons for async screens | cockpit-wireframe, vault-list, vault-detail, alerts-inbox, radar-settings | All five screens aggregate async document data. Implement shimmer skeleton using the StateScaffold DS component or a library like `react-native-skeleton-placeholder`. |
+| I5 | Loading skeletons for async screens | overview-wireframe, vault-list, vault-detail, alerts-inbox, radar-settings | All five screens aggregate async document data. Implement shimmer skeleton using the StateScaffold DS component or a library like `react-native-skeleton-placeholder`. |
 | I6 | Client-side timeout on scan-processing (30 s) | scan-processing | After 30 s, auto-navigate to error-decode-failed. Prevents the processing-trap blocker without requiring a Cancel tap. |
-| I7 | StoreKit "Restore purchases" flow | paywall | `IAP.restorePurchases()` call; success state navigates to Cockpit with Pro unlocked; failure shows error toast. |
+| I7 | StoreKit "Restore purchases" flow | paywall | `IAP.restorePurchases()` call; success state navigates to Overview with Pro unlocked; failure shows error toast. |
 | I8 | Dynamic Type / iOS system text size compliance | appearance | Map the text-size slider to `UIContentSizeCategory` values rather than a custom scale. Ensures 3rd-party accessibility tools work correctly. |
 | I9 | `UIActivityViewController` for "Share via…" in share-decode | share-decode | Replace the undefined "Send to someone" with the native iOS share sheet. Zero custom UI needed. |
 | I10 | Discard confirmation on back navigation for unsaved forms | add-commitment, contact-support | Listen to the navigation `beforeRemove` event (React Navigation); present action sheet if form is dirty. |
@@ -401,6 +401,6 @@ These findings cannot be fixed in Figma and must be addressed in code.
 | I12 | `itms-apps://` deeplink for "Manage payment method" in error-purchase-failed | error-purchase-failed | `Linking.openURL('itms-apps://apps.apple.com/account/subscriptions')` or similar. Verify URL scheme on iOS 26. |
 | I13 | Dark mode token collection | All screens | A Dark token collection does not yet exist in the Figma DS (noted in audit-findings.md section C). Required for App Store submission. Must be built in Figma first, then mapped in code. |
 | I14 | iOS 26 floating tab bar | All tab-bar screens | The current tab bar is a custom component. iOS 26 introduces a floating tab bar pattern. Evaluate `expo-router` tab bar configuration or native `UITabBarController` behaviour changes. |
-| I15 | VoiceOver accessibility labels for icon-only controls | scan-camera (× button), cockpit bell, avatar circle, paywall plan selector | Each icon-only tap target needs an `accessibilityLabel` and `accessibilityRole`. The greyed Pro toggles in radar-settings need `accessibilityHint: "Requires Pro subscription"`. |
-| I16 | Progressive decode-credit counter on Cockpit | cockpit-wireframe | No visible "3 of 5 decodes used" indicator between scans. Users have no warning before hitting the limit screen. A small counter in the Cockpit header or the scan-capture sheet reduces the surprise. |
+| I15 | VoiceOver accessibility labels for icon-only controls | scan-camera (× button), overview bell, avatar circle, paywall plan selector | Each icon-only tap target needs an `accessibilityLabel` and `accessibilityRole`. The greyed Pro toggles in radar-settings need `accessibilityHint: "Requires Pro subscription"`. |
+| I16 | Progressive decode-credit counter on Overview | overview-wireframe | No visible "3 of 5 decodes used" indicator between scans. Users have no warning before hitting the limit screen. A small counter in the Overview header or the scan-capture sheet reduces the surprise. |
 | I17 | Partial-result state for scan-processing | scan-processing | When only some pages of a multi-page document are readable, the current flow has no "partial result" state. Define a success-with-caveats response in the decode API and surface it in the result screen. |

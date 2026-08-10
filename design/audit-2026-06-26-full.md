@@ -6,7 +6,7 @@ Scope: the whole Figma file (file key `ZR4wMSgGSbdckASvpiFwIP`) — 63 screen fr
 
 **✅ Fixed + verified this pass (the systemic / Blocker core):**
 - **B1** — broken Ask suggestion chip + the library-wrap `szV=FILL` stretch regression (SuggestionChip 150→32, StepRow 150→54). Verified.
-- **B3** — off-grid spacing: **468 values snapped to the 4/8 grid** across 1028 frames (6→8 ×113, 14→16 ×107, 15→16 ×94, 10→12 ×68, 9→8, 5→4, 3→4, 13→12, 18→20, 11→12…). Verified on cockpit / add-commitment / decode-result / vault-detail — no breaks.
+- **B3** — off-grid spacing: **468 values snapped to the 4/8 grid** across 1028 frames (6→8 ×113, 14→16 ×107, 15→16 ×94, 10→12 ×68, 9→8, 5→4, 3→4, 13→12, 18→20, 11→12…). Verified on overview / add-commitment / decode-result / vault-detail — no breaks.
 - **B2** — type ramp: **194 text nodes snapped to a 6-step ramp (12 / 15 / 17 / 20 / 26 / 34)**; 20 distinct sizes → 6; sub-12 (10/11) raised to the 12 floor. Verified on result / paywall / settings / vault-detail — hierarchy intact, small text now more legible.
 - Earlier this session: InputField clipped-icon, StageRow icons, ListItem/Bubble consolidation.
 
@@ -14,7 +14,7 @@ Scope: the whole Figma file (file key `ZR4wMSgGSbdckASvpiFwIP`) — 63 screen fr
 - **H9** honest verbs — AlertCard "Move money" → "See what to do"; alert-detail → "Open in Klarna".
 - **H6** Scan = distinct centre action — TabBar middle tab is now a dark circular FAB (white camera-viewfinder glyph + "Scan"), across all 3 variants. Verified.
 - **H10** Compare decision CTA — added Primary "Save the cheaper one" above the (now Secondary) "Add another to compare"; wired in prototype. Verified.
-- **M8** cockpit differentiator — trap-figure line "3 traps cost you £180/year" bumped 12→17px.
+- **M8** overview differentiator — trap-figure line "3 traps cost you £180/year" bumped 12→17px.
 - **H7** onboarding trust hooks — explicit sub-line "No bank login, ever · Every number calculated, not AI" added to slide 1 (body already had "No bank login"; mock already shows the credit-file chip). Verified.
 - **M3** radius — 20 mid off-token radii snapped to tokens.
 
@@ -66,14 +66,14 @@ Severity: **Blocker** (broken / unprofessional now) · **High** · **Med** · **
 ### High
 | # | Finding | Fix | Lens |
 |---|---|---|---|
-| H1 | Section rhythm violates the 1:3 rule (sections at 14–18, should be 24). Only Cockpit was piloted. | Between-section gap → 24 (`lg`); within-group → 8 (`sm`), across all 11 other screens. | DS |
+| H1 | Section rhythm violates the 1:3 rule (sections at 14–18, should be 24). Only Overview was piloted. | Between-section gap → 24 (`lg`); within-group → 8 (`sm`), across all 11 other screens. | DS |
 | H2 | **3 header patterns + inconsistent back affordance** (bare `‹`, `‹ Home`, `‹ Settings`; large-title vs inline vs sheet). | Keep NavBar/SheetHeader/SectionHeader separate but unify: one title style, one trailing Action slot, one back rule (chevron-only). Consider NavBar `variant=Large/Inline`. | DS, HIG |
 | H3 | **decode-result frame authored/exported at a different scale/width** than the 402 standard (smaller chrome/type). | Re-author/normalize the result frame to 402px; re-verify its type maps to the ramp. | DS, visual |
 | H4 | **Low tonal contrast** on secondary/placeholder/overline gray text — likely fails 4.5:1. | Darken secondary/overline grays (token fix); flag every gray-on-white pairing to measure at colour phase. | a11y |
 | H5 | **Sub-12px text heavy** (12px ×351, 11px ×83, 10px ×1) — below legibility floor. | Body/secondary floor 15px; smallest caption ≥12–13; kill 10/11. (Same fix as B2.) | a11y |
 | H6 | **"+ Scan" is a flat tab label** mixing a create-action with two nav destinations; the product's core verb is the weakest of three. | Make Scan a distinct raised/center action (camera glyph), not a flat tab; drop the "+". Activation lever must be unmistakable. | UX, HIG |
 | H7 | **Onboarding slide 1 buries the trust hooks** ("Calculated, not AI" + "No bank login" only appear on slide 3). | Surface both as a sub-line/micro-badges on slide 1. | UX |
-| H8 | **"Save & watch" has no success confirmation** — jumps straight to Cockpit; the activation payoff isn't confirmed. | Add a toast/success state ("Saved to Vault · Watching the 28 May payment"), land on Cockpit with the item present. | UX |
+| H8 | **"Save & watch" has no success confirmation** — jumps straight to Overview; the activation payoff isn't confirmed. | Add a toast/success state ("Saved to Vault · Watching the 28 May payment"), land on Overview with the item present. | UX |
 | H9 | **Action verbs over-promise** — "Move money"/"Review" only navigate, never act. Trust gap for a debt audience. | Relabel to the honest action ("See what to do" / "Open in Klarna" only if it deep-links). | UX |
 | H10 | **Compare has no decision CTA** + unclear column data source. | Add a primary action on the verdict ("Save Clearpay & watch"); label each column's source. | UX |
 
@@ -87,7 +87,7 @@ Severity: **Blocker** (broken / unprofessional now) · **High** · **Med** · **
 | M5 | Add-commitment form: no validation/disabled/required cues; placeholder-only fields (titles exist — confirm association). | Disable "Add to Radar" until Name+Date valid; mark required; native date picker; associate visible titles with inputs. | UX, a11y |
 | M6 | "Stop watching · Delete" — two verbs in one tap target (one destructive). | Split into two controls; route Delete via the existing confirm. | UX, a11y |
 | M7 | Compare buried one level deep (only in doc detail). | Promote Compare to the result and/or vault list. | UX |
-| M8 | Cockpit demotes the differentiator — leads with "£214 committed" (budgeting) while "traps cost you £180/yr" is a small chip. | Give the traps/overpay figure equal weight on home. | UX |
+| M8 | Overview demotes the differentiator — leads with "£214 committed" (budgeting) while "traps cost you £180/yr" is a small chip. | Give the traps/overpay figure equal weight on home. | UX |
 | M9 | Reduced-motion + focus management unspecified (carousel, sheets, chat autoscroll, async decode). | Spec `prefers-reduced-motion`, focus-into-sheet + trap + Escape, live-region announce on async results. | a11y, build |
 | M10 | Status / switch / severity may rely on tone alone once colour lands. | Keep text labels (present); ensure icon/text differentiation at colour phase. | a11y |
 | M11 | The "10px gap" (×43) is an ambiguous tier between 8 and 12. | Resolve each to 8 or 12; don't keep 10 as a de-facto tier. | DS |

@@ -35,7 +35,7 @@
 | **T-2 Surprise charge** | Free-тир **без платёжных данных вообще**; платный — только Apple IAP; push+email за 48ч до конца триала и до renewal самого Decode | Paywall-флоу; онбординг (free без карты) |
 | **T-3 Bank link страх** | «No bank connection. Ever.» — первый trust-экран; privacy-карточка (что на сервер / что на устройстве / retention / «удалить всё» в 1 тап) | Онбординг trust-слайд; Settings → Privacy |
 | **T-4 Неточность** | Source-highlight на каждый extracted term; confidence-бейдж; состояние «Couldn't read — check manually» вместо галлюцинации; «Calculated, not AI» на числах | Decode-result (три языка достоверности) |
-| **T-5 Paywall-ирония** | Free = завершённый акт ценности (полный decode N/мес); paywall на Watch-слой; апселл редкий, в момент ценности, не на каждом экране; цена+лимиты на одном экране без footnotes (планка FTC-settlement) | Paywall; cockpit |
+| **T-5 Paywall-ирония** | Free = завершённый акт ценности (полный decode N/мес); paywall на Watch-слой; апселл редкий, в момент ценности, не на каждом экране; цена+лимиты на одном экране без footnotes (планка FTC-settlement) | Paywall; overview |
 | **T-6 Бот-поддержка** | «Email a human, reply in 24h» в Settings; не прятать поддержку за ботом | Settings → Help |
 | **T-7 Нотификации-лотерея** | Radar reliability contract: экран «what I'm watching for you» + тест-нотификация в онбординге + локальные iOS-нотификации с серверным дублём | Radar-экран; онбординг-шаг после 1-го скана |
 

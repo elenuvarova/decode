@@ -19,11 +19,11 @@
 │                                         │
 ├──────────┬───────────────┬──────────────┤
 │   Home    │   ⊕ Scan      │    Vault     │   ← TabBar (safe-area bottom)
-│ (Cockpit) │  (центр, акцент)│  (Документы) │
+│ (Overview) │  (центр, акцент)│  (Документы) │
 └──────────┴───────────────┴──────────────┘
 ```
 
-- **Home (Cockpit)** — дефолтный таб `[PM1]`. Не последний result.
+- **Home (Overview)** — дефолтный таб `[PM1]`. Не последний result.
 - **⊕ Scan** — центральный акцентный пункт; не экран-назначение, а презентует модально `{Capture sheet}` поверх текущего таба.
 - **Vault** — список всех decoded-документов/обязательств.
 - **Settings** — НЕ таб; push из шестерёнки в шапке Home (редкий доступ).
@@ -66,7 +66,7 @@
 
 | ID | Экран | Тип | Из | В | Компоненты | Состояния | Job/PM |
 |---|---|---|---|---|---|---|---|
-| HM | Home / Cockpit ★ | [F] | TabBar · post-save | VA-d · SC-1 · AL | Headline, RangeToggle(7/30/60·mo/yr), SectionList, CommitmentRow, TrapBadge, EmptyState | empty · 1 · many · all-clear | **J2 · PM1** |
+| HM | Home / Overview ★ | [F] | TabBar · post-save | VA-d · SC-1 · AL | Headline, RangeToggle(7/30/60·mo/yr), SectionList, CommitmentRow, TrapBadge, EmptyState | empty · 1 · many · all-clear | **J2 · PM1** |
 | VA | Vault list | [F] | TabBar | VA-d · SC-1 | SearchBar, FilterChips, CommitmentRow, EmptyState | empty · 1 · many | J6 |
 
 ### Группа C · Scan & Decode pipeline (F2, modal)
@@ -79,7 +79,7 @@
 | SC-4 | Processing | [F] | SC-3 | RS | DocThumb+ScanLine, StageProgress(4), ResultSkeleton | streaming · slow · fail | J1 |
 | RS | Decode-result ★ | [F] | SC-4 · VA-d | QA · QA-src · SW · SC-1 | AhaNumber, **CreditFileBadge**, KeyTermList, RiskLabel, TrapCard, TrustSourceTag, ConfidenceTag, CalculatedBadge | success · partial(couldn't read) · error | **J1 · PM3 · PM6** |
 | RS-c | Inline correction | {S} | RS (tap «Check this») | RS (recalc) | ZoomDoc, GuidedCorrectField, RecalcToast | — | PM6 |
-| SW | Save-Watch success (обновлено 2026-07-02) | [F] | RS «Save & watch» | HM · VA · RD-set | «Saved & watching», строка-подтверждение даты «Watching the 28 May payment — we'll remind you 2 days before.», Button(Back to Cockpit), Link(View in Vault), тихий Link(Adjust reminders) | — | J3 шов Scan→Watch |
+| SW | Save-Watch success (обновлено 2026-07-02) | [F] | RS «Save & watch» | HM · VA · RD-set | «Saved & watching», строка-подтверждение даты «Watching the 28 May payment — we'll remind you 2 days before.», Button(Back to Overview), Link(View in Vault), тихий Link(Adjust reminders) | — | J3 шов Scan→Watch |
 
 > **Обновлено 2026-07-02:** конфигурационный шит `SV` (AutoNameField + DateSuggestionList + RadarToggle) **не строился** — вместо него zero-config save: тап «Save & watch» на RS сразу ведёт на success-экран `SW`; авто-имя и даты Radar ставятся автоматически. Конфигурация живёт за тихим «Adjust reminders» → RD-set.
 
@@ -140,7 +140,7 @@
                                                 └──────────────► HM(empty)
    ══════════════════════════ MAIN (TabBar) ═════════════════════════════════════
 
-   [Home/Cockpit HM]★ ──gear──► ST ─► {ST-sub·priv·notif·help·legal}
+   [Home/Overview HM]★ ──gear──► ST ─► {ST-sub·priv·notif·help·legal}
       │  ├─ bell ─► [AL Renewal Radar] ─► {AL-d} ─► RS / VA-d
       │  └─ row ──► {VA-d}
       │
@@ -159,7 +159,7 @@
    share-extension (Mail) ─► {SC-1}
 ```
 
-Сквозной шов **Scan → Watch** (обновлено 2026-07-02): SC-4→RS→SW (zero-config save) →HM; настройка напоминаний — за тихим «Adjust reminders» на SW → RD-set. Cockpit (HM) — постоянная точка возврата.
+Сквозной шов **Scan → Watch** (обновлено 2026-07-02): SC-4→RS→SW (zero-config save) →HM; настройка напоминаний — за тихим «Adjust reminders» на SW → RD-set. Overview (HM) — постоянная точка возврата.
 
 ---
 
@@ -172,7 +172,7 @@
 | F1 Onboarding | ON-1…4 + ON-4a (обновлено 2026-07-02) | ✅ |
 | F2 Scan & Decode | SC-1…4, RS, RS-c, SW (обновлено 2026-07-02) | ✅ |
 | F3 Ask | QA, QA-src, QA-sign | ✅ |
-| F5 Cockpit | HM | ✅ |
+| F5 Overview | HM | ✅ |
 | F6 Radar | AL, AL-d, RD-set | ✅ |
 | F7 Vault | VA, VA-d | ✅ |
 | F8 Upgrade | PW | ✅ |
@@ -185,7 +185,7 @@
 
 **Открытые вопросы — все резолвлены в построенном (обновлено 2026-07-02):**
 1. Guest-scan до Sign in — **да**: на ON-4 есть «Skip — keep on device» (гостевой/локальный режим) → ценность до регистрации (критерий найма №1). Старый контракт «Sign in with Apple — единственный auth» отменён: Apple — primary из трёх опций (+ email-auth, + гость).
-2. Vault — **отдельный таб**, cockpit не дублирует: cockpit = обзор списаний/статусов, vault = архив документов.
+2. Vault — **отдельный таб**, overview не дублирует: overview = обзор списаний/статусов, vault = архив документов.
 3. Alerts — **полноэкранный Renewal Radar**, не sheet: объём контента + Pro-upsell блок («Watching 2 of 6 · Unlock with Pro»).
 4. Demo-документ — **захардкоженный sample**: «Try a sample» на ON-3 ведёт сразу на decode-result, без скан-флоу.
 

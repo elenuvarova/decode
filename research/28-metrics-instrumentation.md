@@ -111,7 +111,7 @@ Skill-правило: *«The Activation point is when your customers start exper
 | `reminder_set` | Включён Radar-reminder с датой | lead_time (2d/7d/14d), category | **NSM-компонент**; «Activated-Retained» |
 | `reminder_delivered` | Локальный/серверный пуш доставлен | type (renewal/payment_due/price_rise), amount_bucket | Эффективность Radar (offline-first) |
 | `reminder_opened` | Пользователь открыл из пуша | type, days_before_due | **Главный return-триггер** в low-freq продукте |
-| `cockpit_viewed` | Открыт home/cockpit с обязательствами | committed_bucket, commitments_count | Возвраты к Watch-слою |
+| `overview_viewed` | Открыт home/overview с обязательствами | committed_bucket, commitments_count | Возвраты к Watch-слою |
 | `price_rise_detected` | Radar засёк рост цены при renewal | delta_pct_bucket | Proactive-value (whitespace, [00](00-executive-summary.md) §6.6) |
 | `vault_unlocked` | Face ID разблокировал Vault | — | Trust-сигнал использования |
 | `push_permission_resolved` | Ответ на запрос пушей (ПОСЛЕ 1-го скана) | granted (bool) | Гейт Radar-ретеншна |
@@ -178,7 +178,7 @@ Decode — low-frequency: применять буквальный Day-1/Day-7 re
 
 1. **Activation-предиктор Day-7 (для скорости сигнала, не как продукт-ретеншн):** *«7% of your cohort returning on day 7 ⇒ top-25% activation; 69% of top day-7 performers were also top 3-month performers»* ([Amplitude — 7% rule](https://amplitude.com/blog/7-percent-retention-rule)). Считаем как ранний предохранитель PMF на запуске 15.07, а не как KPI здоровья.
 2. **Продуктовый ретеншн — unbounded, помесячно.** Unbounded retention = обратная churn, *«вернулся на день N ИЛИ позже»* ([Lenny/Berezovsky](https://www.lennysnewsletter.com/p/measuring-cohort-retention)) — корректно для эпизодического использования: пользователь, вернувшийся через 5 недель с новым оффером, не «отвалился».
-3. **Return-событие = ценностное, не `app_opened`.** Считаем «вернулся» по `decode_completed` ИЛИ `reminder_opened` ИЛИ `cockpit_viewed` — return по голому открытию приложения завышает картину.
+3. **Return-событие = ценностное, не `app_opened`.** Считаем «вернулся» по `decode_completed` ИЛИ `reminder_opened` ИЛИ `overview_viewed` — return по голому открытию приложения завышает картину.
 
 ### 6.2 Ключевые когорты для wedge
 
@@ -186,7 +186,7 @@ Decode — low-frequency: применять буквальный Day-1/Day-7 re
 |---|---|---|---|
 | **Activated vs not** (видел true_cost в Day-0) | `true_cost_revealed` ≤24ч | Активация предсказывает удержание (ждём резкое расхождение кривых) | §2; *«users who activate within 3 days are 90% more likely to continue»* ([digitalapplied](https://www.digitalapplied.com/blog/customer-onboarding-time-to-value-2026-saas-metrics-framework)) |
 | **Loop-closed vs scan-only** | есть ≥1 `commitment_saved`/`reminder_set` | H5: WTP и ретеншн живут в Watch-слое, не в разовом decode | [jtbd.md](../docs/product/jtbd.md) §7 H5; урок Little Birdie |
-| **Multi-commitment** | ≥2 сохранённых обязательства | H1: у сегмента ≥2 одновременных BNPL-плана ⇒ cockpit (J2) имеет смысл | [jtbd.md](../docs/product/jtbd.md) §7 H1 |
+| **Multi-commitment** | ≥2 сохранённых обязательства | H1: у сегмента ≥2 одновременных BNPL-плана ⇒ overview (J2) имеет смысл | [jtbd.md](../docs/product/jtbd.md) §7 H1 |
 | **Reminder-driven returns** | вернулся через `reminder_opened` | Radar — главный двигатель возврата в low-freq продукте | [00](00-executive-summary.md) §6.6 |
 | **Acquisition source** (15.07 PR-всплеск vs organic) | `source` при `app_opened` | Качество PR-трафика инфоповода 15.07.2026 vs органики | [22-gtm](22-gtm-aso-launch.md) |
 | **Free vs paid** | `plan` | Различие ретеншна, обоснование цены/границы free | [21](21-pricing-monetization.md) |

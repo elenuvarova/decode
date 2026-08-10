@@ -1,6 +1,6 @@
 # Mobbin-исследование: Fintech home / dashboard для Decode
 
-**Тема:** subscriptions overview, upcoming payments, headline numbers, commitments cockpit
+**Тема:** subscriptions overview, upcoming payments, headline numbers, commitments overview
 **Дата:** 2026-06-10 · **Платформа:** iOS · **Источник:** Mobbin MCP (search_screens + search_flows)
 **Примечание о методе:** режим `deep` стабильно отдавал таймаут, все запросы выполнены в режиме `fast` (8 запросов, переформулировки относительно исходного списка — исходные формулировки давали нерелевантные «manage my app subscription» экраны).
 
@@ -8,7 +8,7 @@
 
 ## 1. Subscriptions overview (трекеры подписок)
 
-- [Orbit – Subscriptions home (flow, 4 экрана)](https://mobbin.com/flows/e0d2902c-4de8-4584-856f-c2972b802519) — эталонный «commitments cockpit» без bank connection (как у Decode). Иерархия: вверху hero-визуал (планета с орбитами = подписки), ниже **двойная headline-метрика**: слева счётчик «3» с переключателем сегмента (Personal ⌄), справа «$240.00 Total yearly» с переключателем периода. Список секционирован по статусу: **Free Trials** (с собственным субтоталом $5.05) и **Active**, у секции — сортировка «Next ↑↓». Анатомия строки: логотип сервиса + название + подпись «Renews in 4 days • 28 Nov 2025» (относительная И абсолютная дата вместе) + цена + chevron. Empty state — не пустота, а guided action: карточка «Get started guide — Find your subscriptions». Tab bar: Subscriptions / Calendar / Settings.
+- [Orbit – Subscriptions home (flow, 4 экрана)](https://mobbin.com/flows/e0d2902c-4de8-4584-856f-c2972b802519) — эталонный «commitments overview» без bank connection (как у Decode). Иерархия: вверху hero-визуал (планета с орбитами = подписки), ниже **двойная headline-метрика**: слева счётчик «3» с переключателем сегмента (Personal ⌄), справа «$240.00 Total yearly» с переключателем периода. Список секционирован по статусу: **Free Trials** (с собственным субтоталом $5.05) и **Active**, у секции — сортировка «Next ↑↓». Анатомия строки: логотип сервиса + название + подпись «Renews in 4 days • 28 Nov 2025» (относительная И абсолютная дата вместе) + цена + chevron. Empty state — не пустота, а guided action: карточка «Get started guide — Find your subscriptions». Tab bar: Subscriptions / Calendar / Settings.
 - [Orbit – Subscription detail (flow, 3 экрана)](https://mobbin.com/flows/d7c17e15-d253-4903-b667-ca73cc24eae0) — деталка обязательства как bottom sheet: логотип, имя, крупная цена; затем key-value строки (Billing, Free Trial, Next payment, Payment Method, Category, URL); блок **Notes** («Cancel before free trial period ends» — пользовательская заметка-намерение); блок **Price History** с датами и дельтой «↑ $0.05» красным. Два уровня действий: основной CTA «Mark as Cancelled» (фиолетовая кнопка) и тихий деструктив «Delete subscription» текстом.
 - [Rocket Money – Subscription overview (flow)](https://mobbin.com/flows/4ba37e27-0d46-4505-8129-8f6c4e2377d9) и экран [Rocket Money – Your Subscription Overview](https://mobbin.com/screens/301a0b9c-d67a-4a7b-b154-23a57f864940) — лучший копирайт-паттерн категории: «We detected **2 subscriptions** costing you a total of **$121 a year**» + строка-мотиватор «Save up to **$96 annually** by canceling just 1 subscription». Деньги выражены как годовая сумма (шокирует сильнее месячной) + конкретное обещание экономии. Во flow также экран «Ready to start saving right away?» с меню задач (Review Subscriptions / Create A Budget / Save For A Goal / Lower A Bill) — превращает обзор в действия.
 - [Orbit – выбор стриминговых сервисов в онбординге](https://mobbin.com/screens/deac87fe-f7ef-4452-8deb-f233aada237f) — чек-лист популярных сервисов с логотипами и средними ценами, CTA «See my yearly total»: пользователь получает первую «wow-цифру» до какого-либо ручного ввода.
@@ -28,7 +28,7 @@
 - [Chime – Home](https://mobbin.com/screens/b3938201-b968-4234-babb-205374a8542a) — цветной hero-блок: label «Available» + крупное «$533.23 >» (вся цифра — tap target), под ним контекстная строка-ссылка «$20.00 overdraft coverage ›». Дальше белые карточки (Savings + APY), баннер-карусель, грид «Financial tools». Чёткая трёхуровневая иерархия: одна главная цифра → вторичные карточки → инструменты.
 - [Plazo – Home](https://mobbin.com/screens/805bd63f-132c-49f9-bd6f-db184c813c9d) — центрированная композиция: над цифрой мелкий label «Crédito • Disponible», гигантское «1987,18€», под ним вторичная строка «Saldo utilizado: 12,82€». Ниже **ровно три круглых quick action** с подписями, затем «Últimas transacciones» со ссылкой «Ver más». Минимальная, спокойная модель для финансового дома.
 - [ANZ Plus – My Accounts](https://mobbin.com/screens/ffef05df-fd86-4a29-b8f4-f914771ced73) — сверху total «$1,784.69» с поясняющим тултипом «Amounts Displayed ⓘ», ниже карточки, сгруппированные секциями по источнику. Паттерн группировки пригоден для Vault (группировка по типу документа).
-- [Revolut Business – Home c виджетами](https://mobbin.com/screens/8c5050da-f68f-449d-983f-3c4773ed86f3) — секция «Widgets +»: пользователь сам собирает дашборд из блоков («Total assets» и т.п.). Для MVP Decode — overkill, но идея «cockpit = настраиваемые блоки» полезна на роадмапе.
+- [Revolut Business – Home c виджетами](https://mobbin.com/screens/8c5050da-f68f-449d-983f-3c4773ed86f3) — секция «Widgets +»: пользователь сам собирает дашборд из блоков («Total assets» и т.п.). Для MVP Decode — overkill, но идея «overview = настраиваемые блоки» полезна на роадмапе.
 
 ## 4. Monthly summary / insights (месячная сводка)
 
@@ -48,7 +48,7 @@
 
 ### Копируем (почти как есть)
 
-1. **Headline «сколько я должен» + временные срезы** (Afterpay): на home Decode — «Committed this month: £214» и под ним три колонки «Due in 7 / 30 / 60 days». Это и есть «commitments cockpit» одним блоком; считается детерминированным движком, без банка.
+1. **Headline «сколько я должен» + временные срезы** (Afterpay): на home Decode — «Committed this month: £214» и под ним три колонки «Due in 7 / 30 / 60 days». Это и есть «commitments overview» одним блоком; считается детерминированным движком, без банка.
 2. **Двойная метрика count + total с переключателем периода** (Orbit): «6 commitments — £86/mo ⇄ £1,032/yr». Тап по сумме переключает month/year — годовая цифра продаёт ценность.
 3. **Секции списка по статусу с субтоталами** (Orbit Free Trials/Active): для Decode — «Trials ending», «Renewing soon», «Active», «Decoded, no action». Субтотал на секции «Trials ending» — главный крючок.
 4. **Анатомия строки обязательства** (Orbit): логотип/иконка типа документа + имя + «Renews in 4 days • 28 Nov 2025» (относительная И абсолютная дата) + сумма + chevron. Добавляем слот для trap-флага (⚠︎) — это уже дифференциатор Decode.
@@ -68,6 +68,6 @@
 
 - **Всё, что предполагает bank linking** (Rocket Money «Linked Accounts», ANZ «Connect accounts») — противоречит ключевому дифференциатору Decode; берём только копирайт-framing, не механику.
 - **Home как витрина промо** (Affirm Home с «Shop Dyson», карусель баннеров Chime) — рекламные блоки на главной убивают доверие к «декодеру ловушек», который сам должен быть на стороне пользователя.
-- **Перегруз аналитикой** (Revolut Business Analytics: 3+ графика подряд) — cockpit Decode держим на одном headline-блоке + списке; графики максимум один и по тапу.
+- **Перегруз аналитикой** (Revolut Business Analytics: 3+ графика подряд) — overview Decode держим на одном headline-блоке + списке; графики максимум один и по тапу.
 - **Геймифицированная тёмная эстетика Orbit** (планета/орбиты) — паттерны информации у Orbit отличные, но визуальный язык для UK-аудитории финансового доверия лучше спокойный, светлый, «банковский» (ближе к Wise/Apple Wallet).
 - **Скрытие сумм за процентами**: показывать всегда £-цифры (как Afterpay/Tabby), проценты — вторично; пользователь Decode принимает решения в фунтах.

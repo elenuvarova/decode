@@ -51,7 +51,7 @@
 4. **Моки — в `entities/<e>/api/mock-*.ts`** через хуки (`useDocuments`,
    `useCommitments`) — подключение бэкенда не трогает экраны.
 5. **По одному экрану за проход**, между группами — `/clear`. Порядок: онбординг →
-   основной слой (cockpit, scan, result) → редкие (settings, ошибки).
+   основной слой (overview, scan, result) → редкие (settings, ошибки).
 6. **Курсор** (web-прототип): интерактив — `cursor-pointer` в `cva()`, disabled —
    `cursor-not-allowed` (Tailwind 4 убирает руку с `<button>` по умолчанию).
 

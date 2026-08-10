@@ -53,15 +53,15 @@ src/
 | `Modal`, `Toast`, `BottomSheet`, `DataList` | `shared/ui/` (UI-organism без домена) |
 | `DocumentCard`, `TrapFlagCard`, `CostBreakdown` | `entities/document/ui/` |
 | `ScanButton`, `AskAnythingInput` | `features/<name>/ui/` |
-| `TabBar`, `CockpitHeader` | `widgets/<name>/` |
+| `TabBar`, `OverviewHeader` | `widgets/<name>/` |
 
 ### Правила, которые ломаются чаще всего
 
 1. **Чистый корень.** Весь код в `src/`, разовые скрипты в `scripts/` (TS), доки в `docs/`.
    Никаких `components/`/`lib/`/дампов в корне. Гард: `find . -maxdepth 1 -name "*.js" -not -name "*.config.js"` → пусто.
-2. **Имена страниц.** Компонент экрана — всегда `<Screen>Screen` (`CockpitScreen`,
+2. **Имена страниц.** Компонент экрана — всегда `<Screen>Screen` (`OverviewScreen`,
    `VaultScreen`), именованный экспорт в `pages/<name>/ui/`. Слово `page` — только за
-   файлом-маршрутом Next `src/app/.../page.tsx` (тонкий адаптер: `export default CockpitScreen`).
+   файлом-маршрутом Next `src/app/.../page.tsx` (тонкий адаптер: `export default OverviewScreen`).
 3. **Обвязка — в layout, не в страницах.** TabBar/Header живут в
    `app/(app)/layout.tsx` (route-группа), страницы рендерят только контент — иначе
    обвязка перемонтируется на каждом переходе («мигает меню»). Публичные экраны

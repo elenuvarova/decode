@@ -15,14 +15,14 @@
 - **Компонентизация (inline → существующий компонент):** Paywall feature-rows → FeatureRow; Onboarding-2 trust-rows → FeatureRow; Vault-Detail kv → KeyValueRow; Alert-Detail £-герой → HeadlineStat, kv → KeyValueRow; Vault-List чипы → Chip(Default/Active).
 - **Прайсинг:** Yearly £41.99 vs research/21 рекомендует £34.99–39.99 / ~−40% → подтвердить намеренность.
 
-**Nits:** Onboarding-1 / Onboarding-3 dots → Dots-инстанс; Cockpit £214 → HeadlineStat; терминология входа в скан («+ Scan» / «Add a document» / «Scan a document»); «Renewal Radar» vs «Alerts inbox» нейминг; consent-toggle default-on; «Scan another» exit на decode-result; Cockpit-Empty копи сэмпла.
+**Nits:** Onboarding-1 / Onboarding-3 dots → Dots-инстанс; Overview £214 → HeadlineStat; терминология входа в скан («+ Scan» / «Add a document» / «Scan a document»); «Renewal Radar» vs «Alerts inbox» нейминг; consent-toggle default-on; «Scan another» exit на decode-result; Overview-Empty копи сэмпла.
 
 ## B. Полный UX-аудит (81 raw → 53 подтверждённых, 0 critical)
 Линзы: Nielsen, JTBD-фрикшн, онбординг/активация, восстановление после ошибок, доступность (a11y-спец), trust/FCA/тон, IA/когнагрузка, покрытие pre-mortem PM1–6.
 
 **Сквозные темы:**
 1. **Фрагментированный словарь происхождения** — 6 ярлыков («check/document/calc» vs «Calculated, not AI» vs «from your document» vs «AI») для 3 языков доверия, без легенды. Бьёт по PM6 и анти-trust-collapse.
-2. **Страх без efficacy-пути** — cockpit-стек угроз, безоговорочный credit-file «YES», первый ответ Ask называют страх без «вот что делать» (нарушает fear+efficacy для avoidance-сегмента).
+2. **Страх без efficacy-пути** — overview-стек угроз, безоговорочный credit-file «YES», первый ответ Ask называют страх без «вот что делать» (нарушает fear+efficacy для avoidance-сегмента).
 3. **Нет выходов / in-progress** — нет back/close на decode-result и Ask; нет cancel/timeout/error на scan-processing; нет индикатора «печатает» в Ask; нет «всё ещё оффлайн»; нет resume-after-permission на camera-denied.
 4. **Renewal Radar структурно противоречив** — нет входа с Home (J3 недостижим вхолодную) И показан бесплатно без Pro-гейта (ломает PM4-монетизацию с обоих концов).
 5. **Онбординг смешивает модели и просит обязательства до ценности** — карусель + терминальный CTA на слайде 1; pre-ticked consent (риск Apple 5.1.2/GDPR); сэмпл закопан; account-wall до первого decode.
@@ -32,7 +32,7 @@
 - Onboarding-2 consent default-ON → **default OFF, Continue disabled пока не включено** (копи оставить).
 - Onboarding-1 карусель+терминальный CTA → одна модель (CTA только на финальном слайде после consent, либо один welcome + inline-consent при первом скане).
 - Renewal Radar без Pro-гейта → показать free/Pro-границу (Radar на 1–2 items + «unlock all with Pro»).
-- Renewal Radar orphaned → **вход с cockpit** (bell с badge / «Coming up» полоса), 1 тап независимо от пушей.
+- Renewal Radar orphaned → **вход с overview** (bell с badge / «Coming up» полоса), 1 тап независимо от пушей.
 - Color-alone severity → различимые **глифы на состояние** (▲ HIGH, i INFO, разные формы ok/check/calc), текст-лейбл всегда; цвет — лишь усиление.
 - Credit-file hero order (PM3) → рассмотреть credit-file как первый/крупнейший блок (для Priya, высший WTP), напр. свитчабельный порядок/персонализация.
 
@@ -129,7 +129,7 @@
 | S2 | Ask | Dismiss — `Icons/chevron.left` на правой стороне (x:356) — семантически неверно | `swapComponent` → `Icons/xmark.circle.fill` |
 | S3 | Decode-Result TrapCard ×2 | Одинаковая иконка для всех уровней + `⚠`/`ⓘ` в тексте заголовка | Удалены глифы из title; trap2 icon → `Icons/info.circle.fill` |
 | S4 | Decode-Result-Insurance TrapCard ×2 | То же | То же |
-| S5 | Cockpit bell | Нет badge — entry в Renewal Radar не очевиден | Добавлен 8×8 dot (dark fill, white stroke) поверх bell icon |
+| S5 | Overview bell | Нет badge — entry в Renewal Radar не очевиден | Добавлен 8×8 dot (dark fill, white stroke) поверх bell icon |
 | S6 | Paywall feature rows | 4 inline custom frames вместо DS компонента | Заменены на `Molecules/FeatureRow` instances с корректным title/sub |
 
 ### Что уже было OK (проверено, не трогали)
@@ -178,7 +178,7 @@
 
 - TrapCard, AlertCard, StateScaffold, FeatureRow — иконки стоят прямо на белом фоне ✓
 - Delete-Confirm, Trial-Expired, Error-DecodeFailed — state иконки без контейнеров ✓
-- Cockpit, Decode-Result — list-row иконки clean ✓
+- Overview, Decode-Result — list-row иконки clean ✓
 - Permission screens — illustration иконки standalone ✓
 
 ---
@@ -210,7 +210,7 @@
 | 4 | Scan-Processing [59:15] | Добавлена «Cancel» кнопка bottom y:820 |
 | 5 | Settings ct [71:86] | Добавлен ряд «Appearance / Text size, theme» в секцию NOTIFICATIONS |
 | 6 | Vault-detail [95:440] | Добавлен ряд «Compare offers ›» между NoteBlock и CTA |
-| 7 | Cockpit hcard [99:615] | Добавлен «Coming up this week ›» → tappable row под seg |
+| 7 | Overview hcard [99:615] | Добавлен «Coming up this week ›» → tappable row под seg |
 | 8 | Alert-detail ct [95:492] | Добавлена «Mark as done» кнопка под Snooze |
 | 9 | Contact-support ct [114:982] | Добавлен success-hint «After sending, we'll confirm by email within 24 h.» |
 | 10 | Onboarding-4 | Создан экран `email-auth` (email + password form, Sign in btn, Create account link) |
@@ -222,9 +222,9 @@
 | 1 | scan-camera | Добавлен hotspot «Cancel / close» → scan-capture |
 | 2 | scan-processing | Добавлен hotspot «Cancel» → scan-capture |
 | 3 | vault-detail | Delete → delete-document-confirm (новый экран); Compare offers hotspot |
-| 4 | cockpit | «Coming up this week ›» → payment-calendar |
+| 4 | overview | «Coming up this week ›» → payment-calendar |
 | 5 | alert-detail | «Mark as done» hotspot → alerts-inbox |
 | 6 | onboarding-4 | «Continue with email» → email-auth |
-| 7 | email-auth | Новый экран: Sign in → cockpit-empty, Create account → cockpit-empty |
+| 7 | email-auth | Новый экран: Sign in → overview-empty, Create account → overview-empty |
 
 **Итог:** 41 экран · 128 hotspots · 0 broken links

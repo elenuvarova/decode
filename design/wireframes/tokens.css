@@ -1,46 +1,70 @@
-/* Decode — design tokens (wireframe-grayscale stage)
- * Источник правды: docs/DESIGN.md. Архитектура финальная: примитивы → семантические роли.
- * Цвет = grayscale-плейсхолдеры. На фазе дизайна меняются ТОЛЬКО примитивы и ссылки ролей.
+/* Decode — design tokens
+ * Источник правды: docs/DESIGN.md + переменные Figma (файл ZR4wMSgGSbdckASvpiFwIP, коллекция Theme).
+ * Архитектура: примитивы (абсолютные значения) → семантические роли (ссылки, меняются по режиму).
+ * Три режима: wireframe (ч/б) — :root по умолчанию, light — .light, dark — .dark.
  * Портируется 1:1 в src/app/globals.css (:root + .dark + @theme inline) при scaffold прототипа.
+ *
+ * КОНТРАСТ (аудит 2026-08-05): текст ≥4.5:1 на своей поверхности, граница контрола ≥3:1.
+ * Числа в комментариях — посчитанные ratio, не оценки. Меняешь значение → пересчитай.
  */
 
 :root {
-  /* ── Уровень 1: ПРИМИТИВЫ (light, grayscale) — уникальные значения только здесь ── */
+  /* ── Уровень 1: ПРИМИТИВЫ — уникальные значения только здесь, одни на все режимы ── */
   --gray-0:   #FFFFFF;
   --gray-50:  #F7F7F8;
   --gray-100: #EFEFF1;
   --gray-200: #E2E2E6;
   --gray-300: #CACAD0;
   --gray-400: #A6A6AE;
-  --gray-500: #7C7C85;
+  --gray-450: #8E8E96;  /* 3.25:1 на белом — минимум для границы контрола */
+  --gray-500: #7C7C85;  /* 4.13:1 — декор и иконки; для текста НЕ хватает */
+  --gray-550: #6E6E77;  /* 5.05:1 на белом, 4.72:1 на gray-50 — вторичный текст */
   --gray-600: #5A5A62;
   --gray-700: #3F3F46;
+  --gray-800: #2C2C32;
   --gray-900: #1A1A1E;
   --gray-950: #0E0E11;
-  --accent-placeholder: var(--gray-900);   /* brand-акцент: на дизайне → brand hue */
 
-  /* ── Уровень 2: СЕМАНТИЧЕСКИЕ РОЛИ → ссылки на примитивы (в коде используются ТОЛЬКО они) ── */
+  /* акценты light — все ≥5:1 на белом, белый на них тоже ≥5:1 */
+  --teal-600:  #0E7C72;  /* brand · 5.07:1 */
+  --teal-700:  #0A5F58;
+  --green-600: #157A4C;  /* 5.36:1 */
+  --amber-600: #8A5A00;  /* 5.93:1 */
+  --red-600:   #B3261E;  /* 6.54:1 */
+  --blue-600:  #176BB3;  /* 5.54:1 */
+
+  /* акценты dark — все ≥6.7:1 на gray-950, gray-950 на них тоже ≥6.7:1 */
+  --teal-400:  #3FB3A6;  /* 7.54:1 */
+  --green-400: #4CC38A;  /* 8.70:1 */
+  --amber-400: #E0A53F;  /* 8.83:1 */
+  --red-400:   #F2726A;  /* 6.78:1 */
+  --blue-400:  #56A2E8;  /* 7.09:1 */
+
+  /* ── Уровень 2: СЕМАНТИЧЕСКИЕ РОЛИ — в коде используются ТОЛЬКО они ── */
+  /* Значения по умолчанию = режим Wireframe (ч/б) */
   /* Surface */
   --background: var(--gray-0);
   --foreground: var(--gray-900);
   --muted: var(--gray-50);
-  --muted-foreground: var(--gray-500);
-  --border: var(--gray-200);
+  --muted-foreground: var(--gray-550);
+  --border: var(--gray-200);         /* ТОЛЬКО декоративный разделитель */
+  --border-strong: var(--gray-450);  /* граница интерактивного контрола, ≥3:1 */
   --card: var(--gray-0);
   --card-foreground: var(--gray-900);
   --popover: var(--gray-0);
   --popover-foreground: var(--gray-900);
-  --input: var(--gray-200);
-  --ring: var(--gray-400);
+  --input: var(--gray-450);
+  --ring: var(--gray-600);
+  --icon: var(--gray-500);
   /* Brand */
-  --primary: var(--accent-placeholder);
+  --primary: var(--gray-900);
   --primary-foreground: var(--gray-0);
   /* Semantic */
   --success: var(--gray-700);  --success-foreground: var(--gray-0);
   --warning: var(--gray-600);  --warning-foreground: var(--gray-0);
   --danger:  var(--gray-900);  --danger-foreground:  var(--gray-0);
   --info:    var(--gray-500);  --info-foreground:    var(--gray-0);
-  /* Domain (Decode) */
+  /* Domain (Decode) — алиасы на семантику во всех режимах: severity = одно решение */
   --trap-high: var(--danger);
   --trap-med:  var(--warning);
   --trap-info: var(--info);
@@ -57,30 +81,43 @@
 
   /* ── Typography (финальное) ── */
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
-  --font-figures: "SF Pro Text", -apple-system, system-ui, sans-serif; /* + tabular-nums */
-  --text-display: 2.125rem;  --lh-display: 2.5rem;    --fw-display: 700;
-  --text-h1: 1.625rem;       --lh-h1: 2rem;           --fw-h1: 700;
-  --text-h2: 1.25rem;        --lh-h2: 1.625rem;       --fw-h2: 600;
-  --text-body: 1.0625rem;    --lh-body: 1.5rem;       --fw-body: 400;
+  --text-display: 2.125rem;      --lh-display: 2.5rem;      --fw-display: 700;
+  --text-h1: 1.625rem;           --lh-h1: 2rem;             --fw-h1: 700;
+  --text-h2: 1.25rem;            --lh-h2: 1.625rem;         --fw-h2: 600;
+  --text-body: 1.0625rem;        --lh-body: 1.5rem;         --fw-body: 400;
   --fw-body-strong: 600;
-  --text-caption: 0.8125rem; --lh-caption: 1.125rem;  --fw-caption: 400;
+  --text-subheadline: 0.9375rem; --lh-subheadline: 1.25rem;
+  --text-caption: 0.8125rem;     --lh-caption: 1.125rem;    --fw-caption: 400;
+  --text-label: 0.75rem;         --lh-label: 1rem;          --fw-label: 500;
+  /* Табличные цифры — НЕ отдельный стиль (дубли figures/figures-lg удалены 2026-08-05),
+     а свойство на месте: font-variant-numeric: tabular-nums.
+     Применять к £/APR/%/датам в колонках, где цифры должны выстраиваться по разрядам. */
 
-  /* ── Spacing (финальное, base 4px, spacious) ── */
+  /* ── Spacing (base 4px, spacious) ── */
+  --space-2xs: 2px;   /* только инсет дорожки segmented-control */
   --space-xs: 4px;
   --space-sm: 8px;
+  --space-12: 12px;
   --space-md: 16px;
+  --space-20: 20px;
   --space-lg: 24px;
   --space-xl: 32px;
   --space-2xl: 48px;
   --screen-padding: 16px;
+  --safe-bottom: env(safe-area-inset-bottom, 34px);  /* в Figma — константа 34 (iPhone 17 Pro) */
   --tap-min: 44px;
 
-  /* ── Radii (мягкие, гипотеза Apple/Things) ── */
+  /* ── Radii ── */
+  --r-xs: 4px;
   --r-sm: 8px;
   --r-default: 12px;
   --r-lg: 16px;
   --r-xl: 20px;
   --r-full: 9999px;
+
+  /* ── Stroke ── */
+  --stroke-hairline: 1px;
+  --stroke-emphasis: 2px;
 
   /* ── Elevation (на wireframe почти flat) ── */
   --e-card:    0 1px 2px rgba(0,0,0,0.04);
@@ -102,22 +139,36 @@
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* ── Тёмная тема: переопределяем ТОЛЬКО примитивы → роли re-resolve через var() автоматически ── */
+/* ── Light: тот же нейтральный слой, что и wireframe, + цветные акценты ── */
+.light {
+  --primary: var(--teal-600);
+  --success: var(--green-600);
+  --warning: var(--amber-600);
+  --danger:  var(--red-600);
+  --info:    var(--blue-600);
+}
+
+/* ── Dark: переопределяем РОЛИ (не примитивы) — ровно как режим Dark в Figma ── */
 .dark {
-  --gray-0:   #0E0E11;
-  --gray-50:  #16161A;
-  --gray-100: #1D1D22;
-  --gray-200: #26262C;
-  --gray-300: #33333A;
-  --gray-400: #4C4C55;
-  --gray-500: #7C7C85;
-  --gray-600: #A6A6AE;
-  --gray-700: #CACAD0;
-  --gray-900: #EDEDF0;
-  --gray-950: #FFFFFF;
-  /* роли, которые в dark указывают на ДРУГОЙ примитив (см. DESIGN.md) */
-  --card: var(--gray-50);
-  --popover: var(--gray-100);
+  --background: var(--gray-950);
+  --foreground: var(--gray-50);
+  --muted: var(--gray-800);
+  --muted-foreground: var(--gray-400);   /* 7.97:1 на фоне, 7.18:1 на карточке */
+  --border: var(--gray-700);
+  --border-strong: var(--gray-500);      /* 4.66:1 — граница контрола */
+  --card: var(--gray-900);
+  --card-foreground: var(--gray-50);
+  --popover: var(--gray-900);
+  --popover-foreground: var(--gray-50);
+  --input: var(--gray-500);
+  --ring: var(--gray-400);
+  --icon: var(--gray-500);
+  --primary: var(--teal-400);
+  --primary-foreground: var(--gray-950);
+  --success: var(--green-400);  --success-foreground: var(--gray-950);
+  --warning: var(--amber-400);  --warning-foreground: var(--gray-950);
+  --danger:  var(--red-400);    --danger-foreground:  var(--gray-950);
+  --info:    var(--blue-400);   --info-foreground:    var(--gray-950);
 }
 
 @media (prefers-reduced-motion: reduce) {

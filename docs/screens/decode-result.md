@@ -46,7 +46,7 @@
 - `DateSuggestionList`: предложенные даты для Radar из извлечённых дедлайнов («Promo rate ends 14 Nov», «Payment 2 due 28 May»).
 - `RadarToggle` per-date (inline-обещание наблюдения = шов Scan→Watch).
 - Если guest → здесь предложить Sign in with Apple для сохранения.
-- `[Save to Vault]` → Home (cockpit) с тостом «Saved · watching 2 dates».
+- `[Save to Vault]` → Home (overview) с тостом «Saved · watching 2 dates».
 
 ### FCA-инварианты копирайта ([research/09b](../../research/09b-fca-boundary-verified.md), [research/00 §5](../../research/00-executive-summary.md))
 - Summary/trap: факт + рыночный бенчмарк С ДАТОЙ («typical UK range is £5–10, as of June 2026»), НЕ оценка решения.
@@ -55,7 +55,7 @@
 - Футер result: дисклеймер «Decode explains what's in your documents. It doesn't give financial advice…» + signpost MoneyHelper/StepChange.
 
 ### Связи
-RS → [ask](ask.md), [scan](scan.md), SV → [cockpit](cockpit.md)/[alerts](alerts.md). Вход: SC-4, а также из [Vault detail](../ux/screen-sitemap.md) (повторный просмотр).
+RS → [ask](ask.md), [scan](scan.md), SV → [overview](overview.md)/[alerts](alerts.md). Вход: SC-4, а также из [Vault detail](../ux/screen-sitemap.md) (повторный просмотр).
 
 ---
 

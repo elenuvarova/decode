@@ -50,11 +50,11 @@
 | # | Проблема | Где | Фикс |
 |---|---|---|---|
 | 4 | **Type-ramp board ≠ DESIGN.md.** Board показывает 9-ступенчатую iOS-лесенку (34/28/22/17/16/15/13/12), DESIGN.md документирует 6 ступеней (34/26/20/17/13). Конфликт источника правды в файле, который сам объявлен «контрактом визуальной правды». | `design-system-board` ↔ `docs/DESIGN.md` | Свести к одной лесенке: либо обновить DESIGN.md под iOS-ramp борда, либо перерисовать board под 6 ступеней. |
-| 5 | **Два стиля шапки применены с исключениями.** Large-title (cockpit, vault, settings, scan-review, ask) vs centered-nav (multi-page, payment-calendar, compare, alerts, alert-detail, все sub-settings, все error). В целом маппится на root vs pushed — НО `ask.png` использует large-title **без кнопки назад**, тогда как его сосед по флоу `qa-signpost` — «‹ Ask». В одном флоу две трактовки + потерянный аффорданс. | `ask` vs `qa-signpost` | Pushed-экраны → inline-nav + back. Дать `ask` видимую кнопку назад. |
+| 5 | **Два стиля шапки применены с исключениями.** Large-title (overview, vault, settings, scan-review, ask) vs centered-nav (multi-page, payment-calendar, compare, alerts, alert-detail, все sub-settings, все error). В целом маппится на root vs pushed — НО `ask.png` использует large-title **без кнопки назад**, тогда как его сосед по флоу `qa-signpost` — «‹ Ask». В одном флоу две трактовки + потерянный аффорданс. | `ask` vs `qa-signpost` | Pushed-экраны → inline-nav + back. Дать `ask` видимую кнопку назад. |
 | 6 | **Отсутствуют аффордансы назад/закрыть.** `ask` — нет back (прототип всё равно вешает хотспот сверху-слева). `scan-camera` — закрытие нарисовано как белый кружок сверху-СПРАВА без глифа, а прототип вешает cancel сверху-СЛЕВА. | `ask`, `scan-camera-wireframe` | Нарисовать те контролы назад/закрыть, которые ожидают и пользователь, и прототип. |
-| 7 | **Заголовок Cockpit не совпадает.** Заполненный — «Commitments», пустой — «Your commitments». Один экран, два заголовка. | `cockpit-wireframe` vs `cockpit-empty` | Выбрать один вариант. |
+| 7 | **Заголовок Overview не совпадает.** Заполненный — «Commitments», пустой — «Your commitments». Один экран, два заголовка. | `overview-wireframe` vs `overview-empty` | Выбрать один вариант. |
 | 8 | **Размещение CTA непоследовательно.** Большинство экранов прибивают primary-CTA к низу (онбординг, scan-review, errors, paywall, contact), но `multi-page-scan` и `add-commitment` вешают CTA в середине с большой пустотой снизу. | `multi-page-scan`, `add-commitment` | Прибить primary-CTA к низу (над safe-bottom) консистентно. |
-| 9 | **У TabBar нет активного состояния.** На Home и на Vault табы выглядят одинаково; центральный тёмный кружок Scan — это акцент, не «выбранный таб». Пользователь не понимает, где он. | `cockpit-wireframe`, `cockpit-empty`, `vault-list` | Добавить индикатор активного таба (заливка иконки/вес лейбла). |
+| 9 | **У TabBar нет активного состояния.** На Home и на Vault табы выглядят одинаково; центральный тёмный кружок Scan — это акцент, не «выбранный таб». Пользователь не понимает, где он. | `overview-wireframe`, `overview-empty`, `vault-list` | Добавить индикатор активного таба (заливка иконки/вес лейбла). |
 | 10 | **В `settings` нет строк, которые ведёт IA.** Нет ряда «Appearance» и ряда «Help & FAQ», хотя оба экрана существуют и слинкованы; хотспоты прототипа к ним **накладываются** на «Reminders & deadlines» / «Email a human» (коллизия тапа). | `settings.png` + `prototype/app.js` | Добавить две недостающие строки в фрейм settings; развести хотспоты. |
 | 11 | **Paywall без выбранного плана.** У Yearly/Monthly нет radio/выделения; «Start 7-day free trial» неоднозначен — какой план стартует. | `paywall` | Добавить состояние выбора плана (selected). |
 
@@ -63,7 +63,7 @@
 | # | Проблема | Где | Фикс |
 |---|---|---|---|
 | 12 | Stale/дубликаты фреймов, не подключены к прототипу — риск отредактировать не тот файл. | `onboarding-2-trust`, `ask-wireframe`, `decode-result-light`, `result-error`, `foundations-light` | Архивировать/удалить из активной папки. |
-| 13 | Буквальные плейсхолдеры «… behind (dimmed)» вместо реального приглушённого фона. | `scan-capture` («Cockpit behind»), `share-decode` («Decode result behind») | Рендерить реальный приглушённый экран или нейтральный scrim. |
+| 13 | Буквальные плейсхолдеры «… behind (dimmed)» вместо реального приглушённого фона. | `scan-capture` («Overview behind»), `share-decode` («Decode result behind») | Рендерить реальный приглушённый экран или нейтральный scrim. |
 | 14 | Нелогичная дата-группировка: «Boiler cover · 24 Jun» в «LATER THIS MONTH», тогда как «THIS WEEK» = 28 Jun (24 < 28). | `payment-calendar` | Поправить демо-данные. |
 | 15 | Drill-in строки без disclosure: «Remind me / Reminder horizon / Quiet hours» показывают значение, но без шеврона, хотя редактируемы. | `radar-settings` | Добавить шевроны/disclosure-индикатор. |
 | 16 | Третий вариант «Forward an email» в онбординге не имеет хотспота (мёртвая карточка в прототипе). | `onboarding-3-nodoc` + `app.js` | Слинковать или убрать. |
@@ -85,7 +85,7 @@
 
 1. **#1 — переэкспорт на единый холст 402×874.** Это снимает мыло на главном экране и выравнивает масштаб по всему набору; один фикс улучшает каждый кадр. Делать первым.
 2. **#2 + #3 — иконный слой и severity-различие** (хотя бы для trap/credit-file/confidence/табов). Это закрывает colorblind-safe обещание системы.
-3. **#5–#11 — единообразие** (шапки/back, заголовок cockpit, CTA-якорь, активный таб, строки settings, выбор плана paywall) — быстрые правки фреймов, большой эффект на воспринимаемое качество.
+3. **#5–#11 — единообразие** (шапки/back, заголовок overview, CTA-якорь, активный таб, строки settings, выбор плана paywall) — быстрые правки фреймов, большой эффект на воспринимаемое качество.
 4. **#4 — свести type-ramp** в DESIGN.md/борде, чтобы дальше код опирался на одну лесенку.
 5. **LOW** — гигиена репо и демо-данные, по остаточному принципу.
 
@@ -105,10 +105,10 @@
 |---|---|---|
 | 1 | Неунифицированный холст / мыло | **Все 45 экранов + Foundations переэкспортированы из Figma в едином 2× (804px шир.)** прямо в `design/wireframes/figma/`. Геройский result теперь 804×2386 (было мыльные 189×560). |
 | 2 | Severity ловушек в ч/б (BNPL) | Уже исправлено в Figma (⚠ vs ⓘ) — проявилось переэкспортом. |
-| 3 | Нет иконного слоя | Уже построен в Figma (SF Symbols в settings/cockpit/TabBar/traps/inputs) — проявилось переэкспортом. |
+| 3 | Нет иконного слоя | Уже построен в Figma (SF Symbols в settings/overview/TabBar/traps/inputs) — проявилось переэкспортом. |
 | 4 | Type-ramp board ≠ DESIGN.md | В `docs/DESIGN.md` добавлен стиль `label` + примечание «канон рампы = этот файл + Foundations-борд; `design-system-board.png` иллюстративен». |
 | 5/6 | `ask` без back | Back-шеврон уже есть в Figma — проявилось переэкспортом. |
-| 7 | Cockpit заголовок «Your commitments» vs «Commitments» | **Figma-правка:** пустой cockpit → «Commitments». |
+| 7 | Overview заголовок «Your commitments» vs «Commitments» | **Figma-правка:** пустой overview → «Commitments». |
 | 10 | settings: нет Appearance/Help&FAQ + коллизии хотспотов | Appearance уже была в Figma; **добавил строку «Help & FAQ»** (клон ListRow + иконка `questionmark.circle.fill`), фрейм нарастил высоту (1208→1347, footer больше не обрезан); **хотспоты settings перестроены по точной геометрии** (коллизии устранены). |
 | 11a | Paywall: дублированные ✓ | **Figma-правка:** удалил 4 лишних `checkmark.circle.fill` (у каждого FeatureRow свой ✓). |
 | 12 | Stale-дубликаты PNG | Удалены 5 (`ask-wireframe`, `decode-result-light`, `result-error`, `foundations-light`, `onboarding-2-trust`); `contact-sheet.html` перегенерирован. |
@@ -137,8 +137,8 @@
 | **StatusBar «фигня»** (в ШАПКЕ КАЖДОГО экрана) | В кластере `signal` иконки cellularbars+battery были не-равномерно сплющены (24×24 → 18×12 / 26×12), контент вылезал за рамку и накладывался в мусорный блоб; wifi отсутствовал | Пересобрал кластер: свежие инстансы, **равномерный rescale** до ~13px, добавил wifi → чистые сигнал+wifi+батарея. Компонент → пофикшено на всех экранах. |
 | **Appearance иконка** (#9 из раунда 1) | Делила `bell.slash` с Quiet hours; ваша `circle.lefthalf.filled` рендерилась пустой (битый SVG-импорт: белый вектор поверх глифа) | Перерисовал глиф чистым SVG (левый полукруг + кольцо), привязал к токену `gray-400`, сделал компонентом `Icons/circle.lefthalf.filled`, заменил иконку строки Appearance. |
 | **#8 Якорь CTA** | `multi-page-scan` и `add-commitment` — кнопка висела в середине | Добавил grow-spacer + bottom safe-area padding → CTA прибита к низу. |
-| **#9 Активное состояние TabBar** | Home/Vault не подсвечивались | Активный таб (Home на cockpit/cockpit-empty, Vault на vault-list) — иконка+лейбл привязаны к `foreground` (тёмный), остальные приглушены. |
-| **#13** | Литералы «Cockpit behind (dimmed)» / «Decode result behind» | Удалены — чистый scrim под bottom-sheet. |
+| **#9 Активное состояние TabBar** | Home/Vault не подсвечивались | Активный таб (Home на overview/overview-empty, Vault на vault-list) — иконка+лейбл привязаны к `foreground` (тёмный), остальные приглушены. |
+| **#13** | Литералы «Overview behind (dimmed)» / «Decode result behind» | Удалены — чистый scrim под bottom-sheet. |
 | **#14** | payment-calendar: «LATER THIS MONTH» с датой 24 Jun раньше, чем «THIS WEEK» 28 Jun | THIS WEEK всё на 28 Jun (= «£396 land on 28 Jun»); секцию «LATER THIS MONTH» → «RENEWALS» (рамка времени убрана, Boiler 24 Jun остаётся консистентным с другими экранами). |
 
 Все 45 фреймов **переэкспортированы заново** (StatusBar в каждом). Проверено в прототипе: статус-бар чистый, TabBar показывает активный таб, CTA внизу, 45 экранов / 0 битых картинок / 0 невалидных переходов.

@@ -24,23 +24,22 @@ const SCREENS = {
     { label: 'Skip for now', to: 'onboarding-4', rect: [6, 93, 88, 6] } ] },
 
   'onboarding-4': { title: 'Onboarding · Register', img: 'onboarding-4-register.png', hotspots: [
-    { label: 'Sign in with Apple', to: 'cockpit-empty', rect: [6, 75, 88, 6] },
+    { label: 'Sign in with Apple', to: 'overview-empty', rect: [6, 75, 88, 6] },
     { label: 'Continue with email', to: 'email-auth', rect: [6, 82, 88, 6] },
-    { label: 'Skip — keep on device', to: 'cockpit-empty', rect: [6, 88, 88, 6] } ] },
+    { label: 'Skip — keep on device', to: 'overview-empty', rect: [6, 88, 88, 6] } ] },
 
-  'email-auth': { title: 'Sign in with email', img: 'email-auth.png', hotspots: [
+  'email-auth': { title: 'Continue with email', img: 'email-auth.png', hotspots: [
     { label: 'Back', to: 'onboarding-1', rect: [2, 6, 41, 4] },
-    { label: 'Done', to: 'cockpit-empty', rect: [85, 6, 13, 3] },
     { label: 'Forgot password', to: 'email-auth', rect: [58, 36, 38, 3] },
-    { label: 'Sign in', to: 'cockpit-empty', rect: [6, 42, 88, 6] },
-    { label: 'Create account', to: 'cockpit-empty', rect: [25, 50, 50, 3] } ] },
+    { label: 'Sign in', to: 'overview-empty', rect: [6, 42, 88, 6] },
+    { label: 'Create account', to: 'overview-empty', rect: [25, 50, 50, 3] } ] },
 
   // ── SCAN FLOW ────────────────────────────────────────────────────────────────
   'scan-capture': { title: 'Scan · Add a document', img: 'scan-capture.png', hotspots: [
     { label: 'Take a photo', to: 'scan-camera',  rect: [4, 47, 92, 8] },
     { label: 'Choose from library', to: 'scan-review', rect: [4, 56, 92, 8] },
     { label: 'Forward an email', to: 'scan-capture', rect: [4, 65, 92, 8] },
-    { label: 'Cancel', to: 'cockpit', rect: [4, 93, 92, 6] } ] },
+    { label: 'Cancel', to: 'overview', rect: [4, 93, 92, 6] } ] },
 
   'scan-camera': { title: 'Scan · Camera', img: 'scan-camera-wireframe.png', hotspots: [
     { label: 'Cancel / close', to: 'scan-capture', rect: [0, 0, 20, 8] },
@@ -70,7 +69,7 @@ const SCREENS = {
 
   // ── DECODE RESULT ────────────────────────────────────────────────────────────
   'decode-result': { title: 'Decode result · BNPL', img: 'decode-result-wireframe.png', hotspots: [
-    { label: 'Done', to: 'cockpit',  rect: [85, 4, 13, 3] },
+    { label: 'Done', to: 'overview',  rect: [85, 4, 13, 3] },
     { label: 'from your document › (source)', to: 'source-highlight', rect: [4, 21, 45, 3] },
     { label: 'Late fee · p.2 §4 (source)', to: 'source-highlight', rect: [4, 47, 55, 4] },
     { label: 'Does a number look wrong?', to: 'trust-repair', rect: [4, 84, 60, 2] },
@@ -85,14 +84,14 @@ const SCREENS = {
     { label: 'Done', to: 'decode-result', rect: [4, 90, 92, 6] } ] },
 
   'decode-result-insurance': { title: 'Decode result · Insurance', img: 'decode-result-insurance.png', hotspots: [
-    { label: 'Done', to: 'cockpit',      rect: [85, 5, 13, 3] },
+    { label: 'Done', to: 'overview',      rect: [85, 5, 13, 3] },
     { label: 'Trap: auto-renews', to: 'vault-detail', rect: [4, 70, 92, 7] },
     { label: 'Trap: price walking', to: 'vault-detail', rect: [4, 78, 92, 7] },
     { label: 'Ask', to: 'ask',           rect: [4, 94, 45, 5] },
     { label: 'Save & watch', to: 'save-watch-success', rect: [51, 94, 45, 5] } ] },
 
   'save-watch-success': { title: 'Saved & watching', img: 'save-watch-success.png', hotspots: [
-    { label: 'Back to Cockpit', to: 'cockpit', rect: [13, 33, 74, 6] },
+    { label: 'Back to Overview', to: 'overview', rect: [13, 33, 74, 6] },
     { label: 'View in Vault', to: 'vault-list', rect: [13, 40, 74, 5] },
     { label: 'Adjust reminders', to: 'radar-settings', rect: [13, 51, 74, 5] } ] },
 
@@ -119,8 +118,8 @@ const SCREENS = {
     { label: 'Re-check with my correction', to: 'decode-result', rect: [4, 86, 92, 6] },
     { label: 'Actually it was right', to: 'decode-result', rect: [4, 93, 92, 6] } ] },
 
-  // ── COCKPIT / HOME ───────────────────────────────────────────────────────────
-  'cockpit': { title: 'Cockpit (Home)', img: 'cockpit-wireframe.png', hotspots: [
+  // ── OVERVIEW / HOME ───────────────────────────────────────────────────────────
+  'overview': { title: 'Overview (Home)', img: 'overview-wireframe.png', hotspots: [
     { label: 'Settings', to: 'settings', rect: [85, 6, 13, 4] },
     { label: 'Coming up this week ›', to: 'payment-calendar', rect: [4, 38, 92, 4] },
     { label: '3 traps cost you', to: 'alerts-inbox', rect: [4, 44, 92, 5] },
@@ -130,14 +129,14 @@ const SCREENS = {
     { label: '+ Scan', to: 'scan-capture', rect: [34, 92, 32, 7] },
     { label: 'Vault', to: 'vault-list',  rect: [67, 92, 33, 7] } ] },
 
-  'cockpit-empty': { title: 'Cockpit · Empty (first run)', img: 'cockpit-empty.png', hotspots: [
+  'overview-empty': { title: 'Overview · Empty (first run)', img: 'overview-empty.png', hotspots: [
     { label: 'Scan a document', to: 'scan-capture', rect: [13, 62, 74, 6] },
     { label: 'Try a sample first', to: 'decode-result', rect: [13, 69, 74, 6] },
     { label: '+ Scan', to: 'scan-capture', rect: [34, 92, 32, 7] },
     { label: 'Vault', to: 'vault-list',  rect: [67, 92, 33, 7] } ] },
 
   'payment-calendar': { title: 'Coming up · Payment calendar', img: 'payment-calendar.png', hotspots: [
-    { label: 'Back to Home', to: 'cockpit', rect: [2, 6, 30, 4] },
+    { label: 'Back to Home', to: 'overview', rect: [2, 6, 30, 4] },
     { label: 'Klarna · 3 plans', to: 'vault-detail', rect: [4, 26, 92, 8] },
     { label: 'Clearpay · Sofa', to: 'vault-detail', rect: [4, 35, 92, 8] },
     { label: 'PayPal · Headphones', to: 'vault-detail', rect: [4, 44, 92, 8] },
@@ -149,7 +148,7 @@ const SCREENS = {
     { label: 'Klarna BNPL offer', to: 'vault-detail', rect: [4, 27, 92, 8] },
     { label: 'Boiler cover renewal', to: 'vault-detail', rect: [4, 36, 92, 8] },
     { label: 'Clearpay · Sofa', to: 'vault-detail', rect: [4, 45, 92, 8] },
-    { label: 'Home', to: 'cockpit',      rect: [0, 92, 33, 7] },
+    { label: 'Home', to: 'overview',      rect: [0, 92, 33, 7] },
     { label: '+ Scan', to: 'scan-capture', rect: [34, 92, 32, 7] } ] },
 
   'vault-detail': { title: 'Vault · Document detail', img: 'vault-detail.png', hotspots: [
@@ -164,12 +163,12 @@ const SCREENS = {
 
   'compare-offers': { title: 'Compare offers', img: 'compare-offers.png', hotspots: [
     { label: 'Back to Vault', to: 'vault-list', rect: [2, 6, 30, 4] },
-    { label: 'Save the cheaper one', to: 'cockpit', rect: [4, 58, 92, 6] },
+    { label: 'Save Clearpay & watch', to: 'overview', rect: [4, 58, 92, 6] },
     { label: 'Add another to compare', to: 'scan-capture', rect: [4, 67, 92, 6] } ] },
 
   // ── RENEWAL RADAR / ALERTS ───────────────────────────────────────────────────
   'alerts-inbox': { title: 'Renewal Radar', img: 'alerts-inbox.png', hotspots: [
-    { label: 'Back', to: 'cockpit', rect: [2, 6, 30, 4] },
+    { label: 'Back', to: 'overview', rect: [2, 6, 30, 4] },
     { label: 'Add manual commitment', to: 'add-commitment', rect: [84, 6, 14, 5] },
     { label: 'See what to do', to: 'alert-detail', rect: [8, 26, 84, 6] },
     { label: 'Review an alert', to: 'alert-detail', rect: [8, 45, 84, 6] } ] },
@@ -189,12 +188,12 @@ const SCREENS = {
     { label: 'Keep editing', to: 'add-commitment', rect: [13, 35, 74, 6] } ] },
 
   'add-commitment-success': { title: 'Commitment saved', img: 'add-commitment-success.png', hotspots: [
-    { label: 'Back to Cockpit', to: 'cockpit', rect: [13, 28, 74, 6] },
+    { label: 'Back to Overview', to: 'overview', rect: [13, 28, 74, 6] },
     { label: 'View in Vault', to: 'vault-list', rect: [13, 35, 74, 6] } ] },
 
   // ── SETTINGS ─────────────────────────────────────────────────────────────────
   'settings': { title: 'Settings', img: 'settings.png', hotspots: [
-    { label: 'Back', to: 'cockpit', rect: [1, 4, 18, 4] },
+    { label: 'Back', to: 'overview', rect: [1, 4, 18, 4] },
     { label: 'Manage subscription', to: 'subscription-management', rect: [4, 9.4, 92, 5] },
     { label: 'Restore purchases', to: 'subscription-management', rect: [4, 15, 92, 5] },
     { label: 'What Decode stores', to: 'consent-center',  rect: [4, 23.1, 92, 5] },
@@ -210,8 +209,8 @@ const SCREENS = {
     { label: 'Privacy policy & terms', to: 'about',       rect: [4, 91.9, 92, 5] } ] },
 
   'paywall': { title: 'Paywall · Decode Pro', img: 'paywall.png', hotspots: [
-    { label: 'Close', to: 'cockpit',         rect: [2, 6, 36, 4] },
-    { label: 'Start free trial', to: 'cockpit', rect: [4, 89, 92, 6] } ] },
+    { label: 'Close', to: 'overview',         rect: [2, 6, 36, 4] },
+    { label: 'Start free trial', to: 'overview', rect: [4, 89, 92, 6] } ] },
 
   'radar-settings': { title: 'Renewal Radar · Settings', img: 'radar-settings.png', hotspots: [
     { label: 'Back to Settings', to: 'settings', rect: [2, 6, 33, 4] },
@@ -249,12 +248,12 @@ const SCREENS = {
     { label: 'Complaints process', to: 'contact-support', rect: [4, 69, 92, 8] } ] },
 
   'delete-everything-confirm': { title: 'Delete everything?', img: 'delete-everything-confirm.png', hotspots: [
-    { label: 'Delete everything (confirm)', to: 'cockpit-empty', rect: [13, 30, 74, 6] },
+    { label: 'Delete everything (confirm)', to: 'overview-empty', rect: [13, 30, 74, 6] },
     { label: 'Cancel', to: 'settings', rect: [13, 37, 74, 6] } ] },
 
   // ── ERRORS & EMPTY STATES ────────────────────────────────────────────────────
   'result-error': { title: 'Result · Couldn\'t read', img: 'result-error.png', hotspots: [
-    { label: 'Close (×)', to: 'cockpit', rect: [2, 6, 10, 4] },
+    { label: 'Close (×)', to: 'overview', rect: [2, 6, 10, 4] },
     { label: 'Retake photo', to: 'scan-camera', rect: [12, 72, 76, 7] },
     { label: 'Choose a different file', to: 'scan-capture', rect: [25, 82, 50, 4] } ] },
 
@@ -265,7 +264,7 @@ const SCREENS = {
     { label: 'Restore purchases', to: 'subscription-management', rect: [4, 54, 92, 7] } ] },
 
   'error-offline': { title: 'Error · Offline', img: 'error-offline.png', hotspots: [
-    { label: 'Try again', to: 'cockpit',    rect: [13, 35, 74, 6] },
+    { label: 'Try again', to: 'overview',    rect: [13, 35, 74, 6] },
     { label: 'Open Vault', to: 'vault-list', rect: [13, 42, 74, 6] } ] },
 
   'error-decode-failed': { title: 'Error · Decode failed', img: 'error-decode-failed.png', hotspots: [
@@ -274,7 +273,7 @@ const SCREENS = {
 
   'error-limit-reached': { title: 'Error · Free limit', img: 'error-limit-reached.png', hotspots: [
     { label: 'See Pro', to: 'paywall',         rect: [13, 38, 74, 6] },
-    { label: 'Maybe next month', to: 'cockpit', rect: [13, 45, 74, 6] } ] },
+    { label: 'Maybe next month', to: 'overview', rect: [13, 45, 74, 6] } ] },
 
   'error-camera-denied': { title: 'Error · Camera off', img: 'error-camera-denied.png', hotspots: [
     { label: 'Open Settings', to: 'settings', rect: [13, 37, 74, 6] },
@@ -294,10 +293,10 @@ const SCREENS = {
 
 const FLOWS = {
   'first-decode': { name: 'First decode (J1)', sub: 'Onboarding → scan → BNPL result → save',
-    steps: ['onboarding-1','onboarding-2','onboarding-3','scan-capture','scan-camera','scan-review','scan-processing','decode-result','save-watch-success','cockpit'] },
+    steps: ['onboarding-1','onboarding-2','onboarding-3','scan-capture','scan-camera','scan-review','scan-processing','decode-result','save-watch-success','overview'] },
 
   'insurance': { name: 'Insurance decode', sub: 'Scan → process → insurance result',
-    steps: ['scan-capture','scan-review','scan-processing','decode-result-insurance','cockpit'] },
+    steps: ['scan-capture','scan-review','scan-processing','decode-result-insurance','overview'] },
 
   'multi-page': { name: 'Multi-page scan', sub: 'Review → add pages → decode',
     steps: ['scan-review','multi-page-scan','scan-processing','decode-result'] },
@@ -311,23 +310,23 @@ const FLOWS = {
   'trust': { name: 'Trust repair', sub: 'Result → flag number → re-check',
     steps: ['decode-result','trust-repair','decode-result'] },
 
-  'watch': { name: 'Watch / Radar (J3)', sub: 'Cockpit → radar → alert → plan',
-    steps: ['cockpit','alerts-inbox','alert-detail','vault-detail'] },
+  'watch': { name: 'Watch / Radar (J3)', sub: 'Overview → radar → alert → plan',
+    steps: ['overview','alerts-inbox','alert-detail','vault-detail'] },
 
-  'vault': { name: 'Vault (J6)', sub: 'Cockpit → vault → detail → compare',
-    steps: ['cockpit','vault-list','vault-detail','compare-offers'] },
+  'vault': { name: 'Vault (J6)', sub: 'Overview → vault → detail → compare',
+    steps: ['overview','vault-list','vault-detail','compare-offers'] },
 
   'payment-cal': { name: 'Payment calendar', sub: 'Home → coming up → commitment',
-    steps: ['cockpit','payment-calendar','vault-detail'] },
+    steps: ['overview','payment-calendar','vault-detail'] },
 
-  'monetize': { name: 'Monetize (F8)', sub: 'Hit limit → paywall → cockpit',
-    steps: ['error-limit-reached','paywall','cockpit'] },
+  'monetize': { name: 'Monetize (F8)', sub: 'Hit limit → paywall → overview',
+    steps: ['error-limit-reached','paywall','overview'] },
 
   'onboarding': { name: 'Onboarding + register', sub: 'Welcome → trust → no-doc → register',
-    steps: ['onboarding-1','onboarding-2','onboarding-3','onboarding-4','cockpit-empty'] },
+    steps: ['onboarding-1','onboarding-2','onboarding-3','onboarding-4','overview-empty'] },
 
   'settings-tour': { name: 'Settings & help', sub: 'Settings → radar → help → contact',
-    steps: ['cockpit','settings','radar-settings','settings','help-faq','contact-support'] },
+    steps: ['overview','settings','radar-settings','settings','help-faq','contact-support'] },
 
   'privacy': { name: 'Privacy choices', sub: 'Settings → privacy → export / delete',
     steps: ['settings','consent-center','settings'] },

@@ -15,10 +15,10 @@ http://localhost:8765/prototype-app/index.html
 ## What's interactive
 - **Tap the UI itself** — nav-bar back/Done, tab bar, list rows, sheet options all navigate.
 - **Onboarding consent** — switch defaults **OFF**; *Continue* stays disabled until you turn it on (Apple 5.1.2 / GDPR fix).
-- **Cockpit range** — segmented control (7d / 30d / 60d) live-updates the headline £.
+- **Overview range** — segmented control (7d / 30d / 60d) live-updates the headline £.
 - **Scan-processing** — steps through Reading→Extracting→Calculating→Checking, then auto-advances.
 - **Ask** — shows a typing indicator that resolves into the answer.
-- **Renewal Radar** — reachable from the cockpit **bell** (UX-audit fix) and shows the free/Pro gate.
+- **Renewal Radar** — reachable from the overview **bell** (UX-audit fix) and shows the free/Pro gate.
 
 ## Design system (`hig.css`) — with states
 Components carry real **states**, viewable on the **◆ Design system** screen: buttons (filled/gray/plain/destructive/apple × default/pressed/disabled/loading), switch on/off, segmented, text field (default/focus/filled/error), chips (default/selected/disabled), list rows, severity **glyphs** (▲ high / i info / ✓ ok / ƒx calc — shape not colour), 3 provenance languages, grayscale ramp. Monochrome (tint = ink) until colour lands later.

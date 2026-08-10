@@ -8,7 +8,7 @@
 ## Remediation status (2026-07-02, fix-пасс в тот же день)
 
 **✅ Закрыто в Figma (проверено на живом файле):**
-- **B1** — trap-чип Cockpit: `tlc` FILL→HUG, чип 224→279px, «3 traps cost you £180/year» рендерится целиком; слои `tl/tlc` переименованы (trap-chip/text). Файловый свип по видимым клипам дал ещё 5 — все закрыты: Result-Error title (FILL, 340px), Alert-Detail «Mark as done» (ct→HUG, контент 680px, влезает), Paywall «Restore purchases» (cta→HUG + прижат к низу), Privacy-Policy (фрейм вырос до 982 по прецеденту скролл-фреймов), Email-Auth «Forgot password?» (ct→HUG).
+- **B1** — trap-чип Overview: `tlc` FILL→HUG, чип 224→279px, «3 traps cost you £180/year» рендерится целиком; слои `tl/tlc` переименованы (trap-chip/text). Файловый свип по видимым клипам дал ещё 5 — все закрыты: Result-Error title (FILL, 340px), Alert-Detail «Mark as done» (ct→HUG, контент 680px, влезает), Paywall «Restore purchases» (cta→HUG + прижат к низу), Privacy-Policy (фрейм вырос до 982 по прецеденту скролл-фреймов), Email-Auth «Forgot password?» (ct→HUG).
 - **H4** — Settings: секция **GENERAL** создана, Appearance перенесён из NOTIFICATIONS (фрейм 1436→1476).
 - **H5** — построен **«Source-Highlight — Wireframe»** (x=3978, ряд ②): шит с граббером, SheetHeader «Source — Klarna offer / Late fee · p.2 §4», выдержка документа с подсвеченной строкой 4.3 (left-border + body-strong), контекстные пункты 4.2/4.4 приглушены, провенанс-подпись, «Report a mismatch» (quiet) + «Done» (primary). Все заливки/радиусы/отступы привязаны к переменным. PM6 замкнут.
 - **H6b** — Save-Watch-Success: body переписан с конкретикой («Watching the 28 May payment — we'll remind you 2 days before…») + quiet-кнопка **Adjust reminders** (→ Reminder settings).
@@ -42,7 +42,7 @@
 
 Проверено на живом файле, не по отчётам:
 
-- ✅ **Enforcement держится.** `get_variable_defs` на Cockpit / Decode-Result / Foundations возвращает spacing (`xs/sm/12/md/20/lg/xl`), радиусы (`sm/default/lg/xl/full`), text-стили (`Decode/display…figures-lg`) и цветовые роли. Раньше возвращались только цвета. Шкала 4/8/12/16/20/24/32/48 — согласованная.
+- ✅ **Enforcement держится.** `get_variable_defs` на Overview / Decode-Result / Foundations возвращает spacing (`xs/sm/12/md/20/lg/xl`), радиусы (`sm/default/lg/xl/full`), text-стили (`Decode/display…figures-lg`) и цветовые роли. Раньше возвращались только цвета. Шкала 4/8/12/16/20/24/32/48 — согласованная.
 - ✅ **Рампа снапнута**: на просмотренных экранах нет off-ramp размеров; денежные суммы сидят на `figures/figures-lg` (tabular).
 - ✅ **Компонентизация завершена**: библиотека = 8 атомов + 18 молекул + 5 организмов + 70 иконок; Button 3×4 (Style×State), TabBar 3, ListItem 6 trailing-вариантов, Bubble 2. Старое семейство рядов удалено, «Deprecated»-кладбища не осталось.
 - ✅ **UX-фиксы прошлого аудита на месте**: Scan = тёмный центральный FAB (H6), trust-хуки на слайде 1 (H7), Save-Watch-Success существует и заведён в прототип (H8), «See what to do» вместо «Move money» на первой алерт-карточке (H9), «Save the cheaper one» на Compare (H10), радиусы на токенах (M3).
@@ -59,7 +59,7 @@ Severity: **Blocker** (видимый дефект/дезинформация) �
 
 | # | Находка | Где | Фикс |
 |---|---|---|---|
-| B1 | **Trap-чип на Cockpit клиппится: рендерится «3 traps cost you £18»** вместо «…£180/year». Текст-нода `99:632` (width 221) лежит в фиксированном контейнере `tlc` `99:631` (width 166) — после бампа 12→17px (фикс M8 прошлого аудита) контейнер не вырос, текст обрезается. Для финпродукта это не эстетика: экран **показывает неверное число** на home. | Cockpit `99:603` → `tl 99:629/tlc 99:631` | Контейнеру `tlc` — HUG/FILL по ширине (рецепт из скилла figma-autolayout-hygiene); перепроверить остальные места бампа M8; ре-экспорт cockpit PNG |
+| B1 | **Trap-чип на Overview клиппится: рендерится «3 traps cost you £18»** вместо «…£180/year». Текст-нода `99:632` (width 221) лежит в фиксированном контейнере `tlc` `99:631` (width 166) — после бампа 12→17px (фикс M8 прошлого аудита) контейнер не вырос, текст обрезается. Для финпродукта это не эстетика: экран **показывает неверное число** на home. | Overview `99:603` → `tl 99:629/tlc 99:631` | Контейнеру `tlc` — HUG/FILL по ширине (рецепт из скилла figma-autolayout-hygiene); перепроверить остальные места бампа M8; ре-экспорт overview PNG |
 
 ### High
 
@@ -116,8 +116,8 @@ Severity: **Blocker** (видимый дефект/дезинформация) �
 
 ## Флоу и JTBD — сквозная сверка
 
-**Jobs → экраны:** J1→Decode-Result ✅ · J2→Cockpit ✅ · J3→Radar/Alerts ✅ · J4→Ask ✅ · J5→Ask-подветка ✅ (cancel-канал виден в Vault-Detail notes) · J6→Vault-Detail ✅ (P2-глубина, без «lender view» — план).
-**Pre-mortem:** PM1 Home=Cockpit ✅ · PM2 no-doc ветка ✅ · PM3 credit-file герой ✅ (лучший экран продукта) · PM4 пейволл на Watch-границе ✅ («Watching 2 of 6 · Unlock with Pro» на Radar — образцово) · PM5 signpost ✅ · **PM6 — ⚠️ наполовину**: три языка достоверности на месте, но tap-to-source некуда вести (H5).
+**Jobs → экраны:** J1→Decode-Result ✅ · J2→Overview ✅ · J3→Radar/Alerts ✅ · J4→Ask ✅ · J5→Ask-подветка ✅ (cancel-канал виден в Vault-Detail notes) · J6→Vault-Detail ✅ (P2-глубина, без «lender view» — план).
+**Pre-mortem:** PM1 Home=Overview ✅ · PM2 no-doc ветка ✅ · PM3 credit-file герой ✅ (лучший экран продукта) · PM4 пейволл на Watch-границе ✅ («Watching 2 of 6 · Unlock with Pro» на Radar — образцово) · PM5 signpost ✅ · **PM6 — ⚠️ наполовину**: три языка достоверности на месте, но tap-to-source некуда вести (H5).
 **Состояния:** error/empty/discard/confirm/success — редкая для wireframe-стадии полнота (6 error-экранов, 3 confirm-диалога, 2 success). Дыры: Result partial/«couldn't read» (фрейм Result-Error есть, не подключён — M5), push-permission момент (после первого result) не показан в клик-пути.
 **Фрикция первого decode:** onboarding(2–3 экрана) → capture → camera → review → processing → result — 6–7 тапов до aha, регистрация не блокирует (guest) — соответствует критерию найма №1 (≤30 сек). ✅
 
@@ -176,7 +176,7 @@ Severity: **Blocker** (видимый дефект/дезинформация) �
 
 ## Рекомендованная последовательность фиксов
 
-1. **B1** — клип trap-чипа на Cockpit (+ проверка остальных мест M8-бампа) + ре-экспорт.
+1. **B1** — клип trap-чипа на Overview (+ проверка остальных мест M8-бампа) + ре-экспорт.
 2. **Док-синхрон одним коммитом (H1+H2+H3+M3)** — DESIGN.md ↔ Figma ↔ Foundations-борд: рампа, space-12/20, Inter-стенд-ин, роль `icon`. После него «канон» снова правда.
 3. **H4–H6** — Appearance-секция; Source-highlight sheet (или явный перенос); обновление sitemap/flows под построенное.
 4. **M1–M5** — Vault-Detail деструктив, paywall selected-state, прототип-вайринг (лейблы, Subscription-Management, Result-Error).

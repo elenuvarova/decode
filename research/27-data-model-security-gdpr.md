@@ -22,7 +22,7 @@
 
 ## 1. Reference-схема сущностей (Postgres / Supabase)
 
-Дизайн-принципы: (1) каждая user-таблица несёт `user_id uuid references auth.users` и закрыта RLS-политикой `auth.uid() = user_id`; (2) extraction хранится как `jsonb` (schema-on-read — соответствует structured-output-формату из [23](23-ai-eval-extraction.md), где есть `not_found`/`confidence`/`verbatim`); (3) детерминированные поля (суммы, даты, APR) дублируются в типизированные колонки для SQL-аналитики Cockpit и Renewal Radar (cross-vault кейс из [08](08-tech-rag-backend.md) закрывается SQL, а не вектором); (4) privacy-by-design — оригинал файла отделён от извлечённых данных и удаляем независимо.
+Дизайн-принципы: (1) каждая user-таблица несёт `user_id uuid references auth.users` и закрыта RLS-политикой `auth.uid() = user_id`; (2) extraction хранится как `jsonb` (schema-on-read — соответствует structured-output-формату из [23](23-ai-eval-extraction.md), где есть `not_found`/`confidence`/`verbatim`); (3) детерминированные поля (суммы, даты, APR) дублируются в типизированные колонки для SQL-аналитики Overview и Renewal Radar (cross-vault кейс из [08](08-tech-rag-backend.md) закрывается SQL, а не вектором); (4) privacy-by-design — оригинал файла отделён от извлечённых данных и удаляем независимо.
 
 ### 1.1 ER-обзор (связи)
 
@@ -96,7 +96,7 @@ audit_log / consent_log    (служебные, append-only)
 Денормализованные типизированные поля для SQL (берутся из `extracted` после валидации `verbatim`):
 `apr numeric`, `monthly_payment numeric`, `total_repayable numeric`, `term_months int`, `first_payment_date date`, `renewal_date date`, `currency text default 'GBP'`.
 
-#### `commitments` (выведенное обязательство — питает Cockpit «Committed this month» и Radar)
+#### `commitments` (выведенное обязательство — питает Overview «Committed this month» и Radar)
 | Поле | Тип | Назначение |
 |---|---|---|
 | `id` (PK)/`user_id` (FK)/`document_id` (FK null) | `uuid` | commitment может быть и ручным |

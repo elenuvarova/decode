@@ -1,8 +1,8 @@
 # Decode
 
-AI decoder for UK financial documents — BNPL (Buy Now, Pay Later) first.
+AI decoder for UK financial documents — **any money document where getting it wrong costs you**. BNPL (Buy Now, Pay Later) is the beachhead wedge; the product is built to decode the wider family — checkout T&Cs, insurance renewals, subscriptions, credit/loan agreements, telecom/lease contracts (see [research/33-scope-and-input-strategy.md](research/33-scope-and-input-strategy.md)).
 
-Scan or share in a document (a BNPL offer, checkout T&Cs, a scary letter) and get, in ~30 seconds:
+Scan, upload, share in, or forward a document (a BNPL offer, checkout T&Cs, an insurance renewal, a scary letter — from the camera, Files/iCloud, or the OS share sheet) and get, in ~30 seconds:
 
 - **Deterministic true cost** — calculated by code, not by the LLM ("Calculated, not AI")
 - **Trap flags** — late fees, CPA quirks, auto-renewal, lock-ins, from a verified UK trap catalog
@@ -10,7 +10,7 @@ Scan or share in a document (a BNPL offer, checkout T&Cs, a scary letter) and ge
 - **Tappable citations** — every claim links to the exact line in *your* document
 - Decoded documents become **saved commitments in the Vault**, and **Renewal Radar** sends local reminders with the exact amount and the consequence of missing it
 
-**No bank connection, ever.** That is a core positioning invariant, not a missing feature.
+**No bank connection at entry — you bring the document, not your bank login.** This is a core positioning invariant that removes the #1 install barrier for a bank-access-averse cohort (~80% of UK consumers still don't use open banking; identity-theft and data-misuse are the top fears — see [research/33](research/33-scope-and-input-strategy.md)). Input is the OS share sheet + camera + upload + (later) email-forward — never account linking. Optional read-only open banking may arrive later as a Pro *automation* power-feature with progressive-trust framing, but never as a condition of entry.
 
 **Primary segment:** UK BNPL users aged 18–25 ("accidental borrowers" — several plans across Klarna/Clearpay/PayPal, unclear dates, fear of irreversible credit-file consequences).
 

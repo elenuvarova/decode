@@ -54,7 +54,7 @@
 - `[Cancel]`/свайп на любом шаге → подтверждение, если есть несохранённые страницы.
 
 ### Связи
-SC-1 ← Scan-таб · share-extension · empty-state Vault/Cockpit · ON-6 demo. SC-4 → [decode-result](decode-result.md).
+SC-1 ← Scan-таб · share-extension · empty-state Vault/Overview · ON-6 demo. SC-4 → [decode-result](decode-result.md).
 
 ---
 
