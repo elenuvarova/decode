@@ -102,6 +102,39 @@ iOS движется **в противоположную сторону**. Си�
 
 ---
 
+## Второй заход (2026-08-11): кто ещё носит угловатость, кроме ретейла
+
+Первая выборка искала угловатость через кнопки и нашла фэшн. Второй заход искал через **редакционку, события и финансовые дэшборды** — и нашёл то, чего не хватало: **носителя острой геометрии на iOS, не связанного с покупкой.**
+
+### Редакционный кластер на iOS — вот настоящий прецедент ⭐⭐⭐
+
+Здесь вообще нет карточек со скруглением: структуру держат **волосяные линейки и прямые углы**.
+
+- **Bloomberg** ([`bloomberg-ios-hairline-square.webp`](angular-sharp/bloomberg-ios-hairline-square.webp)) — ключевая находка. Финансовая информация на iOS: «The Bulletin» с прямоугольными фото встык, заголовки, разделённые линейками, рубрики `Markets / Politics / Economics` мелким шрифтом, ноль скруглений, чёрный таб-бар. **Это опровергает мой прежний тезис жёстче, чем Dropbox**: финансовый продукт, iOS, острые углы, и никакого «ADD TO BAG» рядом. [Mobbin](https://mobbin.com/screens/338902ad-c35a-4dd2-b75b-c6c9b8462021)
+- **NYTimes** ([`nytimes-ios-rules-no-cards.webp`](angular-sharp/nytimes-ios-rules-no-cards.webp)) — колонки, разделённые вертикальной и горизонтальными линейками, как газетная полоса. [Mobbin](https://mobbin.com/screens/07747af2-a16d-4006-b7c8-e07bf99579d2)
+- **The New Yorker** ([`newyorker-ios-editorial-rules.webp`](angular-sharp/newyorker-ios-editorial-rules.webp)) — прямоугольные иллюстрации, капслочные рубрики по центру, линейки-разделители секций. [Mobbin](https://mobbin.com/screens/f766b3a2-8084-4af8-9023-20bd0692acf0)
+- **The Atlantic** ([`atlantic-ios-square-thumbs.webp`](angular-sharp/atlantic-ios-square-thumbs.webp)) — `RECOMMENDED READING` капслоком под линейкой, квадратные превью, автор капслоком. [Mobbin](https://mobbin.com/screens/be940c2e-c92e-4d51-bdc2-f4743a713254)
+- **SCMP** ([`scmp-ios-dense-hairline.webp`](angular-sharp/scmp-ios-dense-hairline.webp)) — плотная лента только на линейках. [Mobbin](https://mobbin.com/screens/5607f751-b29c-4f94-a592-676bc9e60f57)
+
+**Почему это точнее фэшна для Decode.** Decode по жанру не магазин, а **документ с вердиктом**: разбор, факты, источники, «вот что мы нашли в твоём договоре». Это ближе к газетной полосе и аналитической сводке, чем к карточке товара. Редакционный кластер даёт ровно ту угловатость, которую хотелось, **вместе с правильным смыслом** — «здесь читают и разбираются», а не «здесь покупают».
+
+### Финансовые дэшборды на вебе — та же логика, но в цифрах
+
+- **Fey** ([`fey-web-dark-angular-ledger.webp`](angular-sharp/fey-web-dark-angular-ledger.webp)) — near-black, инсайдерские сделки таблицей с волосяными разделителями, мелкие моно-числа, прямоугольные бейджи `Purchase`. Ближайший веб-аналог нашей ведомости. [Mobbin](https://mobbin.com/screens/55551250-acb8-4686-b71e-b95288f56e48)
+- **Origin** ([`origin-web-forecast-grid.webp`](angular-sharp/origin-web-forecast-grid.webp)) — прогноз активов и обязательств чистой сеткой: `Assets / Cash / Investments / Retirement / Liabilities / Credit Cards / Mortgages / Loans` по годам, ноль скруглений. Наш true-cost выглядел бы так же. [Mobbin](https://mobbin.com/screens/4f0f0a01-e1b3-4899-96c6-0fdf0cb2be5c)
+- **Deel** ([`deel-web-finance-square-table.webp`](angular-sharp/deel-web-finance-square-table.webp)) — счета к оплате: квадратные чекбоксы, статусы `Overdue`, суммы справа, «Total to be paid» крупно сверху. [Mobbin](https://mobbin.com/screens/3e4a43b5-e53b-4950-bc5f-78831fffc3e1)
+- **YNAB** ([`ynab-web-budget-rows.webp`](angular-sharp/ynab-web-budget-rows.webp)) — бюджет строками без карточек, `Income / Expense / Bills / Needs / Wants`. [Mobbin](https://mobbin.com/screens/62817fae-ab1b-43cf-a15d-3d372afd32ca)
+
+### События и маркетплейсы — угловатость как «афиша»
+**DICE** ([`dice-ios-events-square.webp`](angular-sharp/dice-ios-events-square.webp)), **Whatnot** ([`whatnot-ios-square-show-cards.webp`](angular-sharp/whatnot-ios-square-show-cards.webp)), **Polestar** ([`polestar-ios-hairline-list.webp`](angular-sharp/polestar-ios-hairline-list.webp) — чёрный список на линейках с оранжевым акцентом), **Poolsuite FM** — панельные кнопки прямоугольниками.
+
+### Что меняет второй заход
+Утверждение «на iOS радиус 0 = ретейл» **не выдержало проверки**. Правильнее так: на iOS острую геометрию несут **два разных кластера** — ретейловый (кнопка-CTA, чёрная заливка, «купить») и редакционно-аналитический (линейки, полоса, таблица, «читать и разбираться»). Форма одна, смысл задаёт **носитель**: заливка и позиция CTA против линеек и сетки.
+
+Для Decode это снимает дилемму: берём **редакционную угловатость**, а не ретейловую. Прямые углы живут в линейках, таблицах, рубриках и превью; CTA при этом не обязан становиться чёрным прямоугольником во всю ширину — и именно поэтому цитата «ADD TO BAG» не возникает.
+
+---
+
 ## Веб-стили sharp-0 (Refero) — если понадобится бренд-слой
 
 На вебе направление зрелое и как раз даёт «угловатость без ретейл-подтекста»: **mono.frm.fm** (тонкие 1 px линейки, боксированная навигация, ноль скруглений и теней — архитектурный чертёж), **Norgram** (очень малые радиусы, флеш-края, монохром), **mostlikely.at** (белый холст, острые углы, чертёжная строгость), **Intra** (жёсткая сетка, крупные прямоугольные панели), **gt-planar** (zero-radius кнопки как «инструментарий»), **Co Projects**, **Egstad**. Для лендинга Decode это рабочая полка; для самого приложения — источник ритма, не радиуса.
