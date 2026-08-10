@@ -10,24 +10,28 @@
 
 ## 1. Navigation-модель
 
-**Shell — нижний TabBar, 3 пункта** (iOS HIG, thumb-zone):
+**Shell — нижний TabBar, 4 пункта + центральное действие** (iOS HIG, thumb-zone) — *обновлено 2026-08-11 под построенное*:
 
 ```
-┌─────────────────────────────────────────┐
-│                                         │
-│            активный таб                  │
-│                                         │
-├──────────┬───────────────┬──────────────┤
-│   Home    │   ⊕ Scan      │    Vault     │   ← TabBar (safe-area bottom)
-│ (Overview) │  (центр, акцент)│  (Документы) │
-└──────────┴───────────────┴──────────────┘
+┌─────────────────────────────────────────────────────┐
+│                                                     │
+│                   активный таб                       │
+│                                                     │
+├────────┬────────┬─────────┬────────┬────────────────┤
+│  Home   │ Radar  │ ⊕ Scan  │ Vault  │   Settings     │  ← TabBar (safe-area bottom)
+│(Overview)│(Alerts)│ (центр) │(Docs)  │                │
+└────────┴────────┴─────────┴────────┴────────────────┘
 ```
 
 - **Home (Overview)** — дефолтный таб `[PM1]`. Не последний result.
+- **Radar** — полноэкранный Renewal Radar + push-нотификации.
 - **⊕ Scan** — центральный акцентный пункт; не экран-назначение, а презентует модально `{Capture sheet}` поверх текущего таба.
 - **Vault** — список всех decoded-документов/обязательств.
-- **Settings** — НЕ таб; push из шестерёнки в шапке Home (редкий доступ).
-- **Alerts** — НЕ таб; bell в шапке Home → **полноэкранный Renewal Radar** (обновлено 2026-07-02: не sheet — объём контента + Pro-upsell блок) + push-нотификации (Radar = следствие скана, не отдельная навигация).
+- **Settings** — таб.
+
+> **Ревизия 2026-08-11 (доки приведены к файлу).** До этого здесь была трёхтабовая модель: `Home / ⊕Scan / Vault`, Settings — шестерёнка в шапке Home, Alerts — bell там же. Построенный файл разошёлся с ней, и разошёлся осознанно: **Radar — это шаг ядра loop «Watch»**, а не побочный экран (в нём же живёт весь Pro-апселл `[PM4]`), поэтому прятать его за иконкой в шапке значило прятать половину продуктовой ценности. Settings-табом — обычная iOS-практика при четырёх пунктах. Шапка Overview освободилась от иконок совсем: `Show trailing: false`.
+>
+> Следствие для `[PM1]`: требование «Home = Overview, не последний result» держится — дефолтный таб по-прежнему Home.
 
 **Слои навигации:**
 - **Onboarding stack** — pre-auth, показывается один раз, без TabBar (route-группа `(public)` при сборке).
@@ -95,7 +99,7 @@
 
 | ID | Экран | Тип | Из | В | Компоненты | Состояния | Job/PM |
 |---|---|---|---|---|---|---|---|
-| AL | Renewal Radar (Alerts, обновлено 2026-07-02: полноэкранный, не sheet) | [F] | HM bell | AL-d · RD-set · PW | UpcomingCalendar, ComingLaterList, WatchContract(«4 dates·checked today»), ProUpsellBlock(«Watching 2 of 6 · Unlock with Pro») | all-clear · upcoming · overdue · no-permission | J3 · PM4 |
+| AL | Renewal Radar (Alerts, обновлено 2026-07-02: полноэкранный, не sheet; 2026-08-11: **таб**) | [F] | TabBar · (P) notification | AL-d · RD-set · PW | UpcomingCalendar, ComingLaterList, WatchContract(«4 dates·checked today»), ProUpsellBlock(«Watching 2 of 6 · Unlock with Pro») | all-clear · upcoming · overdue · no-permission | J3 · PM4 |
 | AL-d | Alert detail | {S} | AL · (P) notification | RS / VA-d | AlertCard([что]+[когда]+[£+дата]+1 CTA), WhyLink+SourceHighlight | renewal · price-rise · overdue(CPA double) | J3 |
 | RD-set | Reminder settings | {S} | SW («Adjust reminders») · AL | back | LeadTimePicker(by category), LockedToggle(renewals), OffToggle(tips) | — | PM4(free/paid lead) |
 
@@ -109,7 +113,7 @@
 
 | ID | Экран | Тип | Из | В | Компоненты | Состояния | Job/PM |
 |---|---|---|---|---|---|---|---|
-| ST | Settings | [F] | HM gear | под-экраны | SettingsList | — | гигиена |
+| ST | Settings | [F] | TabBar (2026-08-11: **таб**, не шестерёнка) | под-экраны | SettingsList | — | гигиена |
 | ST-sub | Subscription | [F] | ST | (P) Apple Subscriptions | StatusRow, «Manage in Apple Subscriptions»(2 тапа) | free · paid · cancelled | VoC T-1 |
 | ST-priv | Privacy & data | [F] | ST | confirm | DataFlowList, RetentionRow, DeleteAllButton | — | VoC T-3 |
 | ST-notif | Notifications | [F] | ST | (P) iOS settings | CategoryToggles, LeadTime | granted · denied-banner | VoC T-7 |
@@ -140,8 +144,9 @@
                                                 └──────────────► HM(empty)
    ══════════════════════════ MAIN (TabBar) ═════════════════════════════════════
 
-   [Home/Overview HM]★ ──gear──► ST ─► {ST-sub·priv·notif·help·legal}
-      │  ├─ bell ─► [AL Renewal Radar] ─► {AL-d} ─► RS / VA-d
+   [Settings ST]  (таб) ─► {ST-sub·priv·notif·help·legal}
+   [Radar AL]     (таб) ─► {AL-d} ─► RS / VA-d
+   [Home/Overview HM]★  (таб, дефолтный)
       │  └─ row ──► {VA-d}
       │
    [⊕ Scan] ─► {SC-1} ─► SC-2 ─► SC-3 ─► SC-4 ─► [RS]★
@@ -181,7 +186,7 @@
 **Jobs достижимы:** J1→RS · J2→HM · J3→AL/RD-set · J4→QA · J5→QA(под-ветка) · J6→VA-d. ✅
 **Требования pre-mortem:** PM1→HM(дефолт-таб) · PM2→ON-3 · PM3→RS(CreditFileBadge) · PM4→PW/RD-set/AL(Pro-upsell) · PM5→QA-sign · PM6→RS(TrustSourceTag/ConfidenceTag/CalculatedBadge) **+ QA-src(Source-Highlight — tap-to-source построен, ✅ полностью, обновлено 2026-07-02)**. ✅
 **Каждый экран имеет вход и выход** (нет orphan/тупиков); empty-states содержат ScanCTA. ✅
-**TabBar ≤5 (iOS HIG):** 3 пункта. ✅
+**TabBar ≤5 (iOS HIG):** 4 пункта + центральное действие Scan (обновлено 2026-08-11). ✅
 
 **Открытые вопросы — все резолвлены в построенном (обновлено 2026-07-02):**
 1. Guest-scan до Sign in — **да**: на ON-4 есть «Skip — keep on device» (гостевой/локальный режим) → ценность до регистрации (критерий найма №1). Старый контракт «Sign in with Apple — единственный auth» отменён: Apple — primary из трёх опций (+ email-auth, + гость).

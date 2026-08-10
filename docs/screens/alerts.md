@@ -26,7 +26,7 @@
 - **loading / error:** skeleton / retry; данные локальны → офлайн показывает последнее.
 
 ### Действия
-**AL (alerts inbox, sheet из bell):**
+**AL (alerts inbox, полноэкранный таб Radar — 2026-08-11):**
 - Двухслойно: `UpcomingCalendar` (мини-календарь «Coming up») + `ComingLaterList` («Coming later»).
 - `WatchContract`-строка: «Watching 4 dates · last checked today».
 - Tap алерта → **AL-d**. `[Reminder settings]` → **RD-set**.
@@ -52,7 +52,7 @@
 - Тест-нотификация в онбординге после первого скана — доказать надёжность.
 
 ### Связи
-AL ← Home bell. AL-d ← AL / системная нотификация. AL-d → [decode-result](decode-result.md) / Vault detail. RD-set ← SV / AL.
+AL ← таб Radar (2026-08-11). AL-d ← AL / системная нотификация. AL-d → [decode-result](decode-result.md) / Vault detail. RD-set ← SV / AL.
 
 ---
 

@@ -160,7 +160,7 @@
    ▼
    ├──► строка ──► F7 Vault detail
    ├──► [Scan] ──► F2
-   └──► bell/Alerts ──► [Renewal Radar] (F6, полноэкранный)
+   └──► таб Radar ──► [Renewal Radar] (F6, полноэкранный; 2026-08-11: таб, не bell в шапке)
 ```
 **Состояния:** empty (0 документов → guided «Scan your first document — true cost in 30s» + кнопка Scan, антипаттерн-тупик закрыт); 1 документ; many; all-clear.
 **Контракт:** home всегда overview (`[PM1]`); никаких bank-link механик, промо-баннеров, перегруза графиками; спокойный «банковский» тон.

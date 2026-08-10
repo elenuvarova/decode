@@ -29,8 +29,8 @@
 ### Действия
 - Tap строки `CommitmentRow` → [Vault detail](../ux/screen-sitemap.md) (bottom-sheet).
 - `[Scan]` (центр-таб всегда) → [scan](scan.md) SC-1.
-- Tap bell (шапка) → [alerts](alerts.md) inbox.
-- Tap gear (шапка) → Settings.
+- Таб Radar → [alerts](alerts.md) inbox (2026-08-11: таб, не bell в шапке).
+- Таб Settings → Settings (2026-08-11: таб, не шестерёнка в шапке).
 - `RangeToggle` 7/30/60 → фильтр среза (mock-state: пересчёт видимого списка).
 - month⇄year toggle → пересчёт headline/субтоталов.
 - Tap секция-заголовок → схлопнуть/раскрыть.
@@ -46,11 +46,11 @@ HM → Vault detail, [scan](scan.md), [alerts](alerts.md), Settings. Вход: �
 **Референсы:** Afterpay (headline + срезы), Orbit (count/total toggle, структура списка), Rocket Money (копирайт traps), Apple Wallet (all-clear) ([research/13](../../research/13-mobbin-fintech-home.md)).
 
 ### Layout Mobile (основной)
-- **Шапка:** заголовок «Your commitments» + gear (справа) + bell с бейджем-счётчиком (справа). Safe-area top.
+- **Шапка:** только большой заголовок «Commitments», без иконок (2026-08-11: Radar и Settings стали табами, шапка освободилась — `Show trailing: false`). Safe-area top.
 - **Headline-блок:** крупно «Committed this month: £214»; под ним `RangeToggle` сегменты «Due in 7 · 30 · 60 days» (£ + count в каждом); month⇄year переключатель.
 - **Traps-строка (savings-фрейминг):** «Detected 3 traps costing you £180/year» — тап → фильтр needs_attention.
 - **Секции** (`SectionList` с субтоталами): «⚠ Needs attention» (вверху) → «Renewing soon» → «Active» → «Decoded, no action». Каждая строка `CommitmentRow`: иконка типа · name · «Due in 4 days · 28 Nov» (относительная И абсолютная дата) · £ · слот ⚠ `TrapBadge`.
-- **Низ:** TabBar (Home активен · ⊕Scan центр · Vault). Safe-area bottom.
+- **Низ:** TabBar (Home активен · Radar · ⊕Scan центр · Vault · Settings). Safe-area bottom.
 
 ### Layout Desktop (вторичный)
 - Не приоритет (shell = Expo). Web-версия overview — только если делаем web-демо; центр-колонка max-width.
